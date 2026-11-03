@@ -1,0 +1,28 @@
+name: 2 · Xəbər yaz və Telegram-a göndər (10:00 və 17:00 Bakı)
+on:
+  schedule: [{cron: '0 6,13 * * *'}]
+  workflow_dispatch:
+permissions: {contents: write}
+concurrency: {group: bot, cancel-in-progress: false}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null
+      - run: pip install -q pillow numpy
+      - run: python news/collect.py
+      - run: python news/write.py --n 1
+      - run: python news/tg.py send-new
+      - name: commit
+        if: always()
+        run: |
+          git config user.name "showband-bot"; git config user.email "bot@users.noreply.github.com"
+          git add -A news && git commit -m "bot: qaralama" || exit 0
+          git pull --rebase -q && git push -q
