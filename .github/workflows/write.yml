@@ -2,6 +2,8 @@ name: 2 · Xəbər yaz və Telegram-a göndər (10:00 və 17:00 Bakı)
 on:
   schedule: [{cron: '0 6,13 * * *'}]
   workflow_dispatch:
+    inputs:
+      only_send: {description: 'Yalnız göndərilməmiş qaralamaları göndər', type: boolean, default: false}
 permissions: {contents: write}
 concurrency: {group: bot, cancel-in-progress: false}
 jobs:
@@ -18,7 +20,9 @@ jobs:
       - run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null
       - run: pip install -q pillow numpy
       - run: python news/collect.py
+        if: ${{ !inputs.only_send }}
       - run: python news/write.py --n 1
+        if: ${{ !inputs.only_send }}
       - run: python news/tg.py send-new
       - name: commit
         if: always()

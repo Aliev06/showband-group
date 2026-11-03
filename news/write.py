@@ -16,7 +16,7 @@ CATS = ['Şou-biznes', 'Yeni mahnı', 'Klip', 'Konsert', 'Albom', 'Festival', 'A
 
 
 def key():
-    k = os.environ.get('GEMINI_API_KEY')
+    k = (os.environ.get('GEMINI_API_KEY') or '').strip()
     if not k and os.path.exists(os.path.join(HERE, '.env')):
         for l in open(os.path.join(HERE, '.env')):
             if l.startswith('GEMINI_API_KEY='): k = l.split('=', 1)[1].strip()
@@ -69,7 +69,7 @@ def rewrite(it, text):
     j = gemini(f'''Sən "Showband Group" saytının musiqi xəbərləri redaktorusan. Mənbə mətnindən Azərbaycan dilində TAM YENİ, unikal xəbər yaz
 (kopyalama, öz sözlərinlə). Faktları dəyişmə, heç nə uydurma. İddiaları "bildirilir", "iddia olunur" kimi ver; ittiham etmə, təhqir etmə.
 Ton: canlı, maraqlı, peşəkar. 180-320 söz, 2-3 ara başlıq.
-SEO: title 50-70 simvol, artistin adı əvvəldə; description 140-160 simvol.
+SEO: title 50-70 simvol, artistin adı əvvəldə, tam cümlə — sonunda üç nöqtə (...) OLMASIN; description 140-160 simvol.
 Kateqoriya bunlardan biri: {", ".join(CATS)}.
 Yalnız JSON:
 {{"title":"","description":"","category":"","tags":["4-6 açar söz"],"lead":"1-2 cümlə",

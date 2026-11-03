@@ -15,7 +15,7 @@ def env(k):
     if not v and os.path.exists(os.path.join(HERE, '.env')):
         for l in open(os.path.join(HERE, '.env')):
             if l.startswith(k + '='): v = l.split('=', 1)[1].strip()
-    return v
+    return v.strip() if v else v
 
 
 def api(method, data=None, files=None):
