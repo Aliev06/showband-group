@@ -40,5 +40,6 @@
  "source_image": "https://qafqazinfo.az/uploads/1793143207/eurovision.png",
  "viral": 9,
  "tg_message": 5,
- "status": "pending"
+ "status": "published",
+ "ig_status": "no-token"
 }
