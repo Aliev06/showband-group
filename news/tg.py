@@ -37,6 +37,11 @@ def api(method, data=None, files=None):
     return j['result']
 
 
+def ans(data):
+    try: api('answerCallbackQuery', data)  # köhnə düymələrdə Telegram xəta verir — vacib deyil
+    except Exception: pass
+
+
 def caption(d, status=''):
     E = html.escape
     s = (f'🆕 <b>Yeni xəbər — təsdiq gözləyir</b>\n\n<b>{E(d["title"])}</b>\n{E(d["lead"])}\n\n'
@@ -74,18 +79,18 @@ def poll():
         act, slug = q['data'].split(':', 1)
         path = os.path.join(HERE, 'drafts', slug + '.json')
         if not os.path.exists(path):
-            api('answerCallbackQuery', {'callback_query_id': q['id'], 'text': 'Qaralama tapılmadı'}); continue
+            ans({'callback_query_id': q['id'], 'text': 'Qaralama tapılmadı'}); continue
         d = json.load(open(path, encoding='utf-8'))
         if d.get('status') in ('published', 'rejected'):
-            api('answerCallbackQuery', {'callback_query_id': q['id'], 'text': 'Artıq edilib'}); continue
+            ans({'callback_query_id': q['id'], 'text': 'Artıq edilib'}); continue
         if act == 'ok':
-            api('answerCallbackQuery', {'callback_query_id': q['id'], 'text': 'Paylaşılır…'})
+            ans({'callback_query_id': q['id'], 'text': 'Paylaşılır…'})
             import publish
             res = publish.publish(path)
             status = '✅ <b>Saytda paylaşıldı</b>' + (' · Instagram: ' + res['ig'] if res.get('ig') else '')
         else:
             d['status'] = 'rejected'; json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-            api('answerCallbackQuery', {'callback_query_id': q['id'], 'text': 'Ləğv edildi'})
+            ans({'callback_query_id': q['id'], 'text': 'Ləğv edildi'})
             status = '❌ <b>Ləğv edildi</b>'
         method = 'editMessageCaption' if q['message'].get('video') else 'editMessageText'
         key = 'caption' if method == 'editMessageCaption' else 'text'
