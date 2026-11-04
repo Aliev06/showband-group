@@ -63,7 +63,7 @@ def graph(path, params, method='POST'):
         raise RuntimeError(f'HTTP {e.code}: {body[:300]}')
 
 
-def ig_publish(d):
+def ig_publish(d, again=True):
     """Sayt yeniləndikdən sonra çağırılır (video URL artıq açıq olmalıdır)."""
     url = f'{site_url()}/reels/{d["slug"]}.mp4'
     for _ in range(20):  # GitHub Pages yeniləyənə qədər gözlə
@@ -79,7 +79,9 @@ def ig_publish(d):
     for _ in range(40):
         s = graph(c['id'], {'fields': 'status_code,status'}, 'GET')
         if s.get('status_code') == 'FINISHED': break
-        if s.get('status_code') == 'ERROR': raise RuntimeError(s)
+        if s.get('status_code') == 'ERROR':
+            if again: time.sleep(60); return ig_publish(d, False)
+            raise RuntimeError(s)
         time.sleep(10)
     r = graph(f'{env("IG_USER_ID")}/media_publish', {'creation_id': c['id']})
     return r['id']
@@ -97,6 +99,10 @@ def ig_queue():
         except TimeoutError:
             print('  sayt hələ yenilənməyib, növbəti saat yenidən:', d['slug']); continue
         except Exception as e:
+            d['ig_tries'] = d.get('ig_tries', 0) + 1
+            if d['ig_tries'] < 4 and '2207' in str(e):  # Meta tərəfdə müvəqqəti xəta — növbəti saat yenidən
+                print('  Meta xətası, yenidən cəhd olunacaq:', e)
+                json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1); continue
             d['ig_status'] = 'error'; d['ig_error'] = str(e)[:300]; msg = f'⚠️ Instagram xətası: {d["title"]}\n{str(e)[:200]}'
         json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
         try: api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'text': msg})
