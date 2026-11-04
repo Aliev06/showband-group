@@ -74,8 +74,15 @@ def ig_publish(d, again=True):
         time.sleep(15)
     else:
         raise TimeoutError('video saytda hələ yoxdur')
-    c = graph(f'{env("IG_USER_ID")}/media', {'media_type': 'REELS', 'video_url': url, 'caption': d.get('ig_caption', ''),
+    # video faylını birbaşa Meta-ya yükləyirik (resumable upload) — URL-dən yükləmə xətalarından qaçmaq üçün
+    c = graph(f'{env("IG_USER_ID")}/media', {'media_type': 'REELS', 'upload_type': 'resumable', 'caption': d.get('ig_caption', ''),
                                              'share_to_feed': 'false'})  # yalnız Reels bölməsi
+    fn = os.path.join(ROOT, 'reels', d['slug'] + '.mp4'); data = open(fn, 'rb').read()
+    req = urllib.request.Request(c.get('uri') or f'https://rupload.facebook.com/ig-api-upload/v21.0/{c["id"]}', data=data, method='POST',
+                                 headers={'Authorization': 'OAuth ' + env('IG_TOKEN'), 'offset': '0', 'file_size': str(len(data))})
+    try:
+        with urllib.request.urlopen(req, timeout=180) as r: print('  yükləndi:', r.read().decode()[:120])
+    except urllib.error.HTTPError as e: raise RuntimeError('upload ' + e.read().decode()[:300])
     for _ in range(40):
         s = graph(c['id'], {'fields': 'status_code,status'}, 'GET')
         if s.get('status_code') == 'FINISHED': break

@@ -45,5 +45,5 @@
  "tg_message": 35,
  "status": "published",
  "ig_status": "queued",
- "ig_tries": 1
+ "ig_tries": 0
 }
