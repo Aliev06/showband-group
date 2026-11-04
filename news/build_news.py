@@ -159,7 +159,7 @@ def listing():
   <p>Yeni mahnılar, kliplər, konsertlər və artistlər haqqında ən son xəbərlər.</p>
   <div class="chips" id="chips">{chips}</div>
  </section>
- <section class="ng" id="ng">{(card(first, rel, True) if first else '')}{"".join(card(p, rel) for p in rest)}</section>
+ <section class="ng" id="ng">{(card(first, rel) if first else '')}{"".join(card(p, rel) for p in rest)}</section>
  <p class="empty" id="empty" hidden>Bu bölmədə hələ xəbər yoxdur.</p>
 <script>
 (function(){{var b=document.querySelectorAll('#chips button'),c=document.querySelectorAll('#ng .nc'),e=document.getElementById('empty');
