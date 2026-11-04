@@ -75,7 +75,8 @@
   "summary": "",
   "image": "https://axar.az/media/2026/07/23/tacir-shahmalioglu.jpg",
   "score": 4,
-  "found": "2026-11-03T15:12:31.557528+00:00"
+  "found": "2026-11-03T15:12:31.557528+00:00",
+  "used": true
  },
  {
   "title": "Toyundan 11 gün sonra intihar etdi Rusiyalı reper",
@@ -1143,5 +1144,93 @@
   "image": "https://images.oxu.az/2026/11/04/z6XENdlecz6HCc6LIFdJHzTAJ8sSpi0k53k7Qeya:640.jpg",
   "score": 0,
   "found": "2026-11-04T09:08:37.511208+00:00"
+ },
+ {
+  "title": "Temperatur 10° enəcək - Xəbərdarlıq",
+  "url": "https://qafqazinfo.az/news/detail/temperatur-10-enecek-xeberdarliq-527358",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1760533697/hava.jpg",
+  "score": 4,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "Adı bu dəfə Cemre Baysellə hallanır",
+  "url": "https://qafqazinfo.az/news/detail/adi-bu-defe-cemre-bayselle-hallanir-527361",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/uploads/1793789674/1.jpg",
+  "score": 1,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "“Pis davranan bir azərbaycanlı belə görmədim” - Arsen Aqamalyan",
+  "url": "https://qafqazinfo.az/news/detail/pis-davranan-bir-azerbaycanli-bele-gormedim-arsen-aqamalyan-527342",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/uploads/1793781180/2.jpg",
+  "score": 1,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "ABŞ Senatı seçkisində ilk dəfə müsəlman demokrat qələbə qazanıb - Video",
+  "url": "https://oxu.az/dunya/abs-senati-seckisinde-ilk-defe-muselman-demokrat-qelebe-qazanib-video",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T14:50:00+04:00",
+  "summary": "ABŞ-nin Miçiqan ştatında Senata keçirilən seçkilərdə Demokratlar Partiyasının namizədi Abdul El-Sayed rəqibini qabaqlayır. O, ABŞ Konqresinin yuxarı palatasına seçilən ilk müsəlman ola bilər.",
+  "image": "https://images.oxu.az/2026/11/04/2rLtIjkgL9ckzGwTlzQADsW5CTVIjIEDXrgTJTqc:640.webp",
+  "score": 0,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "ABŞ-dəki seçkilərdə son durum: Demokratlar qalib gəlirlər",
+  "url": "https://oxu.az/dunya/abs-deki-seckilerde-son-durum-demokratlar-qalib-gelirler",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T14:08:00+04:00",
+  "summary": "ABŞ Konqresinə keçirilən aralıq seçkilərinin ilkin nəticələrinə görə, demokratlar Senatda ən azı 51 mandat qazanaraq yuxarı palatada və Nümayəndələr Palatasında üstünlüyü təmin edirlər.",
+  "image": "https://images.oxu.az/2026/11/04/s79pqwiXGcPuzTcSON8ua5nHukvbBDzq0Gz9Uf5w:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "Paşinyanın arvadı və qızlarının bahalı zövqləri: Gündəlik xərclənən 1.7 milyon",
+  "url": "https://oxu.az/dunya/pasinyanin-arvadi-ve-qizlarinin-bahali-zovqleri",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T13:48:00+04:00",
+  "summary": "Ermənistanın dövlət büdcəsindən baş nazir Nikol Paşinyan və digər yüksəkvəzifəli məmurların ailələrinin saxlanması üçün ayrılan milyonlarla dram vəsait, eləcə də şəxsi xərclərin ödənilməsi barədə təfərrüatlar.",
+  "image": "https://images.oxu.az/2026/11/04/y0NtToBPyfrDdYMQWQVvOwzBIGTezHfKFXEBfEi6:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "İran Xudafərin körpüsünü vurmağa hazırlaşır? - Erməni iranşünas kadrları paylaşdı - Video",
+  "url": "https://oxu.az/dunya/iran-xudaferin-korpusunu-vurmaga-hazirlasir-ermeni-iransunas-kadrlari-paylasdi-video",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T13:22:00+04:00",
+  "summary": "Erməni iranşünas Vardan Voskanyan sosial şəbəkə hesabında Xudafərin körpüsü istiqamətində Azərbaycan sərhədinin İranın zərbə endirə biləcəyi hədəflərdən biri olduğunu iddia edib.",
+  "image": "https://images.oxu.az/2026/11/04/7whr2K90GVOkpOWNDdAw1HtCE7RtFQZ29Vsjg2Nr:640.png",
+  "score": 0,
+  "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "\"İDSchool\" tədris mərkəzinin tələbələri Atlantia Beynəlxalq STEM Olimpiadasının Azərbaycan mərhələsində 5 mükafat qazandılar - Foto",
+  "url": "https://oxu.az/digar/idschool-tedris-merkezinin-telebeleri-atlantia-beynelxalq-stem-olimpiadasinin-azerbaycan-merhelesinde-5-mukafat-qazandilar",
+  "source": "Oxu.az",
+  "cat": "Digər",
+  "date": "2026-11-04T13:10:00+04:00",
+  "summary": "\"İDTech Academy\"in nəzdində fəaliyyət göstərən \"İDSchool\" uşaqlar və yeniyetmələr üçün İT tədris mərkəzinin tələbələri Atlantia Beynəlxalq STEM Olimpiadalarının Azərbaycan mərhələsində böyük uğura imza atıblar.",
+  "image": "https://images.oxu.az/2026/11/04/YMEq8YebW2lPedRlTB6y5tsS4JLmx2aVPTnyNJLL:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T11:13:49.937902+00:00"
  }
 ]
