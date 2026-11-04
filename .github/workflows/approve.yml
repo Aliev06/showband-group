@@ -1,5 +1,7 @@
 name: 3 · Telegram düymələri və paylaşım (hər 5 dəq)
 on:
+  repository_dispatch:
+    types: [tg]
   schedule: [{cron: '*/5 * * * *'}]
   workflow_dispatch:
 permissions: {contents: write}
@@ -12,11 +14,13 @@ jobs:
       TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       IG_TOKEN: ${{ secrets.IG_TOKEN }}
       IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      TG_EVENT: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload) || '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - run: python news/tg.py poll
+        continue-on-error: true
       - name: commit (sayt yenilənir → Netlify)
         run: |
           git config user.name "showband-bot"; git config user.email "bot@users.noreply.github.com"

@@ -38,6 +38,7 @@ def api(method, data=None, files=None):
 
 
 def ans(data):
+    if not data.get('callback_query_id'): return
     try: api('answerCallbackQuery', data)  # köhnə düymələrdə Telegram xəta verir — vacib deyil
     except Exception: pass
 
@@ -83,9 +84,15 @@ def send(path):
 
 def poll():
     st = json.load(open(STATE)) if os.path.exists(STATE) else {'offset': 0}
-    ups = api('getUpdates', {'offset': st['offset'], 'timeout': 0, 'allowed_updates': ['callback_query']})
+    ev = os.environ.get('TG_EVENT')  # Cloudflare Worker-dən gələn düymə (webhook rejimi)
+    if ev:
+        e = json.loads(ev)
+        ups = [{'update_id': 0, 'callback_query': {'id': '', 'data': e['data'], 'message': {
+            'chat': {'id': e['chat_id']}, 'message_id': e['message_id'], 'video': e.get('video')}}}]
+    else:
+        ups = api('getUpdates', {'offset': st['offset'], 'timeout': 0, 'allowed_updates': ['callback_query']})
     for u in ups:
-        st['offset'] = u['update_id'] + 1
+        if u['update_id']: st['offset'] = u['update_id'] + 1
         q = u.get('callback_query')
         if not q or str(q['message']['chat']['id']) != str(env('TELEGRAM_CHAT_ID')): continue
         act, slug = q['data'].split(':', 1)
