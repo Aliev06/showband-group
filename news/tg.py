@@ -223,6 +223,7 @@ def poll():
         j = write.rewrite(it, text or d['lead'])
         for k in ('title', 'description', 'category', 'lead', 'body', 'reel', 'ig_caption'):
             if j.get(k): d[k] = j[k]
+        d['ig_caption'] = write.add_cta(d.get('ig_caption', ''), d.get('mode', 'hype'))
         d['tags'] = j.get('tags', d['tags'])[:6]; save(path, d); resend(path, mid)
     elif act == 'tt':  # başlığı özün yaz
         m = api('sendMessage', {'chat_id': chat, 'reply_to_message_id': mid,

@@ -75,6 +75,20 @@ def slugify(s):
     return s[:60].rstrip('-')
 
 
+CTA = {'hype': '📲 Ətraflı — showbandgroup.az',
+       'event': '🎉 Toy, nişan, ad günü və korporativ tədbirləri biz təşkil edirik — Direct-ə yazın 📩'}
+
+
+def add_cta(cap, mode):
+    """Instagram mətninə sonda çağırış əlavə edir (heşteqlərdən əvvəl)."""
+    cta = CTA['hype' if mode == 'hype' else 'event']
+    cap = cap.split('\n\n🎵')[0]
+    for c in CTA.values(): cap = cap.replace('\n\n' + c, '').replace(c, '')
+    m = re.search(r'(\s*#\S+)+\s*$', cap)
+    txt, tags = (cap[:m.start()], cap[m.start():].strip()) if m else (cap, '')
+    return txt.rstrip() + '\n\n' + cta + ('\n\n' + tags if tags else '')
+
+
 def save_draft(it, j, og, mode):
     import random
     posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))
@@ -83,7 +97,7 @@ def save_draft(it, j, og, mode):
     while slug in have or os.path.exists(os.path.join(HERE, 'drafts', slug + '.json')): slug += '-2'
     draft = {'slug': slug, 'title': j['title'], 'description': j['description'], 'category': j['category'],
              'date': dt.date.today().isoformat(), 'tags': j.get('tags', [])[:6], 'lead': j['lead'], 'body': j['body'],
-             'reel': j.get('reel', {}), 'ig_caption': j.get('ig_caption', ''),
+             'reel': j.get('reel', {}), 'ig_caption': add_cta(j.get('ig_caption', ''), mode),
              'source': {'name': it['source'], 'url': it['url']}, 'source_image': og or it.get('image', ''),
              'viral': it.get('viral'), 'source_title': it['title'], 'mode': mode}
     if mode == 'article':  # öz tədbir şəkillərimiz

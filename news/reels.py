@@ -145,13 +145,22 @@ def caption_layer(p, top):
     return L
 
 
-def outro_layer():
+def outro_layer(mode='hype'):
     L = Image.new('RGBA', (W, H)); d = ImageDraw.Draw(L)
     L.alpha_composite(logo(560), ((W - 560) // 2, 700))
-    ft = F('unbounded-700', 50); s = 'Ətraflı — saytda'
-    d.text(((W - d.textlength(s, font=ft)) / 2, 940), s, font=ft, fill=WHITE)
-    pf = F('montserrat-600', 40); tw = d.textlength(SITE_HOST, font=pf); x = (W - tw) / 2
-    d.rounded_rectangle((x - 40, 1040, x + tw + 40, 1130), radius=45, fill=RED); d.text((x, 1062), SITE_HOST, font=pf, fill=WHITE)
+    if mode in ('event', 'article'):  # tədbir: xidmətimizə çağırış
+        ft = F('unbounded-700', 50); y = 930
+        for s in ('Tədbirinizi', 'biz təşkil edək'):
+            d.text(((W - d.textlength(s, font=ft)) / 2, y), s, font=ft, fill=WHITE); y += 66
+        sf = F('montserrat-500', 32); s = 'Toy · Nişan · Ad günü · Korporativ'
+        d.text(((W - d.textlength(s, font=sf)) / 2, y + 14), s, font=sf, fill=MUTE)
+        btn, by = 'Direct-ə yazın', y + 84
+    else:
+        ft = F('unbounded-700', 50); s = 'Ətraflı — saytda'
+        d.text(((W - d.textlength(s, font=ft)) / 2, 940), s, font=ft, fill=WHITE)
+        btn, by = SITE_HOST, 1040
+    pf = F('montserrat-600', 40); tw = d.textlength(btn, font=pf); x = (W - tw) / 2
+    d.rounded_rectangle((x - 40, by, x + tw + 40, by + 90), radius=45, fill=RED); d.text((x, by + 22), btn, font=pf, fill=WHITE)
     return L
 
 
@@ -194,7 +203,7 @@ def render(p, out_dir):
     card = make_card(p)
     cy = max(240, (1480 - card.height) // 2)
     cap = caption_layer(p, cy + card.height + 50)
-    outro = outro_layer()
+    outro = outro_layer(p.get('mode', 'hype'))
     if p['_photo']:  # fon: xəbərin şəkli, bulanıq və tünd
         bg = cover_crop(p['_photo'], W, H).filter(ImageFilter.GaussianBlur(45)).convert('RGBA'); bg.alpha_composite(Image.new('RGBA', (W, H), (0, 0, 0, 150)))
     else:
