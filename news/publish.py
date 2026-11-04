@@ -100,9 +100,12 @@ def ig_queue():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] == '--ig-check':
-        me = graph('me', {'fields': 'user_id,username'}, 'GET')
-        print('IG OK:', me.get('username'), '| id uyğundur' if str(me.get('user_id')) == env('IG_USER_ID') else f'| ⚠️ IG_USER_ID fərqlidir: {me.get("user_id")}')
+    if len(sys.argv) > 1 and sys.argv[1] == '--ig-check':  # tokenin növünü yoxlayır (tokeni çap etmir)
+        for host, path, f in (('graph.instagram.com', 'me', 'user_id,username'), ('graph.facebook.com', 'me', 'id,name')):
+            try:
+                q = urllib.parse.urlencode({'fields': f, 'access_token': env('IG_TOKEN')})
+                with urllib.request.urlopen(f'https://{host}/v21.0/{path}?{q}', timeout=30) as r: print('OK', host, r.read().decode()[:200])
+            except urllib.error.HTTPError as e: print('XETA', host, e.read().decode()[:300])
     elif len(sys.argv) > 1 and sys.argv[1] == '--ig-queue': ig_queue()
     elif len(sys.argv) > 1: print(publish(sys.argv[1]))
     else: print(__doc__)
