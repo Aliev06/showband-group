@@ -64,7 +64,8 @@
   "summary": "",
   "image": "https://axar.az/media/2026/10/28/leyla-arzu-eliyeva-layihe-cennet.jpg",
   "score": 4,
-  "found": "2026-11-03T15:12:31.557528+00:00"
+  "found": "2026-11-03T15:12:31.557528+00:00",
+  "used": true
  },
  {
   "title": "Tacir Şahmalıoğlu mədəkiçiltmə etdiribmiş - Video Müğənni",
@@ -1357,5 +1358,38 @@
   "image": "https://qafqazinfo.az/resize/216x135/uploads/1793800491/avtobus.png",
   "score": 1,
   "found": "2026-11-04T14:12:02.652532+00:00"
+ },
+ {
+  "title": "“Evdə oturmuşduq, birdən anam qışqırdı...” - Ləman həmin gündən danışdı...",
+  "url": "https://qafqazinfo.az/news/detail/evde-oturmusduq-birden-anam-qisqirdi-leman-hemin-gunden-danisdi-527382",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1793800491/leman.jpeg",
+  "score": 1,
+  "found": "2026-11-04T15:00:30.872844+00:00"
+ },
+ {
+  "title": "ABŞ tarixində ilk: Qaradərili qadın qalib gəldi",
+  "url": "https://oxu.az/dunya/abs-tarixinde-ilk-qaraderili-qadin-qalib-geldi",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T18:32:00+04:00",
+  "summary": "Keçmiş Atlanta meri Keyşa Lens Bottoms Corciya ştatında qalib gələrək ABŞ tarixində qubernator seçilən ilk qaradərili qadın olub. ABŞ seçkilərinin nəticələri barədə məlumatlar.",
+  "image": "https://images.oxu.az/2026/11/04/b74Z71zJnbXebTsIx3lY1qh4CWux0eHohO34kj13:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T15:00:30.872844+00:00"
+ },
+ {
+  "title": "Xamenei: \"ABŞ-nin İrana qarşı siyasəti dəyişməyəcək\"",
+  "url": "https://oxu.az/dunya/xamenei-abs-nin-irana-qarsi-siyaseti-deyismeyecek",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T18:16:00+04:00",
+  "summary": "İranın ali lideri Müctəba Xamenei ABŞ-dakı aralıq seçkilərinin Tehrana təsiri, Vaşinqtona hərbi xəbərdarlıq və Hörmüz boğazındakı vəziyyət barədə mühüm açıqlamalar verib.",
+  "image": "https://images.oxu.az/2026/11/04/D1KcN8jymIQ4rZ1phsXmexjnOOSw5Rf6hn0UFMXI:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T15:00:30.872844+00:00"
  }
 ]
