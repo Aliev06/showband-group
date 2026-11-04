@@ -109,6 +109,13 @@ def send_new():
         p = os.path.join(dd, f)
         if not f.endswith('.json') or json.load(open(p, encoding='utf-8')).get('status'): continue
         subprocess.run([sys.executable, os.path.join(HERE, 'reels.py'), p], check=True)
+        # Instagram mətninə mahnının adını əlavə et
+        meta = os.path.join(HERE, 'out', f[:-5] + '.json'); tp = os.path.join(HERE, 'music', 'titles.json')
+        if os.path.exists(meta) and os.path.exists(tp):
+            tr = json.load(open(meta, encoding='utf-8')).get('track'); title = json.load(open(tp, encoding='utf-8')).get(tr or '')
+            if title:
+                d = json.load(open(p, encoding='utf-8')); d['ig_caption'] = d.get('ig_caption', '') + f'\n\n🎵 {title}'; d['track'] = title
+                json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
         send(p)
 
 
