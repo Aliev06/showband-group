@@ -6,7 +6,7 @@
   python3 news/publish.py drafts/<slug>.json
 Qeyd: GitHub Actions-da bu addımdan sonra dəyişikliklər commit olunur, Netlify saytı yeniləyir.
 """
-import json, os, sys, time, shutil, subprocess, urllib.request, urllib.parse
+import json, os, sys, time, shutil, subprocess, urllib.request, urllib.parse, urllib.error
 
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
@@ -46,7 +46,7 @@ def publish(path):
 
 
 # ---------- Instagram ----------
-GRAPH = 'https://graph.facebook.com/v21.0'
+GRAPH = 'https://graph.instagram.com/v21.0'  # Instagram Login tokeni
 
 
 def graph(path, params, method='POST'):
@@ -54,7 +54,13 @@ def graph(path, params, method='POST'):
     data = urllib.parse.urlencode(params).encode()
     req = urllib.request.Request(f'{GRAPH}/{path}' + ('' if method == 'POST' else '?' + data.decode()),
                                  data=data if method == 'POST' else None, method=method)
-    with urllib.request.urlopen(req, timeout=60) as r: return json.load(r)
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r: return json.load(r)
+    except urllib.error.HTTPError as e:
+        body = e.read().decode('utf-8', 'replace')
+        if '"code":190' in body.replace(' ', ''):
+            raise RuntimeError('Instagram tokeninin vaxtı bitib — yeni token yaradıb IG_TOKEN-i yeniləyin')
+        raise RuntimeError(f'HTTP {e.code}: {body[:300]}')
 
 
 def ig_publish(d):
