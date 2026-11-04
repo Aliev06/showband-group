@@ -66,7 +66,7 @@ def slugify(s):
     return s[:60].rstrip('-')
 
 
-def rewrite(it, text):
+def _rewrite(it, text, fix=''):
     j = gemini(f'''Sən "Showband Group" saytının musiqi xəbərləri redaktorusan. Mənbə mətnindən Azərbaycan dilində TAM YENİ, unikal xəbər yaz
 (kopyalama, öz sözlərinlə). Faktları dəyişmə, heç nə uydurma. İddiaları "bildirilir", "iddia olunur" kimi ver; ittiham etmə, təhqir etmə.
 Ton: canlı, maraqlı, peşəkar. Yalnız Azərbaycan dilində yaz — heç bir ingilis və ya rus sözü işlətmə (məs. "surprising" yox, "təəccüblü"). 180-320 söz, 2-3 ara başlıq.
@@ -77,7 +77,7 @@ Yalnız JSON:
 "body":[{{"h":"ara başlıq"}},{{"p":"abzas"}},{{"p":"abzas"}},{{"h":"ara başlıq"}},{{"p":"abzas"}}],
 "reel":{{"caption":"kartın altında qısa, maraqlı 1-2 cümlə, max 110 simvol"}},
 "ig_caption":"Instagram üçün 2-3 cümlə + 5 heşteq (#ShowbandGroup daxil)"}}
-MƏNBƏ ({it["source"]}): {it["title"]}\n{text}''', temp=0.5)
+MƏNBƏ ({it["source"]}): {it["title"]}\n{text}''' + fix, temp=0.5)
     # body-ni normallaşdır: {"h","p"} birlikdə gələrsə ayır
     body = []
     for b in j.get('body', []):
@@ -88,8 +88,51 @@ MƏNBƏ ({it["source"]}): {it["title"]}\n{text}''', temp=0.5)
     return j
 
 
-def main():
-    n = int(sys.argv[sys.argv.index('--n') + 1]) if '--n' in sys.argv else 1
+# ---------- avtomatik yoxlama ----------
+EN = set('''the and of to in is for with on at by new song songs music video official surprising amazing shocking fans fan singer
+star best love life news from about after his her their this that it was are be has have will more about breaking exclusive
+finally wow just really very first last people world big great famous viral trend trending update announced reveals revealed
+shares shared says said'''.split())
+
+
+def check(j, src):
+    import re
+    out = []
+    parts = [j.get('title', ''), j.get('description', ''), j.get('lead', ''), (j.get('reel') or {}).get('caption', ''),
+             j.get('ig_caption', '')] + [b.get('h', '') or b.get('p', '') for b in j.get('body', [])]
+    allt = ' '.join(parts)
+    if re.search('[а-яА-ЯёЁ]', allt): out.append('mətndə kiril (rus) hərfləri var')
+    bad = sorted({w for w in re.findall(r"(?<![#@\w])[a-zəğıöüçş]+", allt) if w in EN or ('w' in w and len(w) > 2)})
+    if bad: out.append('ingilis sözləri var: ' + ', '.join(bad[:8]) + ' — Azərbaycan dilində yaz')
+    t = j.get('title', '')
+    if not 35 <= len(t) <= 80: out.append(f'title {len(t)} simvoldur, 50-70 olmalıdır')
+    if t.rstrip().endswith(('...', '…')): out.append('title üç nöqtə ilə bitməməlidir')
+    if len((j.get('reel') or {}).get('caption', '')) > 120: out.append('reel.caption 110 simvoldan uzundur')
+    if not 90 <= len(j.get('description', '')) <= 200: out.append('description 140-160 simvol olmalıdır')
+    words = len(' '.join(b.get('p', '') for b in j.get('body', [])).split())
+    if words < 100: out.append(f'mətn {words} sözdür, ən azı 150 olmalıdır (mənbədəki faktlar əsasında, uydurmadan)')
+    names = [w for w in re.findall(r'[A-ZƏĞIİÖÜÇŞ][\wəğıöüçş]{3,}', t)]
+    low = src.lower().replace('i̇', 'i')
+    if names and not any(n.lower().replace('i̇', 'i')[:5] in low for n in names):
+        out.append('başlıqdakı adlar mənbədə yoxdur — faktları mənbədən götür')
+    return out
+
+
+def rewrite(it, text):
+    """Yazır, yoxlayır, problem varsa 2 dəfəyə qədər yenidən yazdırır."""
+    best, fix = None, ''
+    for attempt in range(3):
+        j = _rewrite(it, text, fix)
+        probs = check(j, it.get('title', '') + ' ' + text)
+        print(f'  yoxlama #{attempt + 1}:', 'OK' if not probs else '; '.join(probs))
+        if best is None or len(probs) < best[1]: best = (j, len(probs))
+        if not probs: break
+        fix = '\n\nƏVVƏLKİ CAVABDA PROBLEMLƏR VAR İDİ, DÜZƏLT:\n- ' + '\n- '.join(probs)
+    return best[0]
+
+
+def main(n=None):
+    if n is None: n = int(sys.argv[sys.argv.index('--n') + 1]) if '--n' in sys.argv else 1
     pool_p = os.path.join(HERE, 'pool.json')
     pool = json.load(open(pool_p, encoding='utf-8')) if os.path.exists(pool_p) else []
     pool = [x for x in pool if not x.get('used')]
@@ -109,7 +152,7 @@ def main():
                  'date': dt.date.today().isoformat(), 'tags': j.get('tags', [])[:6], 'lead': j['lead'], 'body': j['body'],
                  'reel': j.get('reel', {}), 'ig_caption': j.get('ig_caption', ''),
                  'source': {'name': it['source'], 'url': it['url']}, 'source_image': og or it.get('image', ''),
-                 'viral': it.get('viral')}
+                 'viral': it.get('viral'), 'source_title': it['title']}
         json.dump(draft, open(os.path.join(HERE, 'drafts', slug + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
         full = json.load(open(pool_p, encoding='utf-8'))
         for x in full:

@@ -88,6 +88,7 @@ def fdate(p): return B.fdate(p['date'])
 
 def photo(p):
     """Xəbərin şəkli: lokal 'image' və ya mənbədən 'source_image' (news/out/img/ qovluğuna yüklənir)."""
+    if p.get('no_photo'): return None
     if p.get('image') and os.path.exists(os.path.join(ROOT, p['image'])):
         return Image.open(os.path.join(ROOT, p['image'])).convert('RGB')
     url = p.get('source_image')

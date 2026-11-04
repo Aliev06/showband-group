@@ -55,8 +55,10 @@ def caption(d, status=''):
 
 def kb(slug):
     h = sid(slug)  # Telegram callback_data maksimum 64 bayt — qısa id istifadə olunur
-    return json.dumps({'inline_keyboard': [[{'text': '✅ Paylaş', 'callback_data': f'ok:{h}'},
-                                             {'text': '❌ Ləğv et', 'callback_data': f'no:{h}'}]]})
+    return json.dumps({'inline_keyboard': [
+        [{'text': '✅ Paylaş', 'callback_data': f'ok:{h}'}, {'text': '❌ Ləğv et', 'callback_data': f'no:{h}'}],
+        [{'text': '✍️ Yenidən yaz', 'callback_data': f'rw:{h}'}, {'text': '✏️ Başlığı dəyiş', 'callback_data': f'tt:{h}'}],
+        [{'text': '🖼 Şəkilsiz', 'callback_data': f'ph:{h}'}, {'text': '🔄 Başqa xəbər', 'callback_data': f'nx:{h}'}]]})
 
 
 def sid(slug):
@@ -82,60 +84,111 @@ def send(path):
     print('göndərildi:', d['slug'])
 
 
+def save(path, d): json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+
+
+def say(text):
+    try: return api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'text': text, 'parse_mode': 'HTML'})
+    except Exception as e: print('  ! say:', e)
+
+
+def drop(chat, mid):
+    try: api('deleteMessage', {'chat_id': chat, 'message_id': mid})
+    except Exception as e: print('  ! delete:', e)
+
+
+def resend(path, old):
+    """Reels-i yenidən hazırlayır, köhnə mesajı silir və yenisini göndərir."""
+    prepare(path)
+    if old: drop(env('TELEGRAM_CHAT_ID'), old)
+    send(path)
+
+
+def on_reply(e):
+    """✏️ Başlığı dəyiş → istifadəçi bota cavab olaraq yeni başlıq yazır."""
+    dd = os.path.join(HERE, 'drafts')
+    for f in os.listdir(dd) if os.path.isdir(dd) else []:
+        p = os.path.join(dd, f)
+        if not f.endswith('.json'): continue
+        d = json.load(open(p, encoding='utf-8'))
+        if d.get('title_prompt') == e['reply_to'] and d.get('status') == 'pending':
+            new = ' '.join(e['text'].split())[:110]
+            if len(new) < 10: say('⚠️ Başlıq çox qısadır — yenidən yazın.'); return
+            d['title'] = new; prompt = d.pop('title_prompt'); save(p, d)
+            drop(env('TELEGRAM_CHAT_ID'), prompt)
+            resend(p, d.get('tg_message'))
+            return
+
+
 def poll():
     st = json.load(open(STATE)) if os.path.exists(STATE) else {'offset': 0}
-    ev = os.environ.get('TG_EVENT')  # Cloudflare Worker-dən gələn düymə (webhook rejimi)
-    if ev:
-        e = json.loads(ev)
-        ups = [{'update_id': 0, 'callback_query': {'id': '', 'data': e['data'], 'message': {
-            'chat': {'id': e['chat_id']}, 'message_id': e['message_id'], 'video': e.get('video')}}}]
-    else:
-        ups = api('getUpdates', {'offset': st['offset'], 'timeout': 0, 'allowed_updates': ['callback_query']})
-    for u in ups:
-        if u['update_id']: st['offset'] = u['update_id'] + 1
-        q = u.get('callback_query')
-        if not q or str(q['message']['chat']['id']) != str(env('TELEGRAM_CHAT_ID')): continue
-        act, slug = q['data'].split(':', 1)
-        path = find_draft(slug)
-        if not path:
-            ans({'callback_query_id': q['id'], 'text': 'Qaralama tapılmadı'}); continue
-        d = json.load(open(path, encoding='utf-8'))
-        if d.get('status') in ('published', 'rejected'):
-            ans({'callback_query_id': q['id'], 'text': 'Artıq edilib'}); continue
-        if act == 'ok':
-            ans({'callback_query_id': q['id'], 'text': 'Paylaşılır…'})
-            import publish
-            res = publish.publish(path)
-            status = '✅ <b>Saytda paylaşıldı</b>' + (' · Instagram: ' + res['ig'] if res.get('ig') else '')
-        else:
-            d['status'] = 'rejected'; json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-            ans({'callback_query_id': q['id'], 'text': 'Ləğv edildi'})
-            status = '❌ <b>Ləğv edildi</b>'
-        method = 'editMessageCaption' if q['message'].get('video') else 'editMessageText'
-        key = 'caption' if method == 'editMessageCaption' else 'text'
-        try: api(method, {'chat_id': q['message']['chat']['id'], 'message_id': q['message']['message_id'],
-                          key: caption(d, status), 'parse_mode': 'HTML'})
-        except Exception as e: print('  ! edit:', e)
+    ev = os.environ.get('TG_EVENT')  # Cloudflare Worker-dən gələn hadisə (webhook rejimi)
+    if not ev: print('TG_EVENT yoxdur'); return
+    e = json.loads(ev)
+    if e.get('kind') == 'reply': on_reply(e); return
+    if str(e['chat_id']) != str(env('TELEGRAM_CHAT_ID')): return
+    act, key = e['data'].split(':', 1)
+    path = find_draft(key)
+    if not path: say('⚠️ Qaralama tapılmadı'); return
+    d = json.load(open(path, encoding='utf-8'))
+    if d.get('status') in ('published', 'rejected'): return
+    chat, mid, is_video = e['chat_id'], e['message_id'], e.get('video')
+
+    def mark(status):
+        method = 'editMessageCaption' if is_video else 'editMessageText'
+        try: api(method, {'chat_id': chat, 'message_id': mid, ('caption' if is_video else 'text'): caption(d, status), 'parse_mode': 'HTML'})
+        except Exception as x: print('  ! edit:', x)
+
+    if act == 'ok':
+        import publish
+        res = publish.publish(path); d = json.load(open(path, encoding='utf-8'))
+        mark('✅ <b>Saytda paylaşıldı</b>' + (' · Instagram: ' + res['ig'] if res.get('ig') else ''))
+    elif act == 'no':
+        d['status'] = 'rejected'; save(path, d); mark('❌ <b>Ləğv edildi</b>')
+    elif act == 'ph':  # şəkilsiz
+        d['no_photo'] = True; save(path, d); resend(path, mid)
+    elif act == 'rw':  # mətni yenidən yaz
+        import write, collect
+        text, _ = collect.article_text(d['source']['url'])
+        it = {'source': d['source']['name'], 'url': d['source']['url'], 'title': d.get('source_title', d['title'])}
+        j = write.rewrite(it, text or d['lead'])
+        for k in ('title', 'description', 'category', 'lead', 'body', 'reel', 'ig_caption'):
+            if j.get(k): d[k] = j[k]
+        d['tags'] = j.get('tags', d['tags'])[:6]; save(path, d); resend(path, mid)
+    elif act == 'tt':  # başlığı özün yaz
+        m = api('sendMessage', {'chat_id': chat, 'reply_to_message_id': mid,
+                                'text': '✏️ Yeni başlığı <b>bu mesaja cavab (reply)</b> olaraq yazın:', 'parse_mode': 'HTML',
+                                'reply_markup': {'force_reply': True, 'input_field_placeholder': 'Yeni başlıq…'}})
+        d['title_prompt'] = m['message_id']; save(path, d)
+    elif act == 'nx':  # başqa xəbər
+        d['status'] = 'rejected'; save(path, d); mark('🔄 <b>Başqa xəbər axtarılır…</b>')
+        import write
+        try: write.main(1)
+        except SystemExit as x: say(f'⚠️ Başqa uyğun xəbər tapılmadı ({x})'); return
+        send_new()
     json.dump(st, open(STATE, 'w'))
-    print('yeniləmələr:', len(ups))
+
+
+def prepare(p):
+    """Reels-i hazırlayır və Instagram mətninə mahnının adını əlavə edir."""
+    import subprocess
+    subprocess.run([sys.executable, os.path.join(HERE, 'reels.py'), p], check=True)
+    f = os.path.basename(p)
+    meta = os.path.join(HERE, 'out', f[:-5] + '.json'); tp = os.path.join(HERE, 'music', 'titles.json')
+    if os.path.exists(meta) and os.path.exists(tp):
+        tr = json.load(open(meta, encoding='utf-8')).get('track'); title = json.load(open(tp, encoding='utf-8')).get(tr or '')
+        if title:
+            d = json.load(open(p, encoding='utf-8')); d['ig_caption'] = d.get('ig_caption', '').split('\n\n🎵')[0] + f'\n\n🎵 {title}'; d['track'] = title
+            save(p, d)
 
 
 def send_new():
     """Hələ göndərilməmiş qaralamalar üçün Reels hazırlayır və Telegram-a göndərir."""
-    import subprocess
     dd = os.path.join(HERE, 'drafts')
     for f in sorted(os.listdir(dd)) if os.path.isdir(dd) else []:
         p = os.path.join(dd, f)
         if not f.endswith('.json') or json.load(open(p, encoding='utf-8')).get('status'): continue
-        subprocess.run([sys.executable, os.path.join(HERE, 'reels.py'), p], check=True)
-        # Instagram mətninə mahnının adını əlavə et
-        meta = os.path.join(HERE, 'out', f[:-5] + '.json'); tp = os.path.join(HERE, 'music', 'titles.json')
-        if os.path.exists(meta) and os.path.exists(tp):
-            tr = json.load(open(meta, encoding='utf-8')).get('track'); title = json.load(open(tp, encoding='utf-8')).get(tr or '')
-            if title:
-                d = json.load(open(p, encoding='utf-8')); d['ig_caption'] = d.get('ig_caption', '').split('\n\n🎵')[0] + f'\n\n🎵 {title}'; d['track'] = title
-                json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-        send(p)
+        prepare(p); send(p)
 
 
 if __name__ == '__main__':
