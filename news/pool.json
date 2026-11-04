@@ -376,7 +376,8 @@
   "summary": "",
   "image": "https://qafqazinfo.az/uploads/1793379836/882513896_1837214747320620_6294242464291362486_n.jpg",
   "score": 1,
-  "found": "2026-11-03T15:12:31.557528+00:00"
+  "found": "2026-11-03T15:12:31.557528+00:00",
+  "used": true
  },
  {
   "title": "Atasının vəfatından sonra bu fotonu paylaşdı",
@@ -1323,5 +1324,38 @@
   "image": "https://images.oxu.az/2026/11/04/HLK2NEBqdyI58Vj3EclsTitMFyCzbZos9MfuTj95:640.webp",
   "score": 0,
   "found": "2026-11-04T13:36:05.000127+00:00"
+ },
+ {
+  "title": "Tutduğu balıq onu milyonçu etdi - Foto",
+  "url": "https://oxu.az/dunya/tutdugu-baliq-onu-milyoncu-etdi-foto",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T17:52:00+04:00",
+  "summary": "Avstraliyanın Darvin şəhərində qardaşı ilə balıq ovuna çıxan 26 yaşlı gənc təsadüfən tutduğu qırmızı nişanlı balıq sayəsində yarışma iştirakçısı olmadan 1 milyon Avstraliya dolları məbləğində baş mükafatın sahibi olub.",
+  "image": "https://images.oxu.az/2026/11/04/eo8j8G9lrIvk6gZxnjuNnRE8zyNfPxaBU6p79Fwh:640.jpg",
+  "score": 3,
+  "found": "2026-11-04T14:12:02.652532+00:00"
+ },
+ {
+  "title": "Şagirdlərin “mygov”da qeydiyyata alınması müzakirə yaratdı - Rəsmi cavab",
+  "url": "https://qafqazinfo.az/news/detail/sagirdlerin-mygovda-qeydiyyata-alinmasi-muzakire-yaratdi-resmi-cavab-527381",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1771917896/sagird-internet-komputer.jpg",
+  "score": 1,
+  "found": "2026-11-04T14:12:02.652532+00:00"
+ },
+ {
+  "title": "Bu avtobus zolağı artıq 24 saat qüvvədə deyil",
+  "url": "https://qafqazinfo.az/news/detail/bu-avtobus-zolagi-artiq-24-saat-quvvede-deyil-527379",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1793800491/avtobus.png",
+  "score": 1,
+  "found": "2026-11-04T14:12:02.652532+00:00"
  }
 ]
