@@ -44,5 +44,6 @@
  "track": "DJ Orxan Abbasov & Feyyazbeats — Aman Tello",
  "tg_message": 35,
  "status": "published",
- "ig_status": "queued"
+ "ig_status": "error",
+ "ig_error": "{'id': '18481791853118054', 'status': 'Error: Media upload has failed with error code 2207076', 'status_code': 'ERROR'}"
 }
