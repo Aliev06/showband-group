@@ -242,7 +242,8 @@
   "summary": "",
   "image": "https://qafqazinfo.az/uploads/1793253063/rock_songs.jpg",
   "score": 1,
-  "found": "2026-11-03T15:12:31.557528+00:00"
+  "found": "2026-11-03T15:12:31.557528+00:00",
+  "used": true
  },
  {
   "title": "Qızları üçün bir araya gəldilər - Fotolar",
@@ -1277,5 +1278,27 @@
   "image": "https://images.oxu.az/2026/11/04/Abn0b6DjF2Zfv5Lrr3TtihssZJLsghmcU5G5eWyY:640.jpg",
   "score": 0,
   "found": "2026-11-04T12:11:57.491310+00:00"
+ },
+ {
+  "title": "Gələn il yeni islahat paketi planlaşdırılır - Məbləğlər yekun xarakter daşımır",
+  "url": "https://qafqazinfo.az/news/detail/gelen-il-yeni-islahat-paketi-planlasdirilir-meblegler-yekun-xarakter-dasimir-527372",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1781250750/pul.jpg",
+  "score": 1,
+  "found": "2026-11-04T12:39:25.342425+00:00"
+ },
+ {
+  "title": "Rusiya KTMT-də Ermənistana qarşı qərar layihəsi təqdim edib",
+  "url": "https://oxu.az/dunya/rusiya-ktmt-de-ermenistana-qarsi-qerar-layihesi-teqdim-edib",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T16:32:00+04:00",
+  "summary": "Kollektiv Təhlükəsizlik Şurası gündəlik təsdiqlənərsə, Rusiyanın təklifi ilə KTMT Nizamnaməsinin 25-ci maddəsinin Ermənistana tətbiqi məsələsinə baxacaq. İclasda İrəvanın üzvlük haqları və təşkilatın işində iştirak etməməsi müzakirə olunacaq.",
+  "image": "https://images.oxu.az/2026/11/04/BgS3X4M0un5Z8XkJX3jLKkYDoTU5fZuWLbe60dNn:640.webp",
+  "score": 0,
+  "found": "2026-11-04T12:39:25.342425+00:00"
  }
 ]
