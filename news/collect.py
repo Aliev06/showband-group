@@ -25,7 +25,7 @@ SOURCES = [
 ]
 
 # musiqi siqnalları (ilkin süzgəc; son qərarı Gemini verir)
-MUSIC = r'mahnı|mahnısı|klip|konsert|albom|müğənni|ifaçı|ifa |səhnəyə|festival|avroviziya|eurovision|duet|trek|sinql|musiqi|bəstəkar|bəstə|reper|rep |qrupu|orkestr|opera|caz|muğam|aşıq|tur |turne|qrammi|grammy|spotify|youtube|hit|nəğmə|xanəndə|dj '
+MUSIC = r'toy|toyu|nişan|ad günü|ad gününü|korporativ|məzun|son zəng|açılış|açıldı|şənlik|bayram|ziyafət|şadlıq|restoran|tədbir|gecəsi|party|viktorina|intellektual oyun|yeni il|novruz|mahnı|mahnısı|klip|konsert|albom|müğənni|ifaçı|ifa |səhnəyə|festival|avroviziya|eurovision|duet|trek|sinql|musiqi|bəstəkar|bəstə|reper|rep |qrupu|orkestr|opera|caz|muğam|aşıq|tur |turne|qrammi|grammy|spotify|youtube|hit|nəğmə|xanəndə|dj '
 NOISE = r'futbol|məhkəmə|həbs|qəza|siyasi|parlament|nazirlik|bank|manat|neft|hava proqnozu|serial|film|aktyor|aktrisa|arıqla|boşan|hamilə'
 
 

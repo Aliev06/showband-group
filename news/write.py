@@ -12,7 +12,7 @@ sys.path.insert(0, HERE)
 import collect
 
 MODELS = ['gemini-flash-lite-latest', 'gemini-3.5-flash-lite', 'gemini-flash-latest']
-CATS = ['Şou-biznes', 'Yeni mahnı', 'Klip', 'Konsert', 'Albom', 'Festival', 'Avroviziya']
+CATS = ['Şou-biznes', 'Yeni mahnı', 'Klip', 'Konsert', 'Albom', 'Festival', 'Avroviziya', 'Toy və nişan', 'Ad günü', 'Korporativ', 'Son zəng', 'Açılış', 'Party', 'Məsləhət']
 
 
 def key():
@@ -48,12 +48,21 @@ Aktyor, film, serial, model, idmançı — UYĞUN DEYİL.
 QADAĞAN: zorakılıq və cinayət təfərrüatı, cinsi zorakılıq, uşaqlarla bağlı xəbər, ölüm/xəstəlik spekulyasiyası, siyasət."""
 
 
-def pick(pool, n):
-    pool = sorted(pool, key=lambda x: x.get('score', 0), reverse=True)[:40]
-    res = gemini('Sən "Showband Group" musiqi xəbərləri saytının redaktorusan. Başlıqları qiymətləndir.\n' + RULES +
+RULES_EVENT = """Showband Group tədbir təşkilatçısıdır (toy, nişan, ad günü, korporativ, son zəng/məzun, açılış, party, şou proqramı).
+Uyğun: bu tədbirlərlə bağlı xəbərlər — məşhurların toyu, nişanı, ad günü, ziyafəti; Bakıda/Azərbaycanda konsertlər, festivallar,
+şou proqramları, yeni il və bayram tədbirləri; yeni restoran, şadlıq sarayı, məkan açılışları; toy və tədbir trendləri, dekor,
+viktorina/intellektual oyun gecələri, korporativ tədbirlər, məzun gecələri.
+UYĞUN DEYİL: ümumi qalmaqal, ayrılıq, məhkəmə, siyasət, idman, Avroviziya, xəstəlik, ölüm, cinayət."""
+
+
+def pick(pool, n, mode='hype'):
+    pool = sorted(pool, key=lambda x: x.get('score', 0), reverse=True)[:50]
+    rules = RULES if mode == 'hype' else RULES_EVENT
+    res = gemini('Sən "Showband Group" saytının redaktorusan. Başlıqları qiymətləndir.\n' + rules +
                  '\nHər biri üçün: {"i":indeks,"music":bool,"allowed":bool,"viral":1-10}. Yalnız JSON massiv.\nBaşlıqlar:\n' +
                  '\n'.join(f'{i}. {x["title"]}' for i, x in enumerate(pool)), temp=0.2)
     ok = [r for r in res if r.get('music') and r.get('allowed') and 0 <= r.get('i', -1) < len(pool)]
+    if mode != 'hype': ok = [r for r in ok if r.get('viral', 0) >= 4]
     ok.sort(key=lambda r: r.get('viral', 0), reverse=True)
     return [pool[r['i']] | {'viral': r['viral']} for r in ok[:n]]
 
@@ -64,6 +73,25 @@ def slugify(s):
     s = re.sub(r'[^a-z0-9]+', '-', s).strip('-')
     s = '-'.join(s.split('-')[:9])
     return s[:60].rstrip('-')
+
+
+def save_draft(it, j, og, mode):
+    import random
+    posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))
+    have = {p['slug'] for p in posts}
+    slug = slugify(j.get('title', it['title']))
+    while slug in have or os.path.exists(os.path.join(HERE, 'drafts', slug + '.json')): slug += '-2'
+    draft = {'slug': slug, 'title': j['title'], 'description': j['description'], 'category': j['category'],
+             'date': dt.date.today().isoformat(), 'tags': j.get('tags', [])[:6], 'lead': j['lead'], 'body': j['body'],
+             'reel': j.get('reel', {}), 'ig_caption': j.get('ig_caption', ''),
+             'source': {'name': it['source'], 'url': it['url']}, 'source_image': og or it.get('image', ''),
+             'viral': it.get('viral'), 'source_title': it['title'], 'mode': mode}
+    if mode == 'article':  # öz tədbir şəkillərimiz
+        draft['image'] = random.choice(['img/pk_toy.jpg', 'img/pk_korp.jpg', 'img/pk_mezun.jpg', 'video/ev_toy.jpg', 'video/ev_mezun.jpg'])
+        draft.pop('source', None); draft['source'] = {'name': 'Showband Group', 'url': 'https://showbandgroup.az/'}
+    os.makedirs(os.path.join(HERE, 'drafts'), exist_ok=True)
+    json.dump(draft, open(os.path.join(HERE, 'drafts', slug + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    print(f'qaralama ({mode}): drafts/{slug}.json  [{it.get("viral")}/10]  {j["title"]}')
 
 
 def _rewrite(it, text, fix=''):
@@ -111,6 +139,7 @@ def check(j, src):
     if not 90 <= len(j.get('description', '')) <= 200: out.append('description 140-160 simvol olmalıdır')
     words = len(' '.join(b.get('p', '') for b in j.get('body', [])).split())
     if words < 100: out.append(f'mətn {words} sözdür, ən azı 150 olmalıdır (mənbədəki faktlar əsasında, uydurmadan)')
+    if j.get('_article'): return out
     names = [w for w in re.findall(r'[A-ZƏĞIİÖÜÇŞ][\wəğıöüçş]{3,}', t)]
     low = src.lower().replace('i̇', 'i')
     if names and not any(n.lower().replace('i̇', 'i')[:5] in low for n in names):
@@ -118,27 +147,55 @@ def check(j, src):
     return out
 
 
-def rewrite(it, text):
+def rewrite(it, text, article=False):
     """Yazır, yoxlayır, problem varsa 2 dəfəyə qədər yenidən yazdırır."""
     best, fix = None, ''
     for attempt in range(3):
         j = _rewrite(it, text, fix)
+        if article: j['_article'] = True
         probs = check(j, it.get('title', '') + ' ' + text)
         print(f'  yoxlama #{attempt + 1}:', 'OK' if not probs else '; '.join(probs))
         if best is None or len(probs) < best[1]: best = (j, len(probs))
         if not probs: break
         fix = '\n\nƏVVƏLKİ CAVABDA PROBLEMLƏR VAR İDİ, DÜZƏLT:\n- ' + '\n- '.join(probs)
+    best[0].pop('_article', None)
     return best[0]
 
 
-def main(n=None):
+TOPICS = ['Toy üçün ilk rəqs mahnısı necə seçilir', 'Toyda gəlin-bəy girişi üçün 7 ideya', 'Ad günü üçün şou proqram ideyaları',
+ 'Uşaq ad günü: animator, DJ və oyunlar', 'Korporativ tədbir necə təşkil olunur: addım-addım', 'Korporativ gecə üçün 10 əyləncə ideyası',
+ 'Son zəng və məzun gecəsi: unudulmaz gecə üçün ideyalar', 'Nişan mərasimi: musiqi və dekor seçimi', 'Canlı band, yoxsa DJ: nə seçməli',
+ 'Toyda işıq və səs: nəyə diqqət etməli', 'Restoran və ya şadlıq sarayı açılışı necə təşkil olunur', 'Yeni il korporativi üçün ideyalar',
+ 'Toyda milli musiqi: saz, nağara, balaban', 'Party üçün lazer və işıq şousu', 'Tədbir üçün aparıcı (showman) necə seçilir',
+ 'Viktorina gecəsi necə təşkil olunur', 'Toy büdcəsi: musiqi və şou üçün nə qədər ayırmalı', 'Ad günü sürprizləri: 10 ideya']
+
+
+def write_article():
+    """Uyğun tədbir xəbəri olmayanda — xidmətlərlə bağlı faydalı məqalə."""
+    sp = os.path.join(HERE, 'articles_state.json')
+    used = json.load(open(sp, encoding='utf-8')) if os.path.exists(sp) else []
+    free = [t for t in TOPICS if t not in used] or TOPICS
+    topic = free[0]
+    it = {'source': 'Showband Group', 'url': 'https://showbandgroup.az/', 'title': topic}
+    text = ('Bu, xəbər deyil — Showband Group-un mütəxəssis məsləhət məqaləsidir. Mövzu: ' + topic +
+            '. Praktik, faydalı məsləhətlər ver, Bakıdakı tədbirlər kontekstində. Sonda Showband Group-un bu işdə kömək edə biləcəyini qısa qeyd et. Kateqoriya: Məsləhət.')
+    j = rewrite(it, text, article=True); j['category'] = 'Məsləhət'
+    json.dump((used + [topic])[-len(TOPICS):], open(sp, 'w', encoding='utf-8'), ensure_ascii=False)
+    return it, j
+
+
+def main(n=None, mode=None):
     if n is None: n = int(sys.argv[sys.argv.index('--n') + 1]) if '--n' in sys.argv else 1
+    if mode is None: mode = sys.argv[sys.argv.index('--mode') + 1] if '--mode' in sys.argv else (
+        'hype' if dt.datetime.now(dt.timezone.utc).hour < 10 else 'event')
+    print('rejim:', mode)
     pool_p = os.path.join(HERE, 'pool.json')
     pool = json.load(open(pool_p, encoding='utf-8')) if os.path.exists(pool_p) else []
     pool = [x for x in pool if not x.get('used')]
-    if not pool: sys.exit('Hovuz boşdur — əvvəlcə collect.py')
-    chosen = pick(pool, n)
-    if not chosen: sys.exit('Uyğun musiqi xəbəri tapılmadı')
+    chosen = pick(pool, n, mode) if pool else []
+    if not chosen and mode == 'event':
+        it, j = write_article(); save_draft(it, j, '', 'article'); return
+    if not chosen: sys.exit('Uyğun xəbər tapılmadı')
     posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))
     have = {p['slug'] for p in posts}
     os.makedirs(os.path.join(HERE, 'drafts'), exist_ok=True)
@@ -146,19 +203,12 @@ def main(n=None):
         text, og = collect.article_text(it['url'])
         if len(text) < 200: text = it.get('summary', '') + '\n' + text
         j = rewrite(it, text)
-        slug = slugify(j.get('title', it['title']))
-        while slug in have: slug += '-2'
-        draft = {'slug': slug, 'title': j['title'], 'description': j['description'], 'category': j['category'],
-                 'date': dt.date.today().isoformat(), 'tags': j.get('tags', [])[:6], 'lead': j['lead'], 'body': j['body'],
-                 'reel': j.get('reel', {}), 'ig_caption': j.get('ig_caption', ''),
-                 'source': {'name': it['source'], 'url': it['url']}, 'source_image': og or it.get('image', ''),
-                 'viral': it.get('viral'), 'source_title': it['title']}
-        json.dump(draft, open(os.path.join(HERE, 'drafts', slug + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+        save_draft(it, j, og, mode)
         full = json.load(open(pool_p, encoding='utf-8'))
         for x in full:
             if x['url'] == it['url']: x['used'] = True
         json.dump(full, open(pool_p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-        print(f'qaralama: drafts/{slug}.json  [{it["viral"]}/10]  {j["title"]}')
+
 
 
 if __name__ == '__main__':

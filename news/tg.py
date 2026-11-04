@@ -45,7 +45,8 @@ def ans(data):
 
 def caption(d, status=''):
     E = html.escape
-    s = (f'🆕 <b>Yeni xəbər — təsdiq gözləyir</b>\n\n<b>{E(d["title"])}</b>\n{E(d["lead"])}\n\n'
+    lab = {'hype': '🔥 Hype xəbər', 'event': '🎉 Tədbir xəbəri', 'article': '📝 Faydalı məqalə'}.get(d.get('mode'), '🆕 Yeni xəbər')
+    s = (f'<b>{lab}</b> — təsdiq gözləyir\n\n<b>{E(d["title"])}</b>\n{E(d["lead"])}\n\n'
          f'🔥 Viral: {d.get("viral", "?")}/10 · 🏷 {E(d["category"])}\n'
          f'📰 Mənbə: <a href="{E(d["source"]["url"])}">{E(d["source"]["name"])}</a>\n\n'
          f'<b>Instagram mətni:</b>\n{E(d.get("ig_caption", ""))}')
@@ -146,12 +147,12 @@ def unpublish(slug):
         d = json.load(open(dp, encoding='utf-8')); d['status'] = 'deleted'; save(dp, d)
 
 
-def get_news():
+def get_news(mode='hype'):
     """📰 Yeni xəbər al — dərhal yeni xəbər hazırlayır və göndərir."""
     import write, collect
     try: collect.main()
     except Exception as x: print('  ! collect:', x)
-    try: write.main(1)
+    try: write.main(1, mode)
     except SystemExit as x: say(f'⚠️ Hazırda uyğun yeni xəbər tapılmadı ({x}). Bir az sonra yenidən yoxlayın.'); return
     send_new()
 
@@ -185,8 +186,10 @@ def poll():
     e = json.loads(ev)
     if e.get('kind') == 'reply': on_reply(e); return
     if str(e['chat_id']) != str(env('TELEGRAM_CHAT_ID')): return
-    if e.get('kind') == 'cmd' and e.get('cmd') == 'yeni' or (e.get('data') or '').startswith('gt:'):
-        get_news(); return
+    if e.get('kind') == 'cmd' and e.get('cmd') in ('yeni', 'tedbir'):
+        get_news('event' if e['cmd'] == 'tedbir' else 'hype'); return
+    if (e.get('data') or '').startswith('gt:'):
+        get_news('event' if e['data'] == 'gt:e' else 'hype'); return
     if e.get('kind') == 'cmd': list_news(); return
     act, key = e['data'].split(':', 1)
     if act in ('dl', 'dy', 'dn'):
@@ -229,7 +232,7 @@ def poll():
     elif act == 'nx':  # başqa xəbər
         d['status'] = 'rejected'; save(path, d); mark('🔄 <b>Başqa xəbər axtarılır…</b>')
         import write
-        try: write.main(1)
+        try: write.main(1, 'event' if d.get('mode') in ('event', 'article') else 'hype')
         except SystemExit as x: say(f'⚠️ Başqa uyğun xəbər tapılmadı ({x})'); return
         send_new()
     json.dump(st, open(STATE, 'w'))

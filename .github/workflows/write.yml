@@ -1,4 +1,4 @@
-name: 2 · Xəbər yaz və Telegram-a göndər (10:00 və 17:00 Bakı)
+name: 2 · Xəbər yaz (10:00 hype, 17:00 tədbir — Bakı)
 on:
   schedule: [{cron: '0 6,13 * * *'}]
   workflow_dispatch:
