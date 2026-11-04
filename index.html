@@ -88,9 +88,9 @@ h1 em{font-style:normal;color:var(--red2)}
 .al{background:var(--card);border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:14px;transition:opacity .3s,transform .3s,background .3s}
 .al.dim{opacity:.35}.al{transition:opacity .6s,transform .4s,background .4s,box-shadow .4s}.al.hl{background:var(--card2);transform:translateY(-6px);box-shadow:0 30px 60px -30px rgba(227,18,43,.6)}
 .cov{aspect-ratio:1;border-radius:16px;display:flex;flex-direction:column;justify-content:space-between;padding:20px;position:relative;overflow:hidden}
-.al:nth-child(1) .cov{background:linear-gradient(135deg,#e3122b,#4a0711)}
-.al:nth-child(2) .cov{background:linear-gradient(135deg,#2b3a8f,#0b0b1e)}
-.al:nth-child(3) .cov{background:linear-gradient(135deg,#8a2be2,#26073f)}
+.al:nth-child(1) .cov{background:linear-gradient(180deg,rgba(227,18,43,.35),rgba(74,7,17,.92) 85%),url(img/pk_toy.jpg) center/cover}
+.al:nth-child(2) .cov{background:linear-gradient(180deg,rgba(43,58,143,.35),rgba(11,11,30,.92) 85%),url(img/pk_korp.jpg) center/cover}
+.al:nth-child(3) .cov{background:linear-gradient(180deg,rgba(138,43,226,.35),rgba(38,7,63,.92) 85%),url(img/pk_mezun.jpg) center/cover}
 .cov small{font:700 11px var(--s);letter-spacing:.2em;text-transform:uppercase;opacity:.8}
 .cov b{font:900 34px/1 var(--d);letter-spacing:-.04em}
 .al h3{font:700 22px var(--d);margin:0;letter-spacing:-.02em}
@@ -390,7 +390,7 @@ var EV=[
 var PK=[
  {id:'toy',tags:['toy'],n:['Toy paketi','Свадебный пакет','Wedding package'],it:[['DJ • Live Band • Showman','DJ • Live Band • Showman','DJ • Live Band • Showman'],['Ssenari və sürprizlər','Сценарий и сюрпризы','Script & surprises'],['Səs, işıq & dekor','Звук, свет и декор','Sound, light & decor'],['Foto & video','Фото и видео','Photo & video']]},
  {id:'korp',tags:['korp'],n:['Korporativ paket','Корпоративный пакет','Corporate package'],it:[['Aparıcı və şou proqramı','Ведущий и шоу-программа','Host & show programme'],['Live Band və ya DJ','Живой бэнд или DJ','Live band or DJ'],['Səs, işıq və səhnə','Звук, свет и сцена','Sound, light & stage'],['Brend dekor','Брендированный декор','Branded decor'],['Foto & video','Фото и видео','Photo & video']]},
- {id:'party',tags:['adgunu','party','mezun'],n:['Ad günü / Party','День рождения / Вечеринка','Birthday / Party'],it:[['DJ və Showman','DJ и шоумен','DJ & showman'],['Lazer və işıq şousu','Лазерное и световое шоу','Laser & light show'],['Tematik dekor','Тематический декор','Themed decor'],['Foto','Фото','Photo']]}
+ {id:'party',tags:['adgunu','party','mezun'],h:['Ad günü · Party · Son zəng','День рождения · Вечеринки · Выпускные','Birthday · Parties · Graduation'],n:['Ad günü / Party','День рождения / Вечеринка','Birthday / Party'],it:[['DJ və Showman','DJ и шоумен','DJ & showman'],['Lazer və işıq şousu','Лазерное и световое шоу','Laser & light show'],['Tematik dekor','Тематический декор','Themed decor'],['Foto','Фото','Photo']]}
 ];
 // url: YouTube linki (məs. https://www.youtube.com/watch?v=XXXX) — boşdursa "tezliklə" göstərilir
 var FULL={src:'video/showband_full.mp4',poster:'video/showband_full.jpg'};
@@ -428,7 +428,7 @@ function renderPl(){ if(!$('pl'))return; $('pl').innerHTML='<div class="ph"><spa
  $('pl').querySelectorAll('.tr').forEach(function(r){r.onclick=function(){selEv(r.dataset.t,true)}})}
 function price(){return li===0?'… AZN<small>-dən</small>':'<small>'+(li===1?'от ':'from ')+'</small>… AZN'}
 function renderPk(){ $('alb').innerHTML=PK.map(function(p){var on=!EVF||p.tags.indexOf(EVF)>-1;
- return '<div class="al '+(EVF?(on?'hl':'dim'):'')+'"><div class="cov"><small>'+t('pk_s')+'</small><b>'+p.n[li].toUpperCase()+'</b></div><h3>'+p.tags.map(function(x){return evById(x).n[li]}).join(' · ')+'</h3><ol>'+p.it.map(function(x){return '<li>'+x[li]+'</li>'}).join('')+'</ol><div class="meta"><span>'+t('pk_d')+': '+t('pk_h2')+'</span><span class="pr">'+price()+'</span></div><a class="btn" href="#bron" data-pk="'+p.id+'">'+t('pk_btn')+'</a></div>'}).join('');
+ return '<div class="al '+(EVF?(on?'hl':'dim'):'')+'"><div class="cov"><small>'+t('pk_s')+'</small><b>'+p.n[li].toUpperCase()+'</b></div><h3>'+(p.h?p.h[li]:p.tags.map(function(x){return evById(x).n[li]}).join(' · '))+'</h3><ol>'+p.it.map(function(x){return '<li>'+x[li]+'</li>'}).join('')+'</ol><div class="meta"><span>'+t('pk_d')+': '+t('pk_h2')+'</span><span class="pr">'+price()+'</span></div><a class="btn" href="#bron" data-pk="'+p.id+'">'+t('pk_btn')+'</a></div>'}).join('');
  $('alb').querySelectorAll('[data-pk]').forEach(function(a){a.onclick=function(){$('fpk').value=a.dataset.pk}})}
 function renderSv(){ $('svc').innerHTML=SV.map(function(x){return '<div class="sv'+(x.e?' go':'')+'"'+(x.e?' data-e="'+x.e+'"':'')+'><div class="ic">'+ICO[x.i]+'</div><div><h3>'+x.n[li]+'</h3><p>'+x.d[li]+'</p></div></div>'}).join('');
  $('svc').querySelectorAll('[data-e]').forEach(function(c){c.onclick=function(){selEv(c.dataset.e,true)}})}
