@@ -100,6 +100,9 @@ def ig_queue():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) > 1 and sys.argv[1] == '--ig-queue': ig_queue()
+    if len(sys.argv) > 1 and sys.argv[1] == '--ig-check':
+        me = graph('me', {'fields': 'user_id,username'}, 'GET')
+        print('IG OK:', me.get('username'), '| id uyğundur' if str(me.get('user_id')) == env('IG_USER_ID') else f'| ⚠️ IG_USER_ID fərqlidir: {me.get("user_id")}')
+    elif len(sys.argv) > 1 and sys.argv[1] == '--ig-queue': ig_queue()
     elif len(sys.argv) > 1: print(publish(sys.argv[1]))
     else: print(__doc__)
