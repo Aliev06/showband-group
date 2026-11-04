@@ -258,6 +258,13 @@ footer .pt{grid-column:1/-1;font-size:12px;border-top:1px solid var(--line);padd
 @media (max-width:1280px){.nav ul{gap:16px;font-size:13px}}
 
 @media (max-width:1000px){.lang,.nav .cta{display:none}.burger{display:flex}}
+/* mobil düzəlişlər */
+html,body{overflow-x:clip}
+.mnav{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));top:76px;z-index:60;margin:0;max-height:calc(100dvh - 92px);overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.vtabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.vtabs::-webkit-scrollbar{display:none}.vtabs button{flex:none}
+.bk form>*,.bk label{min-width:0}
+input[type=date]{-webkit-appearance:none;appearance:none;display:block;width:100%;min-width:0;max-width:100%;box-sizing:border-box;min-height:52px}
+input[type=date]::-webkit-date-and-time-value{text-align:left}
 </style>
 </head>
 <body>
@@ -279,7 +286,7 @@ footer .pt{grid-column:1/-1;font-size:12px;border-top:1px solid var(--line);padd
   <div class="hl"><span class="beam b1"></span><span class="beam b2"></span><span class="beam b3"></span><div class="crowd"><svg viewBox="0 0 900 150" preserveAspectRatio="none" id="crowd"></svg></div><div class="tp" data-i="h_tp"></div>
    <h1 data-i="h1"></h1>
    <div class="listeners" data-i="h_list"></div>
-   <div class="ctl"><a class="play" href="#" data-play aria-label="Video">▶</a><a class="btn o" href="#paket" data-i="h_pk"></a><a class="btn" href="#bron" data-i="cta"></a></div></div>
+   <div class="ctl"><a class="btn o" href="#paket" data-i="h_pk"></a><a class="btn" href="#bron" data-i="cta"></a></div></div>
   <div class="player">
    <div class="art" id="art"><video class="artv hv" id="hv" preload="none" playsinline></video><img class="artv ps" id="ps" src="img/hero_poster.jpg" alt="Showband Group"><span class="live">● LIVE</span><button class="artp" id="artp" data-play aria-label="Play">▶</button></div>
    <div class="np"><div><b id="nt"></b><span>Showband Group</span></div><i>♥</i></div>
@@ -463,7 +470,7 @@ var onSc=function(){$('nav').classList.toggle('sc',scrollY>10)};addEventListener
 function buildMnav(){ $('mnav').innerHTML=[['#xidmet','n_xidmet'],['#paket','n_paket'],['#video','n_video'],['#komanda','n_komanda'],['#rey','n_rey'],['xeberler/','n_xeber'],['#elaqe','n_elaqe']].map(function(a){return '<a href="'+a[0]+'">'+t(a[1])+'</a>'}).join('')+'<div class="mlang">'+['az','ru','en'].map(function(l){return '<button data-l="'+l+'" class="'+(l===L?'on':'')+'">'+l.toUpperCase()+'</button>'}).join('')+'</div><a class="btn" href="#bron">'+t('cta')+'</a>';
  $('mnav').querySelectorAll('a').forEach(function(a){a.onclick=function(){$('mnav').hidden=true;$('burger').classList.remove('x')}});
  $('mnav').querySelectorAll('button').forEach(function(b){b.onclick=function(){L=b.dataset.l;apply()}})}
-$('burger').onclick=function(){var o=$('mnav').hidden;$('mnav').hidden=!o;$('burger').classList.toggle('x',o)};
+$('burger').onclick=function(){var o=$('mnav').hidden;if(o)$('mnav').style.top=($('nav').getBoundingClientRect().bottom+8)+'px';$('mnav').hidden=!o;$('burger').classList.toggle('x',o)};
 // search
 var norm=function(s){return String(s).toLowerCase().replace(/ə/g,'e').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ş/g,'s').replace(/ç/g,'c').replace(/ğ/g,'g').normalize('NFD').replace(/[̀-ͯ]/g,'')};
 var KW={toy:'wedding svadba свадьба toy nisan engagement помолвка',adgunu:'birthday день рождения ad gunu',korp:'corporate корпоратив korporativ',mezun:'son zeng mezun graduation выпускной последний звонок prom',party:'party вечеринка'};
