@@ -1,8 +1,8 @@
-// Showband Group — Telegram düymələri üçün ani webhook (v2).
+// Showband Group — Telegram düymələri üçün ani webhook (v3).
 // Secrets: TG_TOKEN, CHAT_ID, GH_TOKEN, SECRET
 const REPO = 'Aliev06/showband-group';
 const TXT = { ok: '⏳ Paylaşılır… 1-2 dəqiqə', no: 'Ləğv edilir…', rw: '✍️ Yenidən yazılır… ~1 dəqiqə',
-  tt: '✏️ Yeni başlığı cavab olaraq yazın', ph: '🖼 Şəkilsiz hazırlanır… ~1 dəqiqə', nx: '🔄 Başqa xəbər axtarılır… ~2 dəqiqə' };
+  tt: '✏️ Yeni başlığı cavab olaraq yazın', dl: '🗑 Təsdiq gözlənilir', dy: '🗑 Silinir… ~1 dəqiqə', dn: 'Ləğv edildi', ph: '🖼 Şəkilsiz hazırlanır… ~1 dəqiqə', nx: '🔄 Başqa xəbər axtarılır… ~2 dəqiqə' };
 
 export default {
   async fetch(req, env) {
@@ -19,6 +19,10 @@ export default {
 
     // ✏️ Başlığı dəyiş — botun sualına cavab
     const m = u.message;
+    if (m && String(m.chat.id) === String(env.CHAT_ID) && /^\/xeberler(@\w+)?$/i.test((m.text || '').trim())) {
+      await gh({ kind: 'cmd', cmd: 'xeberler', chat_id: m.chat.id });
+      return new Response('ok');
+    }
     if (m && String(m.chat.id) === String(env.CHAT_ID) && m.text && m.reply_to_message?.from?.is_bot) {
       await gh({ kind: 'reply', text: m.text, reply_to: m.reply_to_message.message_id, chat_id: m.chat.id });
       return new Response('ok');

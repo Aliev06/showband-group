@@ -120,6 +120,54 @@ def on_reply(e):
             return
 
 
+def del_kb(slug):
+    return {'inline_keyboard': [[{'text': '🗑 Saytdan sil', 'callback_data': f'dl:{sid(slug)}'}]]}
+
+
+def find_post(key):
+    for p in json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8')):
+        if p['slug'] == key or sid(p['slug']) == key: return p
+    return None
+
+
+def unpublish(slug):
+    """Xəbəri saytdan silir: posts.json, səhifə, şəkil, video; sonra saytı yenidən qurur."""
+    import shutil, subprocess
+    ROOT = os.path.dirname(HERE)
+    pp = os.path.join(HERE, 'posts.json'); posts = json.load(open(pp, encoding='utf-8'))
+    posts = [p for p in posts if p['slug'] != slug]
+    json.dump(posts, open(pp, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    for f in (os.path.join(ROOT, 'img', 'news', slug + '.jpg'), os.path.join(ROOT, 'reels', slug + '.mp4')):
+        if os.path.exists(f): os.remove(f)
+    shutil.rmtree(os.path.join(ROOT, 'xeberler', slug), ignore_errors=True)
+    subprocess.run([sys.executable, os.path.join(HERE, 'build_news.py')], check=True)
+    dp = os.path.join(HERE, 'drafts', slug + '.json')
+    if os.path.exists(dp):
+        d = json.load(open(dp, encoding='utf-8')); d['status'] = 'deleted'; save(dp, d)
+
+
+def list_news():
+    posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))[:10]
+    if not posts: say('Saytda hələ xəbər yoxdur.'); return
+    rows = [[{'text': '🗑 ' + (p['title'][:55] + ('…' if len(p['title']) > 55 else '')), 'callback_data': f'dl:{sid(p["slug"])}'}] for p in posts]
+    api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'text': '📰 <b>Saytdakı son xəbərlər</b>\nSilmək üçün xəbərə basın:',
+                        'parse_mode': 'HTML', 'reply_markup': {'inline_keyboard': rows}})
+
+
+def delete_flow(act, key, chat):
+    p = find_post(key)
+    if act == 'dl':
+        if not p: say('Bu xəbər saytda artıq yoxdur.'); return
+        api('sendMessage', {'chat_id': chat, 'parse_mode': 'HTML',
+                            'text': f'🗑 <b>{html.escape(p["title"])}</b>\n\nSaytdan silinsin?',
+                            'reply_markup': {'inline_keyboard': [[{'text': '✅ Bəli, sil', 'callback_data': f'dy:{key}'},
+                                                                  {'text': '✖️ Xeyr', 'callback_data': f'dn:{key}'}]]}})
+    elif act == 'dy':
+        if not p: say('Bu xəbər saytda artıq yoxdur.'); return
+        unpublish(p['slug'])
+        say(f'🗑 <b>Saytdan silindi:</b> {html.escape(p["title"])}\n\n⚠️ Instagram-dakı Reels varsa, onu tətbiqdə əl ilə silin.')
+
+
 def poll():
     st = json.load(open(STATE)) if os.path.exists(STATE) else {'offset': 0}
     ev = os.environ.get('TG_EVENT')  # Cloudflare Worker-dən gələn hadisə (webhook rejimi)
@@ -127,22 +175,28 @@ def poll():
     e = json.loads(ev)
     if e.get('kind') == 'reply': on_reply(e); return
     if str(e['chat_id']) != str(env('TELEGRAM_CHAT_ID')): return
+    if e.get('kind') == 'cmd': list_news(); return
     act, key = e['data'].split(':', 1)
+    if act in ('dl', 'dy', 'dn'):
+        if act != 'dl': drop(e['chat_id'], e['message_id'])  # təsdiq mesajını sil
+        delete_flow(act, key, e['chat_id']); return
     path = find_draft(key)
     if not path: say('⚠️ Qaralama tapılmadı'); return
     d = json.load(open(path, encoding='utf-8'))
     if d.get('status') in ('published', 'rejected'): return
     chat, mid, is_video = e['chat_id'], e['message_id'], e.get('video')
 
-    def mark(status):
+    def mark(status, markup=None):
         method = 'editMessageCaption' if is_video else 'editMessageText'
-        try: api(method, {'chat_id': chat, 'message_id': mid, ('caption' if is_video else 'text'): caption(d, status), 'parse_mode': 'HTML'})
+        body = {'chat_id': chat, 'message_id': mid, ('caption' if is_video else 'text'): caption(d, status), 'parse_mode': 'HTML'}
+        if markup: body['reply_markup'] = markup
+        try: api(method, body)
         except Exception as x: print('  ! edit:', x)
 
     if act == 'ok':
         import publish
         res = publish.publish(path); d = json.load(open(path, encoding='utf-8'))
-        mark('✅ <b>Saytda paylaşıldı</b>' + (' · Instagram: ' + res['ig'] if res.get('ig') else ''))
+        mark('✅ <b>Saytda paylaşıldı</b>' + (' · Instagram: ' + res['ig'] if res.get('ig') else ''), del_kb(d['slug']))
     elif act == 'no':
         d['status'] = 'rejected'; save(path, d); mark('❌ <b>Ləğv edildi</b>')
     elif act == 'ph':  # şəkilsiz
