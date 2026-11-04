@@ -101,7 +101,7 @@ def ig_queue():
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == '--ig-check':  # tokenin növünü yoxlayır (tokeni çap etmir)
-        for host, path, f in (('graph.instagram.com', 'me', 'user_id,username'), ('graph.facebook.com', 'me', 'id,name')):
+        for host, path, f in (('graph.facebook.com', env('IG_USER_ID'), 'username,media_count'), ('graph.facebook.com', 'me/accounts', 'name,instagram_business_account')):
             try:
                 q = urllib.parse.urlencode({'fields': f, 'access_token': env('IG_TOKEN')})
                 with urllib.request.urlopen(f'https://{host}/v21.0/{path}?{q}', timeout=30) as r: print('OK', host, r.read().decode()[:200])
