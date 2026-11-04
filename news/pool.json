@@ -209,7 +209,8 @@
   "summary": "",
   "image": "https://qafqazinfo.az/uploads/1738228653/emrah__1_.jpg",
   "score": 1,
-  "found": "2026-11-03T15:12:31.557528+00:00"
+  "found": "2026-11-03T15:12:31.557528+00:00",
+  "used": true
  },
  {
   "title": "“Atamın anamla tanış olduğu şəhərə uçuram...” - Erməni rəqqas Bakıdan yazdı",
@@ -1300,5 +1301,27 @@
   "image": "https://images.oxu.az/2026/11/04/BgS3X4M0un5Z8XkJX3jLKkYDoTU5fZuWLbe60dNn:640.webp",
   "score": 0,
   "found": "2026-11-04T12:39:25.342425+00:00"
+ },
+ {
+  "title": "Məşhur müğənni Güllünün şübhəli ölümü: Qızının həbsindən sonra oğluna qarşı da iddia qaldırıldı",
+  "url": "https://oxu.az/dunya/meshur-mugenni-gullunun-subheli-olumu-qizinin-hebsinden-sonra-ogluna-qarsi-da-iddia-qaldirildi",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T17:04:00+04:00",
+  "summary": "Yalovada faciəvi şəkildə vəfat edən məşhur türk müğənnisi Güllünün ölümü ilə bağlı istintaqda yeni detallar üzə çıxıb. Sənətçinin bacısı tərəfindən oğluna qarşı dəlilləri məhv etmək və gizlətmək ittihamı ilə cinayət işi açılıb.",
+  "image": "https://images.oxu.az/2026/11/04/1GCXm26sGskzds7vMLd06HhpoGFcPF6NkXPQJtfT:640.jpg",
+  "score": 4,
+  "found": "2026-11-04T13:36:05.000127+00:00"
+ },
+ {
+  "title": "Ermənistan prezident administrasiyasının keçmiş rəhbəri saxlanıldı",
+  "url": "https://oxu.az/dunya/ermenistan-prezident-administrasiyasinin-kecmis-rehberi-saxlanildi",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T17:20:00+04:00",
+  "summary": "Ermənistanın keçmiş prezidentləri Serj Sarqsyan və Armen Sarkisyanın aparatlarında rəhbər vəzifələrdə çalışmış, həmçinin Ermənistan Elektrik Şəbəkələrinin sabiq rəsmisi Vardan Makaryan genişmiqyaslı axtarışlardan sonra saxlanılıb.",
+  "image": "https://images.oxu.az/2026/11/04/HLK2NEBqdyI58Vj3EclsTitMFyCzbZos9MfuTj95:640.webp",
+  "score": 0,
+  "found": "2026-11-04T13:36:05.000127+00:00"
  }
 ]
