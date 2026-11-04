@@ -44,6 +44,7 @@
  "track": "DJ Orxan Abbasov & Feyyazbeats — Aman Tello",
  "tg_message": 35,
  "status": "published",
- "ig_status": "queued",
- "ig_tries": 0
+ "ig_status": "done",
+ "ig_tries": 0,
+ "ig_id": "18140247070631535"
 }
