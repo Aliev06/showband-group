@@ -98,7 +98,8 @@
   "summary": "",
   "image": "https://axar.az/media/2025/06/03/rafet-el-roman.jpg",
   "score": 4,
-  "found": "2026-11-03T15:12:31.557528+00:00"
+  "found": "2026-11-03T15:12:31.557528+00:00",
+  "used": true
  },
  {
   "title": "Bakıda Zeytun Festivalının açılışı oldu Məhsullar",
@@ -1232,5 +1233,49 @@
   "image": "https://images.oxu.az/2026/11/04/YMEq8YebW2lPedRlTB6y5tsS4JLmx2aVPTnyNJLL:640.jpg",
   "score": 0,
   "found": "2026-11-04T11:13:49.937902+00:00"
+ },
+ {
+  "title": "Prezidentdən Kamran İmanovla bağlı - Sərəncam",
+  "url": "https://qafqazinfo.az/news/detail/prezidentden-kamran-imanovla-bagli-serencam-527367",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1793793463/kamran.png",
+  "score": 1,
+  "found": "2026-11-04T12:11:57.491310+00:00"
+ },
+ {
+  "title": "Yeni sədrə 2 müavin təyinatı - Biri sabiq nazirin oğludur",
+  "url": "https://qafqazinfo.az/news/detail/yeni-sedre-2-muavin-teyinati-biri-sabiq-nazirin-ogludur-527363",
+  "source": "Qafqazinfo",
+  "cat": "Şou/Mədəniyyət",
+  "date": "",
+  "summary": "",
+  "image": "https://qafqazinfo.az/resize/216x135/uploads/1793791193/456.jpg",
+  "score": 1,
+  "found": "2026-11-04T12:11:57.491310+00:00"
+ },
+ {
+  "title": "Zelenski Melaniya Trampı \"Knyaginya Olqa\" ordeni ilə təltif edib",
+  "url": "https://oxu.az/dunya/zelenski-melaniya-trampi-knyaginya-olqa-ordeni-ile-teltif-edib",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T16:00:00+04:00",
+  "summary": "Ukrayna Prezidenti Volodimir Zelenski ABŞ-ın birinci xanımı Melaniya Trampı humanitar fəaliyyətinə və mülki əhalinin xilasına verdiyi töhfəyə görə I dərəcəli \"Knyaginya Olqa\" ordeni ilə mükafatlandırıb.",
+  "image": "https://images.oxu.az/2026/11/04/JVoVGpvdEm8LE1QdWTm6ezAWrhXPYFNqJ3cpBBlj:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T12:11:57.491310+00:00"
+ },
+ {
+  "title": "NATO-nun yeni strategiyası: Rusiyaya zərbələr istisna olunmur",
+  "url": "https://oxu.az/dunya/nato-nun-yeni-strategiyasi-rusiyaya-zerbeler-istisna-olunmur",
+  "source": "Oxu.az",
+  "cat": "Dünya",
+  "date": "2026-11-04T15:28:00+04:00",
+  "summary": "Şimali Atlantika Alyansının rəhbərliyi özünün yeni müdafiə strategiyası çərçivəsində Rusiya Federasiyası ərazisinə hücumların həyata keçirilməsi ehtimalını mümkün hesab edir.",
+  "image": "https://images.oxu.az/2026/11/04/Abn0b6DjF2Zfv5Lrr3TtihssZJLsghmcU5G5eWyY:640.jpg",
+  "score": 0,
+  "found": "2026-11-04T12:11:57.491310+00:00"
  }
 ]
