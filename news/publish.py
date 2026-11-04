@@ -46,7 +46,7 @@ def publish(path):
 
 
 # ---------- Instagram ----------
-GRAPH = 'https://graph.instagram.com/v21.0'  # Instagram Login tokeni
+GRAPH = 'https://graph.facebook.com/v21.0'  # Facebook Login for Business tokeni
 
 
 def graph(path, params, method='POST'):
