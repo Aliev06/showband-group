@@ -66,16 +66,18 @@ def graph(path, params, method='POST'):
 def ig_publish(d):
     """Sayt yeniləndikdən sonra çağırılır (video URL artıq açıq olmalıdır)."""
     url = f'{site_url()}/reels/{d["slug"]}.mp4'
-    for _ in range(20):  # Netlify yeniləyənə qədər gözlə
+    for _ in range(20):  # GitHub Pages yeniləyənə qədər gözlə
         try:
             with urllib.request.urlopen(urllib.request.Request(url, method='HEAD'), timeout=20) as r:
                 if r.status == 200: break
         except Exception: pass
         time.sleep(15)
+    else:
+        raise TimeoutError('video saytda hələ yoxdur')
     c = graph(f'{env("IG_USER_ID")}/media', {'media_type': 'REELS', 'video_url': url, 'caption': d.get('ig_caption', ''),
                                              'share_to_feed': 'false'})  # yalnız Reels bölməsi
     for _ in range(40):
-        s = graph(c['id'], {'fields': 'status_code'}, 'GET')
+        s = graph(c['id'], {'fields': 'status_code,status'}, 'GET')
         if s.get('status_code') == 'FINISHED': break
         if s.get('status_code') == 'ERROR': raise RuntimeError(s)
         time.sleep(10)
@@ -92,6 +94,8 @@ def ig_queue():
         if d.get('ig_status') != 'queued': continue
         try:
             d['ig_id'] = ig_publish(d); d['ig_status'] = 'done'; msg = f'📲 Instagram-da paylaşıldı: {d["title"]}'
+        except TimeoutError:
+            print('  sayt hələ yenilənməyib, növbəti saat yenidən:', d['slug']); continue
         except Exception as e:
             d['ig_status'] = 'error'; d['ig_error'] = str(e)[:300]; msg = f'⚠️ Instagram xətası: {d["title"]}\n{str(e)[:200]}'
         json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
