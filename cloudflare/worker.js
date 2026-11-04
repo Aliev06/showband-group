@@ -1,8 +1,8 @@
-// Showband Group — Telegram düymələri üçün ani webhook (v3).
+// Showband Group — Telegram düymələri üçün ani webhook (v4).
 // Secrets: TG_TOKEN, CHAT_ID, GH_TOKEN, SECRET
 const REPO = 'Aliev06/showband-group';
 const TXT = { ok: '⏳ Paylaşılır… 1-2 dəqiqə', no: 'Ləğv edilir…', rw: '✍️ Yenidən yazılır… ~1 dəqiqə',
-  tt: '✏️ Yeni başlığı cavab olaraq yazın', dl: '🗑 Təsdiq gözlənilir', dy: '🗑 Silinir… ~1 dəqiqə', dn: 'Ləğv edildi', ph: '🖼 Şəkilsiz hazırlanır… ~1 dəqiqə', nx: '🔄 Başqa xəbər axtarılır… ~2 dəqiqə' };
+  tt: '✏️ Yeni başlığı cavab olaraq yazın', dl: '🗑 Təsdiq gözlənilir', dy: '🗑 Silinir… ~1 dəqiqə', dn: 'Ləğv edildi', gt: '🔎 Yeni xəbər axtarılır… ~2 dəqiqə', ph: '🖼 Şəkilsiz hazırlanır… ~1 dəqiqə', nx: '🔄 Başqa xəbər axtarılır… ~2 dəqiqə' };
 
 export default {
   async fetch(req, env) {
@@ -19,8 +19,10 @@ export default {
 
     // ✏️ Başlığı dəyiş — botun sualına cavab
     const m = u.message;
-    if (m && String(m.chat.id) === String(env.CHAT_ID) && /^\/xeberler(@\w+)?$/i.test((m.text || '').trim())) {
-      await gh({ kind: 'cmd', cmd: 'xeberler', chat_id: m.chat.id });
+    const cmd = m && String(m.chat.id) === String(env.CHAT_ID) && ((m.text || '').trim().match(/^\/(xeberler|yeni)(@\w+)?$/i) || [])[1];
+    if (cmd) {
+      await gh({ kind: 'cmd', cmd: cmd.toLowerCase(), chat_id: m.chat.id });
+      if (cmd.toLowerCase() === 'yeni') await tg('sendMessage', { chat_id: m.chat.id, text: '🔎 Yeni xəbər axtarılır… ~2 dəqiqə' });
       return new Response('ok');
     }
     if (m && String(m.chat.id) === String(env.CHAT_ID) && m.text && m.reply_to_message?.from?.is_bot) {

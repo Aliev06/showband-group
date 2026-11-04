@@ -146,6 +146,16 @@ def unpublish(slug):
         d = json.load(open(dp, encoding='utf-8')); d['status'] = 'deleted'; save(dp, d)
 
 
+def get_news():
+    """📰 Yeni xəbər al — dərhal yeni xəbər hazırlayır və göndərir."""
+    import write, collect
+    try: collect.main()
+    except Exception as x: print('  ! collect:', x)
+    try: write.main(1)
+    except SystemExit as x: say(f'⚠️ Hazırda uyğun yeni xəbər tapılmadı ({x}). Bir az sonra yenidən yoxlayın.'); return
+    send_new()
+
+
 def list_news():
     posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))[:10]
     if not posts: say('Saytda hələ xəbər yoxdur.'); return
@@ -175,6 +185,8 @@ def poll():
     e = json.loads(ev)
     if e.get('kind') == 'reply': on_reply(e); return
     if str(e['chat_id']) != str(env('TELEGRAM_CHAT_ID')): return
+    if e.get('kind') == 'cmd' and e.get('cmd') == 'yeni' or (e.get('data') or '').startswith('gt:'):
+        get_news(); return
     if e.get('kind') == 'cmd': list_news(); return
     act, key = e['data'].split(':', 1)
     if act in ('dl', 'dy', 'dn'):
