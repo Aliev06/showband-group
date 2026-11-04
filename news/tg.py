@@ -53,8 +53,20 @@ def caption(d, status=''):
 
 
 def kb(slug):
-    return json.dumps({'inline_keyboard': [[{'text': '✅ Paylaş', 'callback_data': f'ok:{slug}'[:64]},
-                                             {'text': '❌ Ləğv et', 'callback_data': f'no:{slug}'[:64]}]]})
+    h = sid(slug)  # Telegram callback_data maksimum 64 bayt — qısa id istifadə olunur
+    return json.dumps({'inline_keyboard': [[{'text': '✅ Paylaş', 'callback_data': f'ok:{h}'},
+                                             {'text': '❌ Ləğv et', 'callback_data': f'no:{h}'}]]})
+
+
+def sid(slug):
+    import hashlib; return hashlib.sha1(slug.encode()).hexdigest()[:12]
+
+
+def find_draft(key):
+    dd = os.path.join(HERE, 'drafts')
+    for f in os.listdir(dd) if os.path.isdir(dd) else []:
+        if f.endswith('.json') and (f[:-5] == key or sid(f[:-5]) == key): return os.path.join(dd, f)
+    return None
 
 
 def send(path):
@@ -77,8 +89,8 @@ def poll():
         q = u.get('callback_query')
         if not q or str(q['message']['chat']['id']) != str(env('TELEGRAM_CHAT_ID')): continue
         act, slug = q['data'].split(':', 1)
-        path = os.path.join(HERE, 'drafts', slug + '.json')
-        if not os.path.exists(path):
+        path = find_draft(slug)
+        if not path:
             ans({'callback_query_id': q['id'], 'text': 'Qaralama tapılmadı'}); continue
         d = json.load(open(path, encoding='utf-8'))
         if d.get('status') in ('published', 'rejected'):

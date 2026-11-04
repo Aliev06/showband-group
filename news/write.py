@@ -62,13 +62,14 @@ def slugify(s):
     s = s.lower()
     for a, b in zip('əıöüçşğ', 'eioucsg'): s = s.replace(a, b)
     s = re.sub(r'[^a-z0-9]+', '-', s).strip('-')
-    return '-'.join(s.split('-')[:9])
+    s = '-'.join(s.split('-')[:9])
+    return s[:60].rstrip('-')
 
 
 def rewrite(it, text):
     j = gemini(f'''Sən "Showband Group" saytının musiqi xəbərləri redaktorusan. Mənbə mətnindən Azərbaycan dilində TAM YENİ, unikal xəbər yaz
 (kopyalama, öz sözlərinlə). Faktları dəyişmə, heç nə uydurma. İddiaları "bildirilir", "iddia olunur" kimi ver; ittiham etmə, təhqir etmə.
-Ton: canlı, maraqlı, peşəkar. 180-320 söz, 2-3 ara başlıq.
+Ton: canlı, maraqlı, peşəkar. Yalnız Azərbaycan dilində yaz — heç bir ingilis və ya rus sözü işlətmə (məs. "surprising" yox, "təəccüblü"). 180-320 söz, 2-3 ara başlıq.
 SEO: title 50-70 simvol, artistin adı əvvəldə, tam cümlə — sonunda üç nöqtə (...) OLMASIN; description 140-160 simvol.
 Kateqoriya bunlardan biri: {", ".join(CATS)}.
 Yalnız JSON:
