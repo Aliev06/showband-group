@@ -28,7 +28,7 @@ def gemini(prompt, temp=0.4):
     body = json.dumps({'contents': [{'parts': [{'text': prompt}]}],
                        'generationConfig': {'responseMimeType': 'application/json', 'temperature': temp}}).encode()
     last = ''
-    for attempt in range(2):
+    for attempt in range(6):  # Google pulsuz planda tez-tez 503 (yüklənmə) verir — gözləyib yenidən
         for m in MODELS:
             req = urllib.request.Request(f'https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent', data=body,
                                          headers={'x-goog-api-key': key(), 'content-type': 'application/json'})
@@ -38,7 +38,7 @@ def gemini(prompt, temp=0.4):
                 return json.loads(j['candidates'][0]['content']['parts'][0]['text'])
             except Exception as e:
                 last = f'{m}: {e}'; print('  ! Gemini', last)
-        time.sleep(20)
+        time.sleep([20, 40, 60, 90, 120, 0][attempt])
     raise RuntimeError('Gemini cavab vermədi: ' + last)
 
 
