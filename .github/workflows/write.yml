@@ -1,6 +1,5 @@
-name: 2 · Xəbər yaz (10:00 hype, 17:00 tədbir — Bakı)
+name: 2 · Xəbər yaz (əl ilə; vaxt cədvəli Cloudflare Worker-dədir)
 on:
-  schedule: [{cron: '0 6,13 * * *'}]
   workflow_dispatch:
     inputs:
       only_send: {description: 'Yalnız göndərilməmiş qaralamaları göndər', type: boolean, default: false}
