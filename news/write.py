@@ -16,8 +16,8 @@ CATS = ['Şou-biznes', 'Yeni mahnı', 'Klip', 'Konsert', 'Albom', 'Festival', 'A
 
 
 # Ehtiyat modellər: Gemini işləməsə Groq, o da işləməsə OpenRouter (hamısı pulsuz)
-GROQ = ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile', 'qwen/qwen3.8-27b']
-OPENROUTER = ['openai/gpt-oss-120b:free', 'google/gemma-4-31b-it:free', 'nvidia/nemotron-3-ultra-550b-a55b:free']
+GROQ = ['openai/gpt-oss-120b', 'qwen/qwen3.8-27b']
+OPENROUTER = ['nvidia/nemotron-3-ultra-550b-a55b:free', 'google/gemma-4-31b-it:free']
 
 
 def secret(name):
