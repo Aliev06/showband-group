@@ -2,7 +2,7 @@
 """Showband Group — hovuzdan (pool.json) ən yaxşı musiqi xəbərini seçir və Gemini ilə yenidən yazır.
   python3 news/write.py            # 1 qaralama: news/drafts/<slug>.json + Reels
   python3 news/write.py --n 2      # 2 qaralama
-Açar: GEMINI_API_KEY (mühit dəyişəni və ya news/.env)
+Açarlar: GEMINI_API_KEY, ehtiyat GROQ_API_KEY və OPENROUTER_API_KEY (mühit dəyişəni və ya news/.env)
 Qaralama Telegram təsdiqindən sonra publish.py ilə sayta və Instagram-a gedir.
 """
 import json, os, re, sys, time, urllib.request, datetime as dt
@@ -15,31 +15,70 @@ MODELS = ['gemini-flash-lite-latest', 'gemini-3.5-flash-lite', 'gemini-flash-lat
 CATS = ['Şou-biznes', 'Yeni mahnı', 'Klip', 'Konsert', 'Albom', 'Festival', 'Avroviziya', 'Toy və nişan', 'Ad günü', 'Korporativ', 'Son zəng', 'Açılış', 'Party', 'Məsləhət']
 
 
-def key():
-    k = (os.environ.get('GEMINI_API_KEY') or '').strip()
+# Ehtiyat modellər: Gemini işləməsə Groq, o da işləməsə OpenRouter (hamısı pulsuz)
+GROQ = ['openai/gpt-oss-120b', 'llama-3.3-70b-versatile', 'qwen/qwen3.8-27b']
+OPENROUTER = ['openai/gpt-oss-120b:free', 'google/gemma-4-31b-it:free', 'nvidia/nemotron-3-ultra-550b-a55b:free']
+
+
+def secret(name):
+    k = (os.environ.get(name) or '').strip()
     if not k and os.path.exists(os.path.join(HERE, '.env')):
         for l in open(os.path.join(HERE, '.env')):
-            if l.startswith('GEMINI_API_KEY='): k = l.split('=', 1)[1].strip()
+            if l.startswith(name + '='): k = l.split('=', 1)[1].strip()
+    return k
+
+
+def key():
+    k = secret('GEMINI_API_KEY')
     if not k: sys.exit('GEMINI_API_KEY yoxdur')
     return k
 
 
-def gemini(prompt, temp=0.4):
+def parse_json(t):
+    """Model cavabından JSON çıxarır (```json bloklarını və əlavə mətni atır)."""
+    t = re.sub(r'^```(?:json)?|```$', '', t.strip(), flags=re.M).strip()
+    try: return json.loads(t)
+    except Exception: pass
+    i = min([x for x in (t.find('['), t.find('{')) if x >= 0] or [0])
+    j = max(t.rfind(']'), t.rfind('}'))
+    return json.loads(t[i:j + 1])
+
+
+def _gemini(m, prompt, temp):
     body = json.dumps({'contents': [{'parts': [{'text': prompt}]}],
                        'generationConfig': {'responseMimeType': 'application/json', 'temperature': temp}}).encode()
+    req = urllib.request.Request(f'https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent', data=body,
+                                 headers={'x-goog-api-key': key(), 'content-type': 'application/json'})
+    with urllib.request.urlopen(req, timeout=90) as r:
+        return parse_json(json.load(r)['candidates'][0]['content']['parts'][0]['text'])
+
+
+def _openai(url, k, m, prompt, temp):
+    body = json.dumps({'model': m, 'temperature': temp, 'messages': [
+        {'role': 'system', 'content': 'Reply with valid JSON only, no explanations, no markdown.'},
+        {'role': 'user', 'content': prompt}]}).encode()
+    req = urllib.request.Request(url, data=body, headers={'authorization': 'Bearer ' + k, 'content-type': 'application/json',
+                                                          'user-agent': 'showband-bot', 'http-referer': 'https://showbandgroup.az'})
+    with urllib.request.urlopen(req, timeout=120) as r:
+        return parse_json(json.load(r)['choices'][0]['message']['content'])
+
+
+def gemini(prompt, temp=0.4):
+    """Mətn modeli: əvvəl Gemini, sonra Groq, sonra OpenRouter. Hamısı cavab verməsə — gözləyib yenidən."""
+    chain = [('Gemini ' + m, lambda m=m: _gemini(m, prompt, temp)) for m in MODELS]
+    if secret('GROQ_API_KEY'):
+        chain += [('Groq ' + m, lambda m=m: _openai('https://api.groq.com/openai/v1/chat/completions', secret('GROQ_API_KEY'), m, prompt, temp)) for m in GROQ]
+    if secret('OPENROUTER_API_KEY'):
+        chain += [('OpenRouter ' + m, lambda m=m: _openai('https://openrouter.ai/api/v1/chat/completions', secret('OPENROUTER_API_KEY'), m, prompt, temp)) for m in OPENROUTER]
     last = ''
-    for attempt in range(6):  # Google pulsuz planda tez-tez 503 (yüklənmə) verir — gözləyib yenidən
-        for m in MODELS:
-            req = urllib.request.Request(f'https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent', data=body,
-                                         headers={'x-goog-api-key': key(), 'content-type': 'application/json'})
+    for attempt in range(4):
+        for name, call in chain:
             try:
-                with urllib.request.urlopen(req, timeout=90) as r:
-                    j = json.load(r)
-                return json.loads(j['candidates'][0]['content']['parts'][0]['text'])
+                res = call(); print('  ✓', name); return res
             except Exception as e:
-                last = f'{m}: {e}'; print('  ! Gemini', last)
-        time.sleep([20, 40, 60, 90, 120, 0][attempt])
-    raise RuntimeError('Gemini cavab vermədi: ' + last)
+                last = f'{name}: {e}'; print('  !', last)
+        time.sleep([20, 45, 90, 0][attempt])
+    raise RuntimeError('Heç bir model cavab vermədi: ' + last)
 
 
 RULES = """Uyğun: MÜĞƏNNİLƏR, MUSİQİÇİLƏR, REPERLƏR, DJ-lər, musiqi qrupları, bəstəkarlar və musiqi hadisələri
