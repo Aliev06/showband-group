@@ -206,6 +206,17 @@ def main(n=None, mode=None):
     pool_p = os.path.join(HERE, 'pool.json')
     pool = json.load(open(pool_p, encoding='utf-8')) if os.path.exists(pool_p) else []
     pool = [x for x in pool if not x.get('used')]
+    # artıq qaralaması olan (göndərilmiş, ləğv edilmiş, gözləyən) xəbərləri təkrar götürmə
+    dd = os.path.join(HERE, 'drafts'); urls, sigs = set(), []
+    for f in os.listdir(dd) if os.path.isdir(dd) else []:
+        try: d = json.load(open(os.path.join(dd, f), encoding='utf-8'))
+        except Exception: continue
+        urls.add((d.get('source') or {}).get('url', ''))
+        sigs.append(set(collect.norm(d.get('source_title') or d.get('title', ''))))
+    def dup(x):
+        w = set(collect.norm(x['title']))
+        return x['url'] in urls or any(w and len(w & s) / max(1, len(w | s)) > .45 for s in sigs)
+    pool = [x for x in pool if not dup(x)]
     chosen = pick(pool, n, mode) if pool else []
     if not chosen and mode == 'event':
         it, j = write_article(); save_draft(it, j, '', 'article'); return
