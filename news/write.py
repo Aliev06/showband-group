@@ -275,5 +275,18 @@ def main(n=None, mode=None):
 
 
 
+def llm_test():
+    """Hər provayderi ayrıca yoxlayır (açarları çap etmir)."""
+    q = 'Return JSON: {"ok": true, "dil": "az"}'
+    for name, f, ms in (('Gemini', lambda m: _gemini(m, q, 0), MODELS),
+                        ('Groq', lambda m: _openai('https://api.groq.com/openai/v1/chat/completions', secret('GROQ_API_KEY'), m, q, 0), GROQ),
+                        ('OpenRouter', lambda m: _openai('https://openrouter.ai/api/v1/chat/completions', secret('OPENROUTER_API_KEY'), m, q, 0), OPENROUTER)):
+        for m in ms:
+            try: print('AI-TEST ✓', name, m, f(m))
+            except Exception as e: print('AI-TEST !', name, m, str(e)[:150])
+
+
+if __name__ == '__main__' and '--llm-test' in sys.argv:
+    llm_test(); sys.exit()
 if __name__ == '__main__':
     main()
