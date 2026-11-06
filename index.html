@@ -320,7 +320,7 @@ input[type=date]::-webkit-date-and-time-value{text-align:left}
   <div class="k" data-i="v_k">Kliplər</div><h2 data-i="v_h">Səhnədən <em>canlı</em></h2>
   <div class="vtabs" id="vtabs"><button class="on" data-v="all" data-i="v_all">Hamısı</button><button data-v="toy" data-i="ev_toy">Toy</button><button data-v="korp" data-i="ev_korp">Korporativ</button><button data-v="adgunu" data-i="ev_adgunu">Ad günü</button><button data-v="party" data-i="ev_party">Party</button><button data-v="acilis" data-i="ev_acilis">Açılış</button><button data-v="diger" data-i="ev_diger">Digər</button></div>
   <div class="clips" id="clips"></div>
-  <div class="rg"><button class="btn o" id="vmore" type="button" data-i="v_more">Daha çox</button></div>
+  <div class="rg" style="gap:12px;flex-wrap:wrap"><button class="btn o" id="vmore" type="button" data-i="v_more">Daha çox</button><a class="btn o" id="vall" href="videolar/" data-i="v_all2">Bütün videolar →</a></div>
   <p class="note" data-i="v_note">Bütün videolar — YouTube @ShowbandTour və Instagram-da.</p>
  </section>
 
@@ -388,7 +388,7 @@ var T={
  pk_s:['Showband · paket','Showband · пакет','Showband · package'],pk_d:['Müddət','Длительность','Duration'],pk_h2:['… saat','… ч','… h'],pk_hr:['saatlıq','почасово','hourly'],pk_full:['tam tədbir','всё мероприятие','full event'],pk_hu:['saat','час','hour'],pk_inc:['Toy paketindəki hər şey','Всё из свадебного пакета','Everything in the wedding package'],pk_note:['* Qiymətlər Bakı daxilində keçirilən tədbirlər üçündür. Rayon və regionlarda, eləcə də bayram və xüsusi tarixlərdə qiymət dəyişə bilər.','* Цены указаны для мероприятий в пределах Баку. В районах и регионах, а также в праздничные и особые даты стоимость может меняться.','* Prices are for events within Baku. In districts and regions, and on holidays and special dates, prices may vary.'],pk_btn:['Bu paketi seç','Выбрать пакет','Choose package'],
  v_k:['Kliplər','Клипы','Clips'],v_h:['Səhnədən <em>canlı</em>','<em>Вживую</em> со сцены','<em>Live</em> from the stage'],v_all:['Hamısı','Все','All'],ev_toy:['Toy','Свадьба','Wedding'],ev_korp:['Korporativ','Корпоратив','Corporate'],ev_adgunu:['Ad günü','День рождения','Birthday'],ev_mezun:['Son zəng','Выпускной','Graduation'],ev_party:['Party','Вечеринки','Parties'],ev_acilis:['Açılış','Открытия','Openings'],ev_diger:['Digər','Другое','Other'],
  v_note:['Bütün videolar — YouTube @ShowbandTour və Instagram-da.','Все видео — на YouTube @ShowbandTour и в Instagram.','More videos on YouTube @ShowbandTour and Instagram.'],
- v_soon:['Video tezliklə əlavə olunacaq','Видео скоро появится','Video coming soon'],v_more:['Daha çox','Ещё','Show more'],
+ v_soon:['Video tezliklə əlavə olunacaq','Видео скоро появится','Video coming soon'],v_more:['Daha çox','Ещё','Show more'],v_all2:['Bütün videolar →','Все видео →','All videos →'],
  t_k:['Komanda','Команда','Team'],t_h:['Səhnə<em>dəkilər</em>','На <em>сцене</em>','On <em>stage</em>'],t_ph:['Foto','Фото','Photo'],t_n:['Ad','Имя','Name'],
  r_k:['Rəylər','Отзывы','Reviews'],r_g:['★ Google-da rəy yazın','★ Оставить отзыв в Google','★ Leave a Google review'],r_h:['Qonaqlar <em>deyir</em>','Говорят <em>гости</em>','What <em>guests</em> say'],r_t:['“Reviews” highlight-ından real rəy.','Реальный отзыв из highlights «Reviews».','A real review from the “Reviews” highlights.'],
  b_k:['Onlayn bron','Онлайн-бронь','Online booking'],b_h:['Tarixinizi <em>bron</em> edin','<em>Забронируйте</em> дату','<em>Book</em> your date'],
@@ -517,7 +517,7 @@ HV.onclick=function(){HV.pause()};
 function heroPlay(){if(!HV.src){HV.src=FULL.src}
  if(HV.paused){HV.play();if(innerWidth<=1000)PL.scrollIntoView({behavior:'smooth',block:'center'})}else HV.pause()}
 document.querySelectorAll('[data-play]').forEach(function(b){b.onclick=function(e){e.preventDefault();heroPlay()}});
-document.querySelectorAll('#vtabs button').forEach(function(b){if(b.dataset.v!=='all'&&!CL.some(function(c){return c.e===b.dataset.v}))b.hidden=true;b.onclick=function(){document.querySelectorAll('#vtabs button').forEach(function(x){x.classList.toggle('on',x===b)});CLF=b.dataset.v;CLN=6;renderCl()}});
+document.querySelectorAll('#vtabs button').forEach(function(b){if(b.dataset.v!=='all'&&!CL.some(function(c){return c.e===b.dataset.v}))b.hidden=true;b.onclick=function(){document.querySelectorAll('#vtabs button').forEach(function(x){x.classList.toggle('on',x===b)});CLF=b.dataset.v;CLN=6;$('vall').href='videolar/'+(CLF==='all'?'':({korp:'korporativ',adgunu:'ad-gunu'}[CLF]||CLF)+'/');renderCl()}});
 $('vmore').onclick=function(){CLN+=6;renderCl()};
 // form → WhatsApp
 $('frm').addEventListener('submit',function(e){e.preventDefault();var f=$('frm'),g=function(n){var el=f.querySelector('[name='+n+']');return el?el.value.trim():''};
