@@ -39,18 +39,7 @@ PAGES = [
             ('Lazer və işıq şousu', 'Adi zalı bir neçə dəqiqəyə klub atmosferinə çeviririk.'),
             ('Tematik dekor', 'Mövzu, rənglər və detallar ad günü sahibinin zövqünə uyğun hazırlanır.')],
   'venues': 'Neolit və Bakının digər məkanlarında ad günləri keçirmişik.',
-  'wa': 'Salam! Ad günü üçün məlumat almaq istəyirəm.'},
- {'slug': 'son-zeng', 'video': 'mezun', 'img': 'img/pk_mezun.webp',
-  'title': 'Son zəng və məzun gecəsi üçün DJ, showman və lazer şou Bakıda',
-  'desc': 'Son zəng və məzun gecələri üçün DJ, showman, işıq-lazer şou və foto-video. Məktəb və universitet məzunları üçün. Bakı.',
-  'h1': 'Son zəng və <em>məzun gecəsi</em>',
-  'lead': 'Məzunların ən vacib gecəsi üçün DJ, showman, işıq-lazer şou və foto-video — hər şey bir komandadan.',
-  'inc': ['DJ və Showman', 'İşıq və lazer şousu', 'Tematik dekor', 'Foto və video'],
-  'about': [('DJ və showman', 'Gənclərin sevdiyi musiqi, oyunlar və enerji — gecə boyu rəqs meydançası boş qalmır.'),
-            ('İşıq və lazer şousu', 'Lazer, işıq effektləri və dramatik giriş anları məzun gecəsini xüsusi edir.'),
-            ('Foto və video', 'Ən gözəl anlar peşəkar şəkildə çəkilir — xatirə həmişə qalır.')],
-  'venues': 'Bağçalı Saray və digər məkanlarda məzun gecələri keçirmişik.',
-  'wa': 'Salam! Son zəng / məzun gecəsi üçün məlumat almaq istəyirəm.'},
+  'wa': 'Salam! Ad günü üçün məlumat almaq istəyirəm.'}
 ]
 
 FAQ = [
@@ -83,7 +72,7 @@ CSS = '''<style>
 
 
 def links(rel, cur=''):
-    names = {'toy': 'Toy və nişan', 'korporativ': 'Korporativ', 'ad-gunu': 'Ad günü və party', 'son-zeng': 'Party'}
+    names = {'toy': 'Toy və nişan', 'korporativ': 'Korporativ', 'ad-gunu': 'Ad günü və party'}
     return '<div class="svl">' + ''.join(f'<a class="btn o sm" href="{rel}{s}/">{n}</a>' for s, n in names.items() if s != cur) + '</div>'
 
 

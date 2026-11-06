@@ -12,7 +12,7 @@ CATS = [
     ('toy', 'toy', 'Toy və nişan', 'Toy', 'Salam! Toy üçün məlumat almaq istəyirəm.'),
     ('korporativ', 'korp', 'Korporativ', 'Korporativ', 'Salam! Korporativ tədbir üçün məlumat almaq istəyirəm.'),
     ('ad-gunu', 'adgunu', 'Ad günü', 'Ad günü', 'Salam! Ad günü üçün məlumat almaq istəyirəm.'),
-    ('party', 'party', 'Party və son zəng', 'Party', 'Salam! Party üçün məlumat almaq istəyirəm.'),
+    ('party', 'party', 'Party', 'Party', 'Salam! Party üçün məlumat almaq istəyirəm.'),
     ('acilis', 'acilis', 'Toy açılışı', 'Açılış', 'Salam! Toy açılışı üçün məlumat almaq istəyirəm.'),
     ('diger', 'diger', 'Digər çıxışlar', 'Digər', 'Salam! Tədbir üçün məlumat almaq istəyirəm.'),
 ]
