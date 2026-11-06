@@ -87,7 +87,7 @@ def foot(rel):
 def cover(p, big=False, rel=''):
     if p.get('image'):
         return (f'<div class="cv ph{" big" if big else ""}"><img src="{rel}{E(p["image"])}" alt="{E(p["title"])}" loading="lazy">'
-                f'<span>{E(p["category"])}</span>' + (f'<i>Foto: {E(p["source"]["name"])}</i>' if p.get('source') else '') + '</div>')
+                f'<span>{E(p["category"])}</span>' + f'<img class="wm" src="{rel}img/logo.png" alt="Showband Group">' + '</div>')
     return f'<div class="cv{" big" if big else ""}" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>SHOWBAND GROUP · XƏBƏR</i></div>'
 
 def card(p, rel, big=False):
