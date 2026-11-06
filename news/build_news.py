@@ -75,7 +75,7 @@ def foot(rel):
   <a class="logo" href="{rel}"><img src="{rel}img/logo.png" alt="Showband Group" width="900" height="258"></a>
   <p>Toy, nişan, ad günü və korporativ tədbirlər üçün canlı musiqi və şou. Bakı.</p>
   <p class="pt"><a href="{rel}toy/">Toy və nişan</a> · <a href="{rel}korporativ/">Korporativ</a> · <a href="{rel}ad-gunu/">Ad günü</a></p>
-  <p class="pt">© {y} Showband Group · <a href="{rel}">Ana səhifə</a> · <a href="{rel}xeberler/">Xəbərlər</a> · <a href="{rel}#bron">Bron</a> · <a href="{rel}privacy/">Məxfilik</a> · <a href="{rel}terms/">Şərtlər</a></p>
+  <p class="pt">© {y} Showband Group · <a href="{rel}">Ana səhifə</a> · <a href="{rel}xeberler/">Xəbərlər</a> · <a href="{rel}#bron">Bron</a></p>
  </footer>
 </div>
 <a class="fab" href="{rel}#bron">Tarix seç</a>
@@ -212,7 +212,6 @@ if __name__ == '__main__':
     w('xeberler/rss.xml', rss()); w('sitemap.xml', sitemap())
     home_block()
     import pages; pages.build()
-    import legal; legal.build()
     import videos; videos.build()
     w('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n')
     print('ok:', len(POSTS), 'xəbər')

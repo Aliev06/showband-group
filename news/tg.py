@@ -88,6 +88,38 @@ def send(path):
 def save(path, d): json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
 
 
+TT_CTA = {'hype': '📲 Ətraflı — showbandgroup.az',
+          'event': '🎉 Tədbirinizi biz təşkil edək — showbandgroup.az'}
+
+
+def tiktok_caption(d):
+    """Instagram mətnindən TikTok üçün qısa mətn: mətn + çağırış + heşteqlər."""
+    import re, write
+    cap = d.get('ig_caption', '').split('\n\n🎵')[0]
+    for c in write.CTA.values(): cap = cap.replace('\n\n' + c, '').replace(c, '')
+    m = re.search(r'(\s*#\S+)+\s*$', cap)
+    txt, tags = (cap[:m.start()], cap[m.start():].split()) if m else (cap, [])
+    for t in ('#baku', '#azerbaijan', '#fyp'):
+        if t.lower() not in [x.lower() for x in tags]: tags.append(t)
+    cta = TT_CTA['hype' if d.get('mode', 'hype') == 'hype' else 'event']
+    return (txt.strip() + '\n\n' + cta + '\n\n' + ' '.join(tags[:8])).strip()
+
+
+def send_tiktok(d):
+    """Paylaşdıqdan sonra TikTok üçün video + hazır mətn göndərir (əl ilə paylaşmaq üçün)."""
+    video = os.path.join(HERE, 'out', d['slug'] + '.mp4')
+    if not os.path.exists(video): return
+    txt = tiktok_caption(d)
+    cap = '📱 <b>TikTok üçün</b> — videonu yadda saxlayın, mətnə toxunub kopyalayın:\n\n<code>' + html.escape(txt) + '</code>'
+    if len(cap) > 1000: cap = '📱 <b>TikTok üçün</b> — videonu yadda saxlayın, mətn aşağıda 👇'
+    try:
+        api('sendVideo', {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': cap, 'parse_mode': 'HTML', 'supports_streaming': 'true'},
+            {'video': video})
+        if not cap.endswith('</code>'):
+            api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'text': '<code>' + html.escape(txt) + '</code>', 'parse_mode': 'HTML'})
+    except Exception as e: print('  ! tiktok:', e)
+
+
 def say(text):
     try: return api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'text': text, 'parse_mode': 'HTML'})
     except Exception as e: print('  ! say:', e)
@@ -213,6 +245,7 @@ def poll():
         import publish
         res = publish.publish(path); d = json.load(open(path, encoding='utf-8'))
         mark('✅ <b>Saytda paylaşıldı</b>' + (' · Instagram: ' + res['ig'] if res.get('ig') else ''), del_kb(d['slug']))
+        send_tiktok(d)
     elif act == 'no':
         d['status'] = 'rejected'; save(path, d); mark('❌ <b>Ləğv edildi</b>')
     elif act == 'ph':  # şəkilsiz
