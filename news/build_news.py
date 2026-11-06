@@ -190,7 +190,7 @@ def home_block():
     a, b = '<!--NEWS-->', '<!--/NEWS-->'
     if a not in s or b not in s: print('index.html: NEWS marker tapılmadı'); return
     cards = ''.join(
-        f'<a class="nwc" href="xeberler/{p["slug"]}/">' + (f'<div class="cv ph"><img src="{E(p["image"])}" alt="" loading="lazy"><span>{E(p["category"])}</span></div>' if p.get('image') else f'<div class="cv" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>SHOWBAND GROUP · XƏBƏR</i></div>') +
+        f'<a class="nwc" href="xeberler/{p["slug"]}/">' + (f'<div class="cv ph"><img src="{E(p["image"])}" alt="{E(p["title"])}" loading="lazy"><span>{E(p["category"])}</span></div>' if p.get('image') else f'<div class="cv" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>SHOWBAND GROUP · XƏBƏR</i></div>') +
         f'<div class="nb"><small>{fdate(p["date"])}</small><h3>{E(p["title"])}</h3></div></a>' for p in POSTS[:3])
     s = s[:s.index(a) + len(a)] + cards + s[s.index(b):]
     open(path, 'w', encoding='utf-8').write(s)
