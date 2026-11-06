@@ -31,7 +31,7 @@ def cidx(cat): return sum(map(ord, cat)) % len(GR)  # sabit rəng: kateqoriya ad
 def grad(cat): return GR[cidx(cat)]
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Montserrat:wght@400;500;600;700&display=swap">'
-ICON = '<link rel="icon" type="image/png" sizes="48x48" href="/img/favicon-48.png"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">'
+ICON = '<link rel="icon" type="image/png" sizes="48x48" href="/img/favicon-48.png?v=2"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png?v=2"><link rel="apple-touch-icon" href="/img/apple-touch-icon.png">'
 
 def head(title, desc, url, rel, og_type='website', extra='', og_img='img/og.jpg'):
     return f'''<!doctype html>
