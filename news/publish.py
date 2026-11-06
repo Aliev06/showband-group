@@ -26,7 +26,15 @@ def publish(path):
     img = os.path.join(HERE, 'out', 'img', d['slug'] + '.jpg')
     if os.path.exists(img):  # saytda da şəkil (og:image üçün)
         os.makedirs(os.path.join(ROOT, 'img', 'news'), exist_ok=True)
-        shutil.copy(img, os.path.join(ROOT, 'img', 'news', d['slug'] + '.jpg')); post['image'] = f'img/news/{d["slug"]}.jpg'
+        dst = os.path.join(ROOT, 'img', 'news', d['slug'] + '.jpg')
+        try:  # saytda yüngül şəkil: max 1200px, JPEG q80
+            from PIL import Image
+            im = Image.open(img).convert('RGB')
+            if im.width > 1200: im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+            im.save(dst, quality=80, optimize=True, progressive=True)
+        except Exception:
+            shutil.copy(img, dst)
+        post['image'] = f'img/news/{d["slug"]}.jpg'
     posts.insert(0, post)
     json.dump(posts, open(os.path.join(HERE, 'posts.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     subprocess.run([sys.executable, os.path.join(HERE, 'build_news.py')], check=True)
