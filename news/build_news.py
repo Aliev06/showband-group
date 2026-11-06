@@ -74,6 +74,7 @@ def foot(rel):
  <footer>
   <a class="logo" href="{rel}"><img src="{rel}img/logo.png" alt="Showband Group" width="900" height="258"></a>
   <p>Toy, nişan, ad günü və korporativ tədbirlər üçün canlı musiqi və şou. Bakı.</p>
+  <p class="pt"><a href="{rel}toy/">Toy və nişan</a> · <a href="{rel}korporativ/">Korporativ</a> · <a href="{rel}ad-gunu/">Ad günü</a> · <a href="{rel}son-zeng/">Son zəng</a></p>
   <p class="pt">© {y} Showband Group · <a href="{rel}">Ana səhifə</a> · <a href="{rel}xeberler/">Xəbərlər</a> · <a href="{rel}#bron">Bron</a></p>
  </footer>
 </div>
@@ -175,6 +176,7 @@ def rss():
 def sitemap():
     today = dt.date.today().isoformat()
     urls = [(SITE + '/', today, '1.0'), (SITE + '/xeberler/', POSTS[0]['date'] if POSTS else today, '0.8')]
+    urls += [(f'{SITE}/{s}/', today, '0.9') for s in ('toy', 'korporativ', 'ad-gunu', 'son-zeng')]  # xidmət səhifələri (pages.py)
     urls += [(f'{SITE}/xeberler/{p["slug"]}/', p.get('updated', p['date']), '0.6') for p in POSTS]
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(
         f' <url><loc>{u}</loc><lastmod>{d}</lastmod><priority>{pr}</priority></url>\n' for u, d, pr in urls) + '</urlset>\n'
@@ -206,5 +208,6 @@ if __name__ == '__main__':
             except Exception as e: print('silinmədi:', dname, e)
     w('xeberler/rss.xml', rss()); w('sitemap.xml', sitemap())
     home_block()
+    import pages; pages.build()
     w('robots.txt', f'User-agent: *\nAllow: /\nSitemap: {SITE}/sitemap.xml\n')
     print('ok:', len(POSTS), 'xəbər')
