@@ -42,7 +42,7 @@ PLAY1 = '<script>document.addEventListener("play",function(e){document.querySele
 def clips():
     s = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     m = re.search(r"var CL=\[\n(.*?)\n\];", s, re.S)
-    return [{'e': e, 'k': k, 'n': n} for e, k, n in re.findall(r"\{e:'(\w+)',k:'(\w+)',n:\['([^']*)'", m.group(1))]
+    return [{'e': e, 'k': k, 'w': bool(wd), 'n': n} for e, k, wd, n in re.findall(r"\{e:'(\w+)',k:'(\w+)',(w:1,)?n:\['([^']*)'", m.group(1))]
 
 
 def page(slug, items, allc, cur):
@@ -78,7 +78,7 @@ def page(slug, items, allc, cur):
         f'<a href="{rel}videolar/{s}/"{" class=on" if cur and cur[0] == s else ""}>{E(sh)} <small>{count(e)}</small></a>'
         for s, e, _, sh, _ in CATS if count(e))
     grid = ''.join(
-        f'<figure class="vc"><video controls playsinline preload="none" poster="{rel}video/ev_{c["k"]}.jpg" src="{rel}video/ev_{c["k"]}.mp4" aria-label="{E(c["n"])}"></video>'
+        f'<figure class="vc"><video{" style=\"object-fit:contain\"" if c["w"] else ""} controls playsinline preload="none" poster="{rel}video/ev_{c["k"]}.jpg" src="{rel}video/ev_{c["k"]}.mp4" aria-label="{E(c["n"])}"></video>'
         f'<figcaption><span>{E(lab.get(c["e"], ""))}</span>{E(c["n"])}</figcaption></figure>' for c in items)
     bc = (f'<a href="{rel}">Ana səhifə</a><span>›</span>' + (f'<a href="{rel}videolar/">Videolar</a><span>›</span><em>{E(cur[2])}</em>' if cur else '<em>Videolar</em>'))
     return head(title, desc, url, rel, 'website', extra, og).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">') + f'''
