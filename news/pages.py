@@ -60,9 +60,16 @@ FAQ = [
 ]
 
 CSS = '''<style>
-.svh{max-width:860px;margin:0 auto;padding-top:20px}
-.svh h1 em,.svh h2 em{font-style:normal;color:var(--red2)}
-.svv{margin:28px auto 0;width:min(420px,100%);border-radius:24px;overflow:hidden;background:#000;aspect-ratio:9/16}
+.svx{max-width:1180px;margin:0;padding-top:24px;display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:auto 1fr;grid-template-areas:"a v" "b v";column-gap:64px;align-items:start}
+.sva{grid-area:a}.svb{grid-area:b}.svv{grid-area:v}
+.svx h1{font:900 clamp(34px,4.4vw,58px)/1.04 var(--d);letter-spacing:-.035em;margin:18px 0 18px;text-wrap:balance}
+.svx h1 em,.svx h2 em{font-style:normal;color:var(--red2)}
+.svx .lead{font-size:20px;line-height:1.6;color:#e2e2e8;margin:0 0 30px;max-width:560px}
+.svx h2{font:700 22px/1.3 var(--d);margin:0 0 14px}
+.svp .tx{max-width:760px;margin:0}
+.svbt{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.svv{position:sticky;top:96px;width:100%;border-radius:24px;overflow:hidden;background:#000;aspect-ratio:9/16;box-shadow:0 30px 80px rgba(227,18,43,.18)}
+@media(max-width:900px){.svx{grid-template-columns:1fr;grid-template-areas:"a" "v" "b"}.svv{position:static;width:min(420px,100%);margin:0 auto 30px}.svx .lead{margin-bottom:24px}}
 .svv video{width:100%;height:100%;object-fit:cover;display:block}
 .inc{list-style:none;padding:0;margin:0 0 10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .inc li{background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px;font-weight:600}
@@ -96,18 +103,23 @@ def page(p):
     plain = re.sub('<[^>]+>', '', p['h1'])
     body = ''.join(f'<h2>{E(h)}</h2><p>{E(t)}</p>' for h, t in p['about'])
     return head(f'{p["title"]} | Showband Group', p['desc'], url, rel, 'website', extra,
-                p['img'].replace('.webp', '.jpg')) + f'''
+                p['img'].replace('.webp', '.jpg')).replace('<a class="on" href="../xeberler/">', '<a href="../xeberler/">') + f'''
  <nav class="bc" aria-label="breadcrumb"><a href="{rel}">Ana səhifə</a><span>›</span><em>{E(plain)}</em></nav>
- <article class="art">
-  <header class="ah svh">
-   <span class="chip">Showband Group · Bakı</span>
-   <h1>{p["h1"]}</h1>
-  </header>
-  <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
+ <article class="svp">
+  <div class="svx">
+   <div class="sva">
+    <span class="chip">Showband Group · Bakı</span>
+    <h1>{p["h1"]}</h1>
+    <p class="lead">{E(p["lead"])}</p>
+   </div>
+   <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
+   <div class="svb">
+    <h2>Paketə nə daxildir</h2>
+    <ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in p["inc"])}</ul>
+    <div class="svbt"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
+   </div>
+  </div>
   <div class="tx">
-   <p class="lead">{E(p["lead"])}</p>
-   <h2>Paketə nə daxildir</h2>
-   <ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in p["inc"])}</ul>
    {body}
    <p>{E(p["venues"])}</p>
    <h2>Tez-tez verilən suallar</h2>
