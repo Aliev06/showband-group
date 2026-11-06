@@ -74,7 +74,7 @@ def foot(rel):
  <footer>
   <a class="logo" href="{rel}"><img src="{rel}img/logo.png" alt="Showband Group" width="900" height="258"></a>
   <p>Toy, nişan, ad günü və korporativ tədbirlər üçün canlı musiqi və şou. Bakı.</p>
-  <p class="pt"><a href="{rel}toy/">Toy və nişan</a> · <a href="{rel}korporativ/">Korporativ</a> · <a href="{rel}ad-gunu/">Ad günü</a> · <a href="{rel}son-zeng/">Son zəng</a></p>
+  <p class="pt"><a href="{rel}toy/">Toy və nişan</a> · <a href="{rel}korporativ/">Korporativ</a> · <a href="{rel}ad-gunu/">Ad günü</a> · <a href="{rel}son-zeng/">Party</a></p>
   <p class="pt">© {y} Showband Group · <a href="{rel}">Ana səhifə</a> · <a href="{rel}xeberler/">Xəbərlər</a> · <a href="{rel}#bron">Bron</a></p>
  </footer>
 </div>

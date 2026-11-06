@@ -83,7 +83,7 @@ CSS = '''<style>
 
 
 def links(rel, cur=''):
-    names = {'toy': 'Toy və nişan', 'korporativ': 'Korporativ', 'ad-gunu': 'Ad günü və party', 'son-zeng': 'Son zəng'}
+    names = {'toy': 'Toy və nişan', 'korporativ': 'Korporativ', 'ad-gunu': 'Ad günü və party', 'son-zeng': 'Party'}
     return '<div class="svl">' + ''.join(f'<a class="btn o sm" href="{rel}{s}/">{n}</a>' for s, n in names.items() if s != cur) + '</div>'
 
 
