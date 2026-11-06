@@ -62,7 +62,7 @@ FAQ = [
 CSS = '''<style>
 .svh{max-width:860px;margin:0 auto;padding-top:20px}
 .svh h1 em,.svh h2 em{font-style:normal;color:var(--red2)}
-.svv{margin:28px auto 0;max-width:860px;border-radius:24px;overflow:hidden;background:#000;aspect-ratio:16/9}
+.svv{margin:28px auto 0;width:min(420px,100%);border-radius:24px;overflow:hidden;background:#000;aspect-ratio:9/16}
 .svv video{width:100%;height:100%;object-fit:cover;display:block}
 .inc{list-style:none;padding:0;margin:0 0 10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .inc li{background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px;font-weight:600}
@@ -103,7 +103,7 @@ def page(p):
    <span class="chip">Showband Group · Bakı</span>
    <h1>{p["h1"]}</h1>
   </header>
-  <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
+  <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
   <div class="tx">
    <p class="lead">{E(p["lead"])}</p>
    <h2>Paketə nə daxildir</h2>
