@@ -37,7 +37,11 @@ def publish(path):
         try:  # saytda yüngül şəkil: max 1200px, JPEG q80
             from PIL import Image
             im = Image.open(img).convert('RGB')
-            if im.width > 1200: im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+            if im.width != 1200:  # Google Discover böyük şəkil üçün ≥1200px istəyir
+                from PIL import ImageFilter
+                small = im.width < 1200
+                im = im.resize((1200, round(im.height * 1200 / im.width)), Image.LANCZOS)
+                if small: im = im.filter(ImageFilter.UnsharpMask(radius=1.2, percent=60, threshold=2))
             im.save(dst, quality=80, optimize=True, progressive=True)
         except Exception:
             shutil.copy(img, dst)

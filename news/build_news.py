@@ -132,7 +132,8 @@ def article(p):
     rel_posts = [x for x in POSTS if x['slug'] != p['slug']]
     rel_posts = sorted(rel_posts, key=lambda x: (x['category'] != p['category'], x['date']), reverse=False)[:3]
     wa = f'https://wa.me/{CFG["whatsapp"]}?text=' + re.sub(' ', '%20', 'Salam! Tədbir üçün məlumat almaq istəyirəm.')
-    return head(f'{p["title"]} | Showband Group', p['description'], url, rel, 'article', extra, p.get('image', 'img/og.jpg')) + f'''
+    t = p['title'] if len(p['title']) > 44 else f'{p["title"]} | Showband Group'  # uzun başlıqda Google quyruğu kəsir
+    return head(t, p['description'], url, rel, 'article', extra, p.get('image', 'img/og.jpg')) + f'''
  <nav class="bc" aria-label="breadcrumb"><a href="{rel}">Ana səhifə</a><span>›</span><a href="{rel}xeberler/">Xəbərlər</a><span>›</span><em>{E(p["category"])}</em></nav>
  <article class="art">
   <header class="ah">
