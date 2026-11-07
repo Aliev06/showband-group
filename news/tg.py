@@ -45,7 +45,7 @@ def ans(data):
 
 def caption(d, status=''):
     E = html.escape
-    lab = {'hype': '🔥 Hype xəbər', 'event': '🎉 Tədbir xəbəri', 'article': '📝 Faydalı məqalə'}.get(d.get('mode'), '🆕 Yeni xəbər')
+    lab = {'hype': '🔥 Hype xəbər', 'event': '🎉 Tədbir xəbəri', 'article': '📝 Faydalı məqalə', 'promo': '⭐ Showband promo (yalnız Reels)'}.get(d.get('mode'), '🆕 Yeni xəbər')
     s = (f'<b>{lab}</b> — təsdiq gözləyir\n\n<b>{E(d["title"])}</b>\n{E(d["lead"])}\n\n'
          f'🔥 Viral: {d.get("viral", "?")}/10 · 🏷 {E(d["category"])}\n'
          f'📰 Mənbə: <a href="{E(d["source"]["url"])}">{E(d["source"]["name"])}</a>\n\n'
@@ -76,7 +76,10 @@ def find_draft(key):
 def send(path):
     d = json.load(open(path, encoding='utf-8'))
     video = os.path.join(HERE, 'out', d['slug'] + '.mp4')
-    data = {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': caption(d), 'parse_mode': 'HTML', 'reply_markup': kb(d['slug']),
+    mk = kb(d['slug']) if not d.get('reels_only') else json.dumps({'inline_keyboard': [
+        [{'text': '✅ Paylaş', 'callback_data': f'ok:{sid(d["slug"])}'}, {'text': '❌ Ləğv et', 'callback_data': f'no:{sid(d["slug"])}'}],
+        [{'text': '🔄 Başqa variant', 'callback_data': f'nx:{sid(d["slug"])}'}]]})
+    data = {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': caption(d), 'parse_mode': 'HTML', 'reply_markup': mk,
             'supports_streaming': 'true'}
     m = api('sendVideo', data, {'video': video}) if os.path.exists(video) else api('sendMessage', {
         'chat_id': data['chat_id'], 'text': data['caption'], 'parse_mode': 'HTML', 'reply_markup': json.loads(data['reply_markup'])})
@@ -190,6 +193,14 @@ def get_news(mode='hype'):
     send_new()
 
 
+def get_promo():
+    """⭐ Showband promo Reels hazırlayır və təsdiqə göndərir."""
+    import promo
+    try: promo.make_draft()
+    except Exception as x: say(f'⚠️ Promo Reels hazırlanmadı: {x}'); print(x); return
+    send_new()
+
+
 def list_news():
     posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))[:10]
     if not posts: say('Saytda hələ xəbər yoxdur.'); return
@@ -220,6 +231,11 @@ def poll():
     if e.get('kind') == 'reply': on_reply(e); return
     if str(e['chat_id']) != str(env('TELEGRAM_CHAT_ID')): return
     if e.get('kind') == 'cmd' and e.get('cmd') in ('yeni', 'tedbir'):
+        import datetime as _dt
+        now = _dt.datetime.now(_dt.timezone.utc)
+        if e['cmd'] == 'yeni' and now.hour == 6 and now.minute < 30: get_promo(); return   # 10:00 Bakı — hər gün Showband promo
+        if e['cmd'] == 'tedbir' and now.hour == 13 and now.minute < 30:                       # 17:00 Bakı — növbə ilə hype / tədbir
+            get_news('hype' if now.timetuple().tm_yday % 2 else 'event'); return
         get_news('event' if e['cmd'] == 'tedbir' else 'hype'); return
     if (e.get('data') or '').startswith('gt:'):
         get_news('event' if e['data'] == 'gt:e' else 'hype'); return
@@ -241,6 +257,9 @@ def poll():
         try: api(method, body)
         except Exception as x: print('  ! edit:', x)
 
+    if d.get('reels_only') and act in ('rw', 'nx', 'ph'):  # promo: başqa variant
+        d['status'] = 'rejected'; save(path, d); mark('🔄 <b>Başqa promo hazırlanır…</b>'); get_promo()
+        json.dump(st, open(STATE, 'w')); return
     if act == 'ok':
         import publish
         res = publish.publish(path); d = json.load(open(path, encoding='utf-8'))
@@ -291,8 +310,11 @@ def send_new():
     dd = os.path.join(HERE, 'drafts')
     for f in sorted(os.listdir(dd)) if os.path.isdir(dd) else []:
         p = os.path.join(dd, f)
-        if not f.endswith('.json') or json.load(open(p, encoding='utf-8')).get('status'): continue
-        prepare(p); send(p)
+        if not f.endswith('.json'): continue
+        d = json.load(open(p, encoding='utf-8'))
+        if d.get('status'): continue
+        if not d.get('reels_only'): prepare(p)  # promo videosu artıq hazırdır
+        send(p)
 
 
 if __name__ == '__main__':

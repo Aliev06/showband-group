@@ -166,7 +166,38 @@ def render(kind, k=None, out_dir=None, seed=None):
     print('ok:', mp4); return {'slug': slug, 'mp4': mp4, 'caption': cap}
 
 
+KINDS = ['event', 'news', 'review', 'season']  # promo növləri növbə ilə
+
+
+def make_draft():
+    """Növbəti promo Reels-i hazırlayır və drafts/ qovluğuna qaralama yazır (yalnız Instagram Reels)."""
+    import datetime
+    sp = os.path.join(HERE, 'promo_state.json')
+    st = json.load(open(sp)) if os.path.exists(sp) else {'i': -1, 'used': []}
+    st['i'] = (st['i'] + 1) % len(KINDS); kind = KINDS[st['i']]
+    cl = [c['k'] for c in V.clips() if not c['w']]
+    fresh = [k for k in cl if k not in st['used'][-(len(cl) - 2):]] or cl
+    k = random.choice(fresh); st['used'] = (st['used'] + [k])[-50:]
+    out = os.path.join(HERE, 'out')
+    r = render(kind, k, out)
+    day = datetime.date.today().isoformat()
+    slug = f'{r["slug"]}-{day}'
+    for ext in ('.mp4', '.jpg'):
+        src = os.path.join(out, r['slug'] + ext)
+        if os.path.exists(src): os.replace(src, os.path.join(out, slug + ext))
+    c = next(x for x in V.clips() if x['k'] == k)
+    title = r['caption'].split('\n')[0]
+    d = {'slug': slug, 'title': title, 'lead': f'Promo Reels ({kind}) · video: {c["n"]}', 'category': 'Showband',
+         'date': day, 'source': {'name': 'Showband Group', 'url': V.SITE + '/videolar/'}, 'ig_caption': r['caption'],
+         'mode': 'promo', 'promo_kind': kind, 'clip': k, 'reels_only': True, 'viral': '—'}
+    os.makedirs(os.path.join(HERE, 'drafts'), exist_ok=True)
+    json.dump(d, open(os.path.join(HERE, 'drafts', slug + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    json.dump(st, open(sp, 'w'))
+    print('promo qaralama:', slug); return slug
+
+
 if __name__ == '__main__':
     a = sys.argv[1:]
+    if a and a[0] == 'draft': make_draft(); sys.exit()
     r = render(a[0] if a else 'event', a[1] if len(a) > 1 and a[1] != '-' else None, a[2] if len(a) > 2 else None)
     print(r['caption'])

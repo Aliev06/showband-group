@@ -20,6 +20,13 @@ def site_url(): return json.load(open(os.path.join(HERE, 'config.json'), encodin
 
 def publish(path):
     d = json.load(open(path, encoding='utf-8'))
+    if d.get('reels_only'):  # promo: saytda post yoxdur, yalnız Instagram Reels
+        vid = os.path.join(HERE, 'out', d['slug'] + '.mp4')
+        os.makedirs(os.path.join(ROOT, 'reels'), exist_ok=True)
+        if os.path.exists(vid): shutil.copy(vid, os.path.join(ROOT, 'reels', d['slug'] + '.mp4'))
+        d['status'] = 'published'; d['ig_status'] = 'queued' if env('IG_TOKEN') else 'no-token'
+        json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+        return {'site': '', 'ig': 'növbədə' if env('IG_TOKEN') else ''}
     posts = json.load(open(os.path.join(HERE, 'posts.json'), encoding='utf-8'))
     posts = [p for p in posts if not p.get('demo') and p['slug'] != d['slug']]  # demo məqalələr ilk real xəbərlə silinir
     post = {k: d[k] for k in KEEP if k in d}
