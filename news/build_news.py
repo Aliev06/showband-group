@@ -66,6 +66,20 @@ def head(title, desc, url, rel, og_type='website', extra='', og_img='img/og.jpg'
  </header>
 '''
 
+# 👁 Baxış sayğacı (Cloudflare Worker /v): saylar göstərilir; məqalədə 10 san qalan və ya aşağı sürüşdürən
+# real oxucu 1 dəfə sayılır (botlar və fon vərəqləri sayılmır, cihaz başına gündə 1).
+VIEWS = '''<script>(function(){var A="https://showband-bot.murad-f6f.workers.dev/v",E=[].slice.call(document.querySelectorAll("[data-v]"));if(!E.length||location.protocol==="file:")return;
+var S=E.map(function(e){return e.dataset.v}).filter(function(v,i,a){return a.indexOf(v)===i});
+function fmt(n){return n>=1e4?(n/1e3).toFixed(n>=1e5?0:1).replace(".0","")+"K":String(n).replace(/\\B(?=(\\d{3})+$)/g," ")}
+fetch(A+"?s="+S.join(",")).then(function(r){return r.json()}).then(function(d){E.forEach(function(e){var n=d[e.dataset.v];if(n){e.querySelector("b").textContent=fmt(n);e.hidden=false}})}).catch(function(){});
+var h=document.querySelector("[data-hit]");if(!h||navigator.webdriver)return;var k="sbv:"+h.dataset.v,t0=Date.now(),vis=0,last=document.visibilityState==="visible"?t0:0,sent=0;
+try{if(Date.now()-(+localStorage.getItem(k)||0)<864e5)return}catch(e){}
+function seen(){return vis+(last?Date.now()-last:0)}
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="visible")last=Date.now();else if(last){vis+=Date.now()-last;last=0}});
+function go(){if(sent||document.visibilityState!=="visible")return;var sc=(scrollY+innerHeight)/document.documentElement.scrollHeight;if(seen()<10000&&!(sc>.5&&seen()>3000))return;sent=1;
+try{localStorage.setItem(k,Date.now())}catch(e){}fetch(A,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({s:h.dataset.v,t:seen()}),keepalive:true}).catch(function(){})}
+setInterval(go,2000);addEventListener("scroll",go,{passive:true})})();</script>'''
+
 FILEFIX = '<script>if(location.protocol==="file:")document.addEventListener("click",function(e){var a=e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");if(/^(https?:|mailto:|tel:|#)/.test(h))return;var p=h.split("#");if(p[0]===""||p[0].slice(-1)==="/"){p[0]+="index.html";e.preventDefault();location.href=p.join("#")}});</script>'
 
 def foot(rel):
@@ -79,7 +93,7 @@ def foot(rel):
  </footer>
 </div>
 <a class="fab" href="{rel}#bron">Tarix seç</a>
-'''+FILEFIX+'''
+'''+VIEWS+FILEFIX+'''
 </body>
 </html>
 '''
@@ -92,7 +106,7 @@ def cover(p, big=False, rel=''):
 
 def card(p, rel, big=False):
     return (f'<a class="nc{" big" if big else ""}" href="{rel}xeberler/{p["slug"]}/" data-cat="{E(p["category"])}">{cover(p, big, rel)}'
-            f'<div class="nb"><small>{fdate(p["date"])} · {mins(p)} dəq</small><h3>{E(p["title"])}</h3><p>{E(p["description"])}</p></div></a>')
+            f'<div class="nb"><small>{fdate(p["date"])} · {mins(p)} dəq<span class="vw" data-v="{p["slug"]}" hidden> · 👁 <b></b></span></small><h3>{E(p["title"])}</h3><p>{E(p["description"])}</p></div></a>')
 
 def article(p):
     rel = '../../'
@@ -124,7 +138,7 @@ def article(p):
   <header class="ah">
    <span class="chip">{E(p["category"])}</span>
    <h1>{E(p["title"])}</h1>
-   <div class="meta"><time datetime="{p["date"]}">{fdate(p["date"])}</time><span>{mins(p)} dəq oxu</span><span>Showband Group</span></div>
+   <div class="meta"><time datetime="{p["date"]}">{fdate(p["date"])}</time><span>{mins(p)} dəq oxu</span><span class="vw" data-v="{p["slug"]}" data-hit hidden>👁 <b></b> baxış</span><span>Showband Group</span></div>
   </header>
   {cover(p, True, rel)}
   <div class="tx">
