@@ -63,8 +63,10 @@ def head(title, desc, url, rel, og_type='website', extra='', og_img='img/og.jpg'
  <header class="nav">
   <a class="logo" href="{rel}" aria-label="Showband Group"><img src="{rel}img/logo.png" alt="Showband Group" width="900" height="258"></a>
   <nav><a href="{rel}#xidmet">Xidmətlər</a><a href="{rel}#paket">Paketlər</a><a href="{rel}#video">Videolar</a><a href="{rel}#komanda">Komanda</a><a href="{rel}#rey">Rəylər</a><a class="on" href="{rel}xeberler/">Xəbərlər</a><a href="{rel}#elaqe">Əlaqə</a></nav>
-  <a class="btn sm" href="{rel}#bron">Tarix seç</a>
+  <div class="nr"><a class="btn sm" href="{rel}#bron">Tarix seç</a><button class="burger" id="burger" aria-label="Menyu" aria-expanded="false"><i></i><i></i><i></i></button></div>
  </header>
+ <div class="mnav" id="mnav" hidden><a href="{rel}#xidmet">Xidmətlər</a><a href="{rel}#paket">Paketlər</a><a href="{rel}#video">Videolar</a><a href="{rel}#komanda">Komanda</a><a href="{rel}#rey">Rəylər</a><a href="{rel}xeberler/">Xəbərlər</a><a href="{rel}#elaqe">Əlaqə</a><a class="btn" href="{rel}#bron">Tarix seç</a></div>
+ <script>(function(){{var b=document.getElementById('burger'),m=document.getElementById('mnav');b.onclick=function(){{var o=m.hidden;m.hidden=!o;b.classList.toggle('x',o);b.setAttribute('aria-expanded',o)}};m.querySelectorAll('a').forEach(function(a){{a.onclick=function(){{m.hidden=true;b.classList.remove('x')}}}})}})();</script>
 '''
 
 # 👁 Baxış sayğacı (Cloudflare Worker /v): saylar göstərilir; məqalədə 10 san qalan və ya aşağı sürüşdürən

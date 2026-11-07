@@ -93,3 +93,14 @@ footer .pt a{text-decoration:none}footer .pt a:hover{color:var(--fg)}
  .cb .btn{flex:1}
  .fab{display:flex;position:fixed;left:50%;bottom:calc(16px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--red);color:#fff;text-decoration:none;font:700 15px var(--s);padding:14px 28px;border-radius:999px;box-shadow:0 14px 40px -10px rgba(227,18,43,.7)}
 }
+
+/* mobil menyu (ana səhifədəki kimi) */
+.nr{display:flex;align-items:center;gap:10px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;border:0;background:var(--card);cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px;padding:0}
+.burger i{display:block;width:20px;height:2px;background:var(--fg);border-radius:2px;transition:transform .25s,opacity .25s}
+.burger.x i:nth-child(1){transform:translateY(7px) rotate(45deg)}.burger.x i:nth-child(2){opacity:0}.burger.x i:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mnav{position:fixed;left:max(16px,env(safe-area-inset-left,0px));right:max(16px,env(safe-area-inset-right,0px));top:80px;z-index:60;display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:14px;max-height:calc(100dvh - 96px);overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.6)}
+.mnav a:not(.btn){padding:12px 10px;font:700 17px var(--s);text-decoration:none;border-bottom:1px solid var(--line)}
+.mnav .btn{margin-top:8px}
+@media (max-width:1000px){.burger{display:flex}}
+@media (min-width:1001px){.mnav{display:none!important}}
