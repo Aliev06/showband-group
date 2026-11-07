@@ -320,6 +320,7 @@ def send_new():
 if __name__ == '__main__':
     sys.path.insert(0, HERE)
     if len(sys.argv) > 1 and sys.argv[1] == 'send-new': send_new()
+    if len(sys.argv) > 1 and sys.argv[1] == 'promo': get_promo()
     elif len(sys.argv) > 2 and sys.argv[1] == 'send': send(sys.argv[2])
     elif len(sys.argv) > 1 and sys.argv[1] == 'poll': poll()
     else: print(__doc__)
