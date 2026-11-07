@@ -78,7 +78,8 @@ def send(path):
     video = os.path.join(HERE, 'out', d['slug'] + '.mp4')
     mk = kb(d['slug']) if not d.get('reels_only') else json.dumps({'inline_keyboard': [
         [{'text': '✅ Paylaş', 'callback_data': f'ok:{sid(d["slug"])}'}, {'text': '❌ Ləğv et', 'callback_data': f'no:{sid(d["slug"])}'}],
-        [{'text': '🔄 Başqa variant', 'callback_data': f'nx:{sid(d["slug"])}'}]]})
+        [{'text': '✏️ Başlığı dəyiş', 'callback_data': f'tt:{sid(d["slug"])}'}, {'text': '🎬 Başqa video', 'callback_data': f'pv:{sid(d["slug"])}'}],
+        [{'text': '🔄 Başqa növ', 'callback_data': f'nx:{sid(d["slug"])}'}]]})
     data = {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': caption(d), 'parse_mode': 'HTML', 'reply_markup': mk,
             'supports_streaming': 'true'}
     m = api('sendVideo', data, {'video': video}) if os.path.exists(video) else api('sendMessage', {
@@ -135,6 +136,11 @@ def drop(chat, mid):
 
 def resend(path, old):
     """Reels-i yenidən hazırlayır, köhnə mesajı silir və yenisini göndərir."""
+    d = json.load(open(path, encoding='utf-8'))
+    if d.get('reels_only'):  # promo: eyni növ + eyni video, yeni başlıqla
+        d['status'] = 'rejected'; save(path, d)
+        if old: drop(env('TELEGRAM_CHAT_ID'), old)
+        get_promo(kind=d.get('promo_kind'), k=d.get('clip'), title=d['title']); return
     prepare(path)
     if old: drop(env('TELEGRAM_CHAT_ID'), old)
     send(path)
@@ -193,10 +199,31 @@ def get_news(mode='hype'):
     send_new()
 
 
-def get_promo():
+def auto_mode():
+    import datetime as _dt
+    return 'hype' if _dt.date.today().timetuple().tm_yday % 2 else 'event'
+
+
+PANEL = {'inline_keyboard': [
+    [{'text': '⭐ Promo video', 'callback_data': 'gt:p'}, {'text': '📰 Xəbər', 'callback_data': 'gt:n'}],
+    [{'text': '📋 Saytdakı xəbərlər', 'callback_data': 'gt:l'}]]}
+
+
+def panel():
+    """🎛 İdarə paneli — mesaj göndərir və sancaqlayır (pin)."""
+    m = api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'parse_mode': 'HTML', 'reply_markup': PANEL, 'text':
+        '🎛 <b>Showband bot — idarə paneli</b>\n\n'
+        'Avtomatik: <b>10:00</b> — ⭐ Showband promo · <b>17:00</b> — 📰 xəbər (bir gün hype, bir gün tədbir)\n\n'
+        'Təcili lazım olsa — düyməyə basın:\n⭐ <b>Promo video</b> — Showband haqqında Reels\n📰 <b>Xəbər</b> — yeni xəbər + Reels\n'
+        '📋 <b>Saytdakı xəbərlər</b> — siyahı və silmək'})
+    try: api('pinChatMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'message_id': m['message_id'], 'disable_notification': True})
+    except Exception as x: print('  ! pin:', x)
+
+
+def get_promo(**kw):
     """⭐ Showband promo Reels hazırlayır və təsdiqə göndərir."""
     import promo
-    try: promo.make_draft()
+    try: promo.make_draft(**kw)
     except Exception as x: say(f'⚠️ Promo Reels hazırlanmadı: {x}'); print(x); return
     send_new()
 
@@ -235,10 +262,14 @@ def poll():
         now = _dt.datetime.now(_dt.timezone.utc)
         if e['cmd'] == 'yeni' and now.hour == 6 and now.minute < 30: get_promo(); return   # 10:00 Bakı — hər gün Showband promo
         if e['cmd'] == 'tedbir' and now.hour == 13 and now.minute < 30:                       # 17:00 Bakı — növbə ilə hype / tədbir
-            get_news('hype' if now.timetuple().tm_yday % 2 else 'event'); return
+            get_news(auto_mode()); return
         get_news('event' if e['cmd'] == 'tedbir' else 'hype'); return
     if (e.get('data') or '').startswith('gt:'):
-        get_news('event' if e['data'] == 'gt:e' else 'hype'); return
+        g = e['data'][3:]
+        if g == 'p': get_promo(); return                       # ⭐ Promo video
+        if g == 'l': list_news(); return                       # 📋 Saytdakı xəbərlər
+        if g == 'n': get_news(auto_mode()); return             # 📰 Xəbər (hype / tədbir növbə ilə)
+        get_news('event' if g == 'e' else 'hype'); return
     if e.get('kind') == 'cmd': list_news(); return
     act, key = e['data'].split(':', 1)
     if act in ('dl', 'dy', 'dn'):
@@ -257,8 +288,11 @@ def poll():
         try: api(method, body)
         except Exception as x: print('  ! edit:', x)
 
-    if d.get('reels_only') and act in ('rw', 'nx', 'ph'):  # promo: başqa variant
-        d['status'] = 'rejected'; save(path, d); mark('🔄 <b>Başqa promo hazırlanır…</b>'); get_promo()
+    if d.get('reels_only') and act in ('rw', 'nx', 'ph', 'pv'):  # promo: başqa növ / başqa video
+        d['status'] = 'rejected'; save(path, d)
+        drop(chat, mid)
+        if act == 'pv': get_promo(kind=d.get('promo_kind'), exclude=d.get('clip'))
+        else: get_promo()
         json.dump(st, open(STATE, 'w')); return
     if act == 'ok':
         import publish
@@ -321,6 +355,7 @@ if __name__ == '__main__':
     sys.path.insert(0, HERE)
     if len(sys.argv) > 1 and sys.argv[1] == 'send-new': send_new()
     if len(sys.argv) > 1 and sys.argv[1] == 'promo': get_promo()
+    if len(sys.argv) > 1 and sys.argv[1] == 'panel': panel()
     elif len(sys.argv) > 2 and sys.argv[1] == 'send': send(sys.argv[2])
     elif len(sys.argv) > 1 and sys.argv[1] == 'poll': poll()
     else: print(__doc__)

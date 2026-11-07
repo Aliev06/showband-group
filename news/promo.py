@@ -44,10 +44,10 @@ def header(d, sub):
     av = R.logo(150); return av, sub
 
 
-def layer_event(c):
+def layer_event(c, title=None):
     L = shade(True); d = ImageDraw.Draw(L)
     x = chip(d, 70, 170, 'CANLI · SHOWBAND', RED); chip(d, x + 14, 170, R.up(LABEL.get(c['e'], 'Tədbir')), (255, 255, 255, 40))
-    tf, tl = R.fit(d, c['n'], 'unbounded-900', 74, W - 140, 3)
+    tf, tl = R.fit(d, title or c['n'], 'unbounded-900', 74, W - 140, 3)
     y = 260
     for l in tl: d.text((70, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.18)
     d.text((70, y + 14), 'Bu həftə səhnədə — Showband Group', font=F('montserrat-500', 34), fill=(230, 230, 236))
@@ -56,7 +56,7 @@ def layer_event(c):
     return L
 
 
-def layer_review(rv, c):
+def layer_review(rv, c, title=None):
     L = Image.new('RGBA', (W, H), (0, 0, 0, 90)); d = ImageDraw.Draw(L)
     cw = W - 140; tf, tl = R.fit(d, '«' + rv['t'] + '»', 'montserrat-600', 52, cw - 100, 6, 36)
     ch = 230 + len(tl) * int(tf.size * 1.4) + 110
@@ -71,16 +71,18 @@ def layer_review(rv, c):
     for l in tl: cd.text((50, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.4)
     cd.text((50, y + 30), '— ' + rv['u'], font=F('unbounded-700', 34), fill=WHITE)
     L.alpha_composite(C, (70, (H - ch) // 2 - 60))
-    chip(d, 70, 170, 'MÜŞTƏRİLƏR NƏ DEYİR', RED)
+    chip(d, 70, 170, R.up(title) if title else 'MÜŞTƏRİLƏR NƏ DEYİR', RED)
     lg = R.logo(260); L.alpha_composite(lg, (W - 260 - 60, H - lg.height - 90))
     return L
 
 
-def layer_season(s, c):
+def layer_season(s, c, title=None):
     L = shade(True); d = ImageDraw.Draw(L)
     chip(d, 70, 170, s['chip'], RED)
     y = 270; tf = F('unbounded-900', s.get('size', 96))
-    for l in s['title']: d.text((70, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.15)
+    lines = s['title']
+    if title: tf, lines = R.fit(d, title, 'unbounded-900', s.get('size', 96), W - 140, 4, 56)
+    for l in lines: d.text((70, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.15)
     tf2, tl2 = R.fit(d, s['sub'], 'montserrat-600', 40, W - 140, 3, 30)
     for l in tl2: d.text((70, y + 20), l, font=tf2, fill=(235, 235, 240)); y += int(tf2.size * 1.4)
     L.alpha_composite(shade(False))
@@ -105,12 +107,12 @@ NEWS = {
 }
 
 
-def news_render(c, out_dir):
+def news_render(c, out_dir, title=None):
     import datetime
     place = c['n'].split('·')[-1].strip() if '·' in c['n'] else c['n']
     t, cap = NEWS.get(c['e'], NEWS['diger'])
     img = next((f'video/ev_{c["k"]}{x}.jpg' for x in ('_hd', '') if os.path.exists(os.path.join(ROOT, f'video/ev_{c["k"]}{x}.jpg'))), None)
-    p = {'slug': f'promo-news-{c["k"]}', 'title': t.format(place=place), 'category': 'Showband', 'date': datetime.date.today().isoformat(),
+    p = {'slug': f'promo-news-{c["k"]}', 'title': title or t.format(place=place), 'category': 'Showband', 'date': datetime.date.today().isoformat(),
          'image': img, 'description': cap, 'reel': {'caption': cap}, 'mode': 'event'}
     R.render(p, out_dir)
     return {'slug': p['slug'], 'mp4': os.path.join(out_dir, p['slug'] + '.mp4'), 'caption': p['title'] + ' 🎉\n' + cap}
@@ -130,17 +132,17 @@ def duration(path):
     return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path]))
 
 
-def render(kind, k=None, out_dir=None, seed=None):
+def render(kind, k=None, out_dir=None, seed=None, title=None):
     rnd = random.Random(seed)
     cl = [c for c in V.clips() if not c['w']]
     c = next((x for x in cl if x['k'] == k), None) or rnd.choice(cl)
-    if kind == 'news': return news_render(c, out_dir or os.path.join(HERE, 'out'))
+    if kind == 'news': return news_render(c, out_dir or os.path.join(HERE, 'out'), title)
     src = os.path.join(ROOT, 'video', f'ev_{c["k"]}.mp4')
-    if kind == 'event': ov = layer_event(c); slug = f'promo-event-{c["k"]}'; cap = f'{c["n"]} 🎉\nBu həftə səhnədə — Showband Group.'
+    if kind == 'event': ov = layer_event(c, title); slug = f'promo-event-{c["k"]}'; cap = f'{title or c["n"]} 🎉\nBu həftə səhnədə — Showband Group.'
     elif kind == 'review':
-        rv = rnd.choice([r for r in reviews() if len(r['t']) > 30] or reviews()); ov = layer_review(rv, c); slug = f'promo-review-{c["k"]}'; cap = f'«{rv["t"]}» — {rv["u"]} ⭐️⭐️⭐️⭐️⭐️\nRəyiniz üçün təşəkkür edirik!'
+        rv = rnd.choice([r for r in reviews() if len(r['t']) > 30] or reviews()); ov = layer_review(rv, c, title); slug = f'promo-review-{c["k"]}'; cap = f'«{rv["t"]}» — {rv["u"]} ⭐️⭐️⭐️⭐️⭐️\nRəyiniz üçün təşəkkür edirik!'
     else:
-        s = SEASONS[0] if c['e'] == 'korp' else SEASONS[1] if c['e'] in ('toy', 'acilis') else rnd.choice(SEASONS); ov = layer_season(s, c); slug = f'promo-season-{c["k"]}'; cap = ' '.join(s['title']) + ' 📅\n' + s['sub']
+        s = SEASONS[0] if c['e'] == 'korp' else SEASONS[1] if c['e'] in ('toy', 'acilis') else rnd.choice(SEASONS); ov = layer_season(s, c, title); slug = f'promo-season-{c["k"]}'; cap = (title or ' '.join(s['title'])) + ' 📅\n' + s['sub']
     outro = R.outro_layer('event')
     d = duration(src); start = max(0., min(d - TOTAL - .2, d * .3))
     out_dir = out_dir or os.path.join(HERE, 'out'); os.makedirs(out_dir, exist_ok=True)
@@ -169,19 +171,20 @@ def render(kind, k=None, out_dir=None, seed=None):
 KINDS = ['event', 'news', 'review', 'season']  # promo növləri növbə ilə
 
 
-def make_draft():
+def make_draft(kind=None, exclude=None, k=None, title=None):
     """Növbəti promo Reels-i hazırlayır və drafts/ qovluğuna qaralama yazır (yalnız Instagram Reels)."""
     import datetime
     sp = os.path.join(HERE, 'promo_state.json')
     st = json.load(open(sp)) if os.path.exists(sp) else {'i': -1, 'used': []}
-    st['i'] = (st['i'] + 1) % len(KINDS); kind = KINDS[st['i']]
+    if not kind: st['i'] = (st['i'] + 1) % len(KINDS); kind = KINDS[st['i']]
     cl = [c['k'] for c in V.clips() if not c['w']]
     fresh = [k for k in cl if k not in st['used'][-(len(cl) - 2):]] or cl
-    k = random.choice(fresh); st['used'] = (st['used'] + [k])[-50:]
+    fresh = [x for x in fresh if x != exclude] or fresh
+    k = k or random.choice(fresh); st['used'] = (st['used'] + [k])[-50:]
     out = os.path.join(HERE, 'out')
-    r = render(kind, k, out)
+    r = render(kind, k, out, title=title)
     day = datetime.date.today().isoformat()
-    slug = f'{r["slug"]}-{day}'
+    slug = f'{r["slug"]}-{day}-{datetime.datetime.now().strftime("%H%M%S")}'
     for ext in ('.mp4', '.jpg'):
         src = os.path.join(out, r['slug'] + ext)
         if os.path.exists(src): os.replace(src, os.path.join(out, slug + ext))
