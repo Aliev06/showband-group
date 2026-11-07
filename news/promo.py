@@ -143,7 +143,10 @@ def video_frames(path, start, dur):
 
 
 def duration(path):
-    return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path]))
+    # ffprobe CI-da yoxdur (imageio-ffmpeg) — müddəti ffmpeg -i çıxışından oxuyuruq
+    err = subprocess.run(['ffmpeg', '-i', path], capture_output=True, text=True).stderr
+    h, m, sec = re.search(r'Duration: (\d+):(\d+):([\d.]+)', err).groups()
+    return int(h) * 3600 + int(m) * 60 + float(sec)
 
 
 def render(kind, k=None, out_dir=None, seed=None, title=None, text=None):
