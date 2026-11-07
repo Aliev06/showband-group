@@ -40,6 +40,7 @@ def head(title, desc, url, rel, og_type='website', extra='', og_img='img/og.jpg'
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>{E(title)}</title>
+{GA}
 <meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{url}">
 <meta name="robots" content="index,follow,max-image-preview:large">
@@ -79,6 +80,14 @@ document.addEventListener("visibilitychange",function(){if(document.visibilitySt
 function go(){if(sent||document.visibilityState!=="visible")return;var sc=(scrollY+innerHeight)/document.documentElement.scrollHeight;if(seen()<10000&&!(sc>.5&&seen()>3000))return;sent=1;
 try{localStorage.setItem(k,Date.now())}catch(e){}fetch(A,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({s:h.dataset.v,t:seen()}),keepalive:true}).catch(function(){})}
 setInterval(go,2000);addEventListener("scroll",go,{passive:true})})();</script>'''
+
+# Google Analytics 4 (müştərinin hesabı) + düymə klikləri hadisə kimi
+GA = r'''<script async src="https://www.googletagmanager.com/gtag/js?id=G-90R0QJ1ZJQ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-90R0QJ1ZJQ');
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var h=a.getAttribute('href')||'',n=null;
+if(/wa\.me|whatsapp/i.test(h))n='whatsapp_click';else if(/^tel:/.test(h))n='phone_click';else if(/instagram\.com/.test(h))n='instagram_click';else if(/#bron$/.test(h))n='tarix_sec_click';
+if(n)gtag('event',n,{link_url:h,link_text:(a.textContent||'').trim().slice(0,60),page_path:location.pathname})},true);</script>
+'''
 
 FILEFIX = '<script>if(location.protocol==="file:")document.addEventListener("click",function(e){var a=e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");if(/^(https?:|mailto:|tel:|#)/.test(h))return;var p=h.split("#");if(p[0]===""||p[0].slice(-1)==="/"){p[0]+="index.html";e.preventDefault();location.href=p.join("#")}});</script>'
 
