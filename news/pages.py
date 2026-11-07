@@ -6,6 +6,27 @@ from build_news import head, foot, SITE, CFG, E, w
 
 WA = f'https://wa.me/{CFG["whatsapp"]}?text='
 
+
+def load_pk():
+    """Paketlər — ana səhifədəki var PK=[...] massivindən (yeganə mənbə; qiymət/tərkib orada dəyişir)."""
+    import os
+    src = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'index.html'), encoding='utf-8').read()
+    blk = src[src.index('var PK=['):src.index('];', src.index('var PK=['))]
+    out = {}
+    for line in blk.splitlines()[1:]:
+        m = re.search(r"id:'(\w+)'", line)
+        if not m: continue
+        out[m.group(1)] = {'pr': int(re.search(r'pr:(\d+)', line).group(1)), 'hr': 'hr:1' in line, 'inc': 'inc:1' in line,
+                           'it': re.findall(r"\['([^']*)','[^']*','[^']*'\]", line[line.index('it:'):])}
+    return out
+
+
+PK = load_pk()
+# səhifə → paket və paketə əlavə edilə bilən xidmətlər (ana səhifədəki SV xidmətlərindən)
+PKMAP = {'toy': ('toy', ['Səs, işıq və səhnə', 'Dekorasiya və məkan dizaynı', 'Foto, video və Love Story']),
+         'korporativ': ('korp', ['Dekorasiya və brend dizaynı', 'Foto və video']),
+         'ad-gunu': ('party', ['Dekorasiya və tematik dizayn', 'Foto və video'])}
+
 PAGES = [
  {'slug': 'toy', 'video': 'toy', 'img': 'img/pk_toy.webp',
   'title': 'Bakıda toy təşkili — canlı musiqi, şou və DJ',
@@ -44,7 +65,7 @@ PAGES = [
 
 FAQ = [
  ('Qiymət nə qədərdir?', 'Qiymət tarixdən, məkandan, qonaq sayından və seçdiyiniz proqramdan asılıdır. WhatsApp-a yazın və ya saytda tarix seçin — paketi və dəqiq qiyməti dəqiqləşdirək.'),
- ('Səs, işıq və dekor paketə daxildir?', 'Toy və korporativ paketlərə səs və işıq daxildir, dekor və foto-video da paketdə var. Hamısı bir komandadan — ayrı-ayrı podratçı axtarmağa ehtiyac yoxdur.'),
+ ('Səs, işıq və dekor paketə daxildir?', 'Korporativ və ad günü paketlərinə səs sistemi, lazer və LED işıq şousu daxildir. Dekorasiya, foto-video və toy üçün səs-işıq əlavə xidmət kimi razılaşdırılır — hamısı bir komandadan, ayrı-ayrı podratçı axtarmağa ehtiyac yoxdur.'),
  ('Tarixi necə bron etmək olar?', 'Saytda «Tarix seç» düyməsi ilə və ya WhatsApp vasitəsilə: tarix, məkan və tədbir növünü yazın, sizinlə əlaqə saxlayaq.'),
 ]
 
@@ -91,6 +112,7 @@ CSS = '''<style>
 .inc{list-style:none;padding:0;margin:0 0 10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .inc li{background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px;font-weight:600}
 .inc li:before{content:"✓ ";color:var(--red2)}
+.pkp{margin:4px 0 0;color:var(--mut,#a9a9b3);font-size:15px;line-height:1.6}.pkp b{color:var(--fg);font-size:18px}
 .faq details{border-bottom:1px solid var(--line,#26262e);padding:14px 0}
 .faq summary{cursor:pointer;font-weight:600;color:var(--fg)}
 .faq p{margin:10px 0 0}
@@ -108,6 +130,10 @@ def page(p):
     rel = '../'
     url = f'{SITE}/{p["slug"]}/'
     seo = SEO.get(p['slug'], {})
+    pk_id, extra_sv = PKMAP[p['slug']]
+    pk = PK[pk_id]
+    pk_name = {'toy': 'Toy paketi', 'korp': 'Korporativ paket', 'party': 'Ad günü / Party paketi'}[pk_id]
+    pk_items = (['Toy paketindəki hər şey: ' + ', '.join(x.split(':')[0] for x in PK['toy']['it'])] if pk['inc'] else []) + pk['it']
     faq = seo.get('faq', []) + FAQ
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'Service', 'name': re.sub('<[^>]+>', '', p['h1']), 'description': p['desc'], 'url': url,
@@ -133,8 +159,9 @@ def page(p):
    </div>
    <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
    <div class="svb">
-    <h2>Paketə nə daxildir</h2>
-    <ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in p["inc"])}</ul>
+    <h2>{E(pk_name)} — nə daxildir</h2>
+    <ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in pk_items)}</ul>
+    <p class="pkp"><b>{pk["pr"]} AZN</b>-dən{" / saat" if pk["hr"] else ""} · <span>Əlavə edilə bilər: {E(", ".join(extra_sv))}</span></p>
     <div class="svbt"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
    </div>
   </div>
