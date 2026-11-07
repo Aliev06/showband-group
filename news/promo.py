@@ -3,7 +3,7 @@
 Fon: müştərinin öz canlı videosu (video/ev_<k>.mp4) + öz səsi. Üstündə xəbər üslubunda başlıq.
 Növlər:
   news    — XƏBƏR üslubu (mövcud kart, reels.py): «Showband ... etdi — siz də istəyirsinizsə yazın»
-  event   — YENİ üslub, canlı video fonda: «Bu həftə səhnədə»: tədbirdən canlı kadr + başlıq
+  event   — YENİ üslub, canlı video fonda: «Tədbiriniz də belə olsun?»: tədbirdən canlı kadr + başlıq
   review  — «Rəy»: Google rəyi kartı, 5 ulduz
   season  — mövsüm/tarix: «Dekabr korporativləri — tarixlər dolur»
 İstifadə: python3 news/promo.py <event|review|season> [k] [out_dir]
@@ -46,11 +46,11 @@ def header(d, sub):
 
 def layer_event(c, title=None, text=None):
     L = shade(True); d = ImageDraw.Draw(L)
-    x = chip(d, 70, 170, 'CANLI · SHOWBAND', RED); chip(d, x + 14, 170, R.up(LABEL.get(c['e'], 'Tədbir')), (255, 255, 255, 40))
+    x = chip(d, 70, 170, 'SHOWBAND GROUP', RED); chip(d, x + 14, 170, R.up(LABEL.get(c['e'], 'Tədbir')), (255, 255, 255, 40))
     tf, tl = R.fit(d, title or c['n'], 'unbounded-900', 74, W - 140, 3)
     y = 260
     for l in tl: d.text((70, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.18)
-    sf, sl = R.fit(d, text or 'Bu həftə səhnədə — Showband Group', 'montserrat-500', 34, W - 140, 3, 28)
+    sf, sl = R.fit(d, text or 'Tədbiriniz də belə olsun? — Showband Group', 'montserrat-500', 34, W - 140, 3, 28)
     for l in sl: d.text((70, y + 14), l, font=sf, fill=(230, 230, 236)); y += int(sf.size * 1.4)
     L.alpha_composite(shade(False))
     lg = R.logo(260); L.alpha_composite(lg, (W - 260 - 60, H - lg.height - 90))
@@ -155,7 +155,7 @@ def render(kind, k=None, out_dir=None, seed=None, title=None, text=None):
     c = next((x for x in cl if x['k'] == k), None) or rnd.choice(cl)
     if kind == 'news': return news_render(c, out_dir or os.path.join(HERE, 'out'), title, text)
     src = os.path.join(ROOT, 'video', f'ev_{c["k"]}.mp4')
-    if kind == 'event': ov = layer_event(c, title, text); slug = f'promo-event-{c["k"]}'; cap = f'{title or c["n"]} 🎉\n' + (text or 'Bu həftə səhnədə — Showband Group.')
+    if kind == 'event': ov = layer_event(c, title, text); slug = f'promo-event-{c["k"]}'; cap = f'{title or c["n"]} 🎉\n' + (text or 'Tədbiriniz də belə olsun? Showband Group — Direct-ə yazın 📩')
     elif kind == 'review':
         rv = rnd.choice([r for r in reviews() if len(r['t']) > 30] or reviews()); ov = layer_review(rv, c, title); slug = f'promo-review-{c["k"]}'; cap = f'«{rv["t"]}» — {rv["u"]} ⭐️⭐️⭐️⭐️⭐️\nRəyiniz üçün təşəkkür edirik!'
     else:
