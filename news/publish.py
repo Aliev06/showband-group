@@ -84,7 +84,8 @@ def ig_publish(d, again=True):
         raise TimeoutError('video saytda hələ yoxdur')
     # video faylını birbaşa Meta-ya yükləyirik (resumable upload) — URL-dən yükləmə xətalarından qaçmaq üçün
     c = graph(f'{env("IG_USER_ID")}/media', {'media_type': 'REELS', 'upload_type': 'resumable', 'caption': d.get('ig_caption', ''),
-                                             'share_to_feed': 'false'})  # yalnız Reels bölməsi
+                                             'share_to_feed': 'false',  # yalnız Reels bölməsi
+                                             'thumb_offset': '3000'})  # örtük: 3-cü saniyə (kart tam görünür)
     fn = os.path.join(ROOT, 'reels', d['slug'] + '.mp4'); data = open(fn, 'rb').read()
     req = urllib.request.Request(c.get('uri') or f'https://rupload.facebook.com/ig-api-upload/v21.0/{c["id"]}', data=data, method='POST',
                                  headers={'Authorization': 'OAuth ' + env('IG_TOKEN'), 'offset': '0', 'file_size': str(len(data))})

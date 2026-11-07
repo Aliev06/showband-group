@@ -130,10 +130,10 @@ def make_card(p):
     C.paste(img, (44, y), m)
     cf = F('montserrat-600', 26); tg = up(p['category']); tw = d.textlength(tg, font=cf)
     d.rounded_rectangle((70, y + 26, 70 + tw + 40, y + 76), radius=25, fill=RED); d.text((90, y + 36), tg, font=cf, fill=WHITE)
-    if ph and (p.get('source') or {}).get('name'):
-        cr = 'Foto: ' + p['source']['name']; crf = F('montserrat-500', 22); cw2 = d.textlength(cr, font=crf)
-        d.rounded_rectangle((CW - 44 - cw2 - 36, y + ih - 50, CW - 44 - 12, y + ih - 14), radius=18, fill=(0, 0, 0, 150))
-        d.text((CW - 44 - cw2 - 24, y + ih - 45), cr, font=crf, fill=(255, 255, 255, 220))
+    # su nişanı: bizim loqo (mənbə adı yox)
+    wm = logo(190); wm.putalpha(wm.getchannel('A').point(lambda v: int(v * .85)))
+    d.rounded_rectangle((CW - 44 - wm.width - 44, y + ih - wm.height - 40, CW - 44 - 14, y + ih - 14), radius=20, fill=(0, 0, 0, 110))
+    C.alpha_composite(wm, (CW - 44 - wm.width - 28, y + ih - wm.height - 27))
     return C
 
 
