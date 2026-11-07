@@ -8,9 +8,9 @@ WA = f'https://wa.me/{CFG["whatsapp"]}?text='
 
 PAGES = [
  {'slug': 'toy', 'video': 'toy', 'img': 'img/pk_toy.webp',
-  'title': 'Toy və nişan üçün canlı musiqi və şou Bakıda',
-  'desc': 'Toy və nişan üçün canlı band, showman, DJ, ilk rəqs, sürprizlər və final şou. Səs, işıq, dekor, foto-video — hamısı bir komandada. Bakı.',
-  'h1': 'Toy və nişan üçün <em>canlı musiqi</em> və şou',
+  'title': 'Bakıda toy təşkili — canlı musiqi, şou və DJ',
+  'desc': 'Bakıda toy və nişan təşkili: canlı band, showman, DJ, ilk rəqs, sürprizlər və final şou. Səs, işıq, dekor, foto-video — hamısı bir komandadan.',
+  'h1': 'Bakıda <em>toy təşkili</em> — canlı musiqi və şou',
   'lead': 'Toyunuzun hər anını — gəlin-bəyin girişindən ilk rəqsə və final şouya qədər — bir komanda idarə edir: canlı band, showman, DJ, səs, işıq və dekor.',
   'inc': ['DJ, Live Band və Showman', 'Ssenari və sürprizlər', 'Səs, işıq və dekor', 'Foto və video'],
   'about': [('Canlı band və showman', 'Qonaqlar oturub telefona baxmır: canlı ifa, interaktiv şou və enerjili aparıcılıq bütün gecə zalı ayaqda saxlayır.'),
@@ -19,9 +19,9 @@ PAGES = [
   'venues': 'Altun Saray, Neapol Saray və Bakının digər şadlıq saraylarında çıxış etmişik.',
   'wa': 'Salam! Toy üçün məlumat almaq istəyirəm.'},
  {'slug': 'korporativ', 'video': 'korp', 'img': 'img/pk_korp.webp',
-  'title': 'Korporativ tədbirlər üçün şou və musiqi Bakıda',
-  'desc': 'Korporativ tədbirlər, təqdimatlar və bayram gecələri: aparıcı, şou proqramı, Live Band və ya DJ, səs-işıq, səhnə və brend dekor. Bakı.',
-  'h1': 'Korporativ tədbirlər üçün <em>aparıcı və şou</em>',
+  'title': 'Bakıda korporativ tədbir təşkili — aparıcı və şou',
+  'desc': 'Bakıda korporativ tədbir təşkili: şirkət gecələri, təqdimatlar, Yeni il proqramları — aparıcı, şou, Live Band və ya DJ, səs-işıq, səhnə və brend dekor.',
+  'h1': 'Bakıda <em>korporativ tədbir</em> təşkili',
   'lead': 'Şirkət gecələri, təqdimatlar, Yeni il və bayram proqramları: aparıcı, şou, canlı musiqi, səhnə və brend dekor — hamısı bir komandadan.',
   'inc': ['Aparıcı və şou proqramı', 'Live Band və ya DJ', 'Səs, işıq və səhnə', 'Brend dekor', 'Foto və video'],
   'about': [('Aparıcı və proqram', 'Rəsmi hissədən əyləncəyə keçid, mükafatlandırma, interaktiv oyunlar — ssenarini şirkətinizə uyğun hazırlayırıq.'),
@@ -30,9 +30,9 @@ PAGES = [
   'venues': 'Korporativ gecələr, təqdimatlar və bayram tədbirləri təşkil edirik.',
   'wa': 'Salam! Korporativ tədbir üçün məlumat almaq istəyirəm.'},
  {'slug': 'ad-gunu', 'video': 'adgunu', 'img': 'img/pk_mezun.webp',
-  'title': 'Ad günü və party üçün DJ və showman Bakıda',
-  'desc': 'Ad günü və party üçün DJ, showman, oyunlar, lazer və işıq şousu, tematik dekor və foto. Uşaq və böyük ad günləri. Bakı.',
-  'h1': 'Ad günü və party üçün <em>DJ və şou</em>',
+  'title': 'Bakıda ad günü təşkili — DJ, showman və şou',
+  'desc': 'Bakıda ad günü və party təşkili: DJ, showman, oyunlar, lazer və işıq şousu, tematik dekor və foto. Uşaq və böyük ad günləri.',
+  'h1': 'Bakıda <em>ad günü</em> və party təşkili',
   'lead': 'Ad gününüzü yadda qalan gecəyə çeviririk: DJ, showman, oyunlar, lazer və işıq şousu, tematik dekor.',
   'inc': ['DJ və Showman', 'Lazer və işıq şousu', 'Tematik dekor', 'Foto'],
   'about': [('DJ və showman', 'Musiqi və aparıcılıq bir yerdə: oyunlar, müsabiqələr və rəqs — qonaqlar bütün gecə iştirak edir.'),
@@ -47,6 +47,34 @@ FAQ = [
  ('Səs, işıq və dekor paketə daxildir?', 'Toy və korporativ paketlərə səs və işıq daxildir, dekor və foto-video da paketdə var. Hamısı bir komandadan — ayrı-ayrı podratçı axtarmağa ehtiyac yoxdur.'),
  ('Tarixi necə bron etmək olar?', 'Saytda «Tarix seç» düyməsi ilə və ya WhatsApp vasitəsilə: tarix, məkan və tədbir növünü yazın, sizinlə əlaqə saxlayaq.'),
 ]
+
+# Axtarış üçün geniş mətn (SEO) və səhifəyə xas suallar
+SEO = {
+ 'toy': {
+  'h2': 'Bakıda toy təşkili necə olur',
+  'p': ['Toy təşkili — bir gündə onlarla detalı eyni vaxtda idarə etməkdir: musiqi, aparıcı, səs, işıq, dekor, gəlin-bəyin girişi, ilk rəqs, tort anı və qonaqların əhvalı. Showband Group bütün bunları bir komanda kimi götürür — ayrı-ayrı müğənni, DJ, işıqçı və dekorçu axtarmağa ehtiyac qalmır.',
+        'Hazırlıq tarixi seçməkdən başlayır. Sonra məkanla, qonaq sayı ilə və sizin istəklərinizlə tanış olur, toyun ssenarisini yazırıq: hansı anda hansı mahnı səslənəcək, sürprizlər nə vaxt olacaq, milli rəqslər və müasir hissə necə növbələşəcək. Toy günü komandamız tədbirin əvvəlindən sonuna qədər zaldadır və proqramı vaxtında aparır.',
+        'Musiqidə canlı band, saksafon, nağara, saz və DJ birləşir — həm milli, həm müasir repertuar. Showman qonaqları oyunlara, fleşmoba və rəqsə qatır. İşıq şousu, lazer, işıqlı eynəklər və fleşmob çubuqları gecənin final hissəsini yadda qalan edir.',
+        'Toy paketi saatlıq hesablanır və 500 AZN-dən başlayır. Dəqiq qiymət tarixdən, məkandan və proqramdan asılıdır. Bakıda, rayonlarda və xaricdə — istənilən ölkədə toy təşkil edirik.'],
+  'faq': [('Toy təşkilinə nə qədər əvvəl müraciət etmək lazımdır?', 'Yay və payız mövsümündə həftəsonu tarixlər tez dolur, ona görə 1–3 ay əvvəl yazmağı məsləhət görürük. Boş tarix olarsa, daha qısa müddətdə də hazırlaşırıq.'),
+          ('Nişan da təşkil edirsiniz?', 'Bəli. Nişan və toy üçün eyni komanda ilə proqram hazırlayırıq — musiqi, aparıcı, səs-işıq və dekor.')]},
+ 'korporativ': {
+  'h2': 'Bakıda korporativ tədbir təşkili',
+  'p': ['Korporativ tədbir şirkətin üzüdür: əməkdaşlar, tərəfdaşlar və qonaqlar tədbirdən sonra brendi necə xatırlayacaqlar — bu, təşkilatdan asılıdır. Showband Group korporativ gecələri, təqdimatları, Yeni il və bayram proqramlarını, şirkətin ildönümlərini və mükafatlandırma mərasimlərini bir komanda ilə təşkil edir.',
+        'İş brief ilə başlayır: tədbirin məqsədi, qonaqların sayı, məkan, rəsmi hissənin müddəti və brend tələbləri. Bunun əsasında ssenari hazırlayırıq — rəsmi çıxışlardan əyləncə hissəsinə rahat keçid, interaktiv oyunlar, müsabiqələr və şou nömrələri.',
+        'Aparıcı, Live Band və ya DJ, səs sistemi, işıq və lazer şousu, səhnə və brend rənglərində dekor bir komandadan gəlir. Bu, podratçılar arasında koordinasiya problemini aradan qaldırır və tədbir vaxtında, planlı keçir.',
+        'Korporativ paket 1500 AZN-dən başlayır; dəqiq qiymət qonaq sayından və proqramdan asılıdır. Bakıda, regionlarda və xaricdə tədbirlər təşkil edirik.'],
+  'faq': [('Yeni il korporativi üçün nə vaxt bron etmək lazımdır?', 'Dekabr tarixləri tez dolur, ona görə 1–2 ay əvvəl yazmağı məsləhət görürük.'),
+          ('Tədbiri şirkətin brend rənglərində hazırlaya bilərsiniz?', 'Bəli. Səhnə, işıq, ekranlar və dekor brend rənglərinizə və üslubunuza uyğun hazırlanır.')]},
+ 'ad-gunu': {
+  'h2': 'Bakıda ad günü təşkili',
+  'p': ['Ad günü təşkili kiçik detallardan ibarətdir: musiqi, aparıcı, oyunlar, dekor, işıq və foto. Showband Group həm uşaq, həm böyük ad günlərini, eləcə də party və məzun gecələrini bir komanda ilə təşkil edir.',
+        'Əvvəlcə ad günü sahibinin zövqünü, qonaq sayını və məkanı öyrənirik, sonra proqramı qururuq: DJ setləri, showman-ın oyunları və müsabiqələri, sürpriz anlar, tort çıxışı və final. Tematik dekor rəngləri və detalları ilə tədbirin üslubunu tamamlayır.',
+        'Lazer və işıq şousu adi zalı bir neçə dəqiqəyə klub atmosferinə çevirir. Fotoqraf gecənin ən yaxşı anlarını çəkir ki, ad günü yalnız yaddaşda deyil, şəkillərdə də qalsın.',
+        'Ad günü və party paketi 800 AZN-dən başlayır və toy paketindəki hər şeyi əhatə edir; dəqiq qiymət proqramdan asılıdır. Bakıda və xaricdə tədbirlər təşkil edirik.'],
+  'faq': [('Uşaq ad günləri də təşkil edirsiniz?', 'Bəli. Uşaq ad günləri üçün yaşa uyğun oyunlar, aparıcı və musiqi ilə ayrıca proqram hazırlayırıq.'),
+          ('Ad günü kiçik məkanda da keçirilə bilər?', 'Bəli, məkanın ölçüsünə görə səs və işıq avadanlığını uyğunlaşdırırıq — restoran, kafe və ya digər məkan.')]},
+}
 
 CSS = '''<style>
 .svx{max-width:1180px;margin:0;padding-top:24px;display:grid;grid-template-columns:minmax(0,1fr) 380px;grid-template-rows:auto 1fr;grid-template-areas:"a v" "b v";column-gap:64px;align-items:start}
@@ -79,11 +107,13 @@ def links(rel, cur=''):
 def page(p):
     rel = '../'
     url = f'{SITE}/{p["slug"]}/'
+    seo = SEO.get(p['slug'], {})
+    faq = seo.get('faq', []) + FAQ
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'Service', 'name': re.sub('<[^>]+>', '', p['h1']), 'description': p['desc'], 'url': url,
-         'areaServed': {'@type': 'City', 'name': 'Bakı'}, 'image': f'{SITE}/{p["img"].replace(".webp", ".jpg")}',
+         'areaServed': [{'@type': 'City', 'name': 'Bakı'}, {'@type': 'Country', 'name': 'Azərbaycan'}], 'image': f'{SITE}/{p["img"].replace(".webp", ".jpg")}',
          'provider': {'@type': 'EntertainmentBusiness', 'name': 'Showband Group', 'url': SITE + '/', 'telephone': '+994556118787'}},
-        {'@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in FAQ]},
+        {'@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faq]},
         {'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Ana səhifə', 'item': SITE + '/'},
             {'@type': 'ListItem', 'position': 2, 'name': re.sub('<[^>]+>', '', p['h1']), 'item': url}]}]}
@@ -111,8 +141,9 @@ def page(p):
   <div class="tx">
    {body}
    <p>{E(p["venues"])}</p>
+   {(f'<h2>{E(seo["h2"])}</h2>' + "".join(f"<p>{E(x)}</p>" for x in seo["p"])) if seo else ""}
    <h2>Tez-tez verilən suallar</h2>
-   <div class="faq">{"".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in FAQ)}</div>
+   <div class="faq">{"".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in faq)}</div>
    <h2>Digər xidmətlər</h2>
    {links(rel, p["slug"])}
   </div>
