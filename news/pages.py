@@ -148,7 +148,7 @@ def page(p):
     plain = re.sub('<[^>]+>', '', p['h1'])
     body = ''.join(f'<h2>{E(h)}</h2><p>{E(t)}</p>' for h, t in p['about'])
     return head(f'{p["title"]} | Showband Group', p['desc'], url, rel, 'website', extra,
-                p['img'].replace('.webp', '.jpg')).replace('<a class="on" href="../xeberler/">', '<a href="../xeberler/">') + f'''
+                p['img'].replace('.webp', '.jpg')).replace('<a class="on" href="../xeberler/">', '<a href="../xeberler/">').replace('<a href="../#xidmet">', '<a class="on" href="../#xidmet">') + f'''
  <nav class="bc" aria-label="breadcrumb"><a href="{rel}">Ana səhifə</a><span>›</span><em>{E(plain)}</em></nav>
  <article class="svp">
   <div class="svx">

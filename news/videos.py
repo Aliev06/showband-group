@@ -81,7 +81,7 @@ def page(slug, items, allc, cur):
         f'<figure class="vc"><video{" style=\"object-fit:contain\"" if c["w"] else ""} controls playsinline preload="none" poster="{rel}video/ev_{c["k"]}.jpg" src="{rel}video/ev_{c["k"]}.mp4" aria-label="{E(c["n"])}"></video>'
         f'<figcaption><span>{E(lab.get(c["e"], ""))}</span>{E(c["n"])}</figcaption></figure>' for c in items)
     bc = (f'<a href="{rel}">Ana səhifə</a><span>›</span>' + (f'<a href="{rel}videolar/">Videolar</a><span>›</span><em>{E(cur[2])}</em>' if cur else '<em>Videolar</em>'))
-    return head(title, desc, url, rel, 'website', extra, og).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">') + f'''
+    return head(title, desc, url, rel, 'website', extra, og).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">').replace(f'<a href="{rel}#video">', f'<a class="on" href="{rel}#video">') + f'''
  <nav class="bc" aria-label="breadcrumb">{bc}</nav>
  <section class="vh">
   <span class="chip">Showband Group · Videolar</span>

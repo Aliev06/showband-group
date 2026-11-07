@@ -62,7 +62,7 @@ def head(title, desc, url, rel, og_type='website', extra='', og_img='img/og.jpg'
 <div class="w">
  <header class="nav">
   <a class="logo" href="{rel}" aria-label="Showband Group"><img src="{rel}img/logo.png" alt="Showband Group" width="900" height="258"></a>
-  <nav><a href="{rel}#xidmet">Xidmətlər</a><a href="{rel}#paket">Paketlər</a><a href="{rel}#video">Videolar</a><a class="on" href="{rel}xeberler/">Xəbərlər</a></nav>
+  <nav><a href="{rel}#xidmet">Xidmətlər</a><a href="{rel}#paket">Paketlər</a><a href="{rel}#video">Videolar</a><a href="{rel}#komanda">Komanda</a><a href="{rel}#rey">Rəylər</a><a class="on" href="{rel}xeberler/">Xəbərlər</a><a href="{rel}#elaqe">Əlaqə</a></nav>
   <a class="btn sm" href="{rel}#bron">Tarix seç</a>
  </header>
 '''
