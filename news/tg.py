@@ -211,20 +211,20 @@ def auto_mode():
     return 'hype' if _dt.date.today().timetuple().tm_yday % 2 else 'event'
 
 
-PANEL = {'inline_keyboard': [
-    [{'text': '⭐ Promo video', 'callback_data': 'gt:p'}, {'text': '📰 Xəbər', 'callback_data': 'gt:n'}],
-    [{'text': '📋 Saytdakı xəbərlər', 'callback_data': 'gt:l'}]]}
+# Klaviatura düymələri (yazı sətrinin üstündə, həmişə görünür). Worker mətni gt:* kimi göndərir.
+PANEL = {'keyboard': [[{'text': '⭐ Promo video'}, {'text': '📰 Xəbər'}], [{'text': '📋 Saytdakı xəbərlər'}]],
+         'resize_keyboard': True, 'is_persistent': True}
 
 
 def panel():
-    """🎛 İdarə paneli — mesaj göndərir və sancaqlayır (pin)."""
-    m = api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'parse_mode': 'HTML', 'reply_markup': PANEL, 'text':
+    """🎛 İdarə paneli — klaviatura düymələrini quraşdırır (köhnə sancaqlanmış paneli götürür)."""
+    try: api('unpinChatMessage', {'chat_id': env('TELEGRAM_CHAT_ID')})
+    except Exception as x: print('  ! unpin:', x)
+    api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'parse_mode': 'HTML', 'reply_markup': PANEL, 'text':
         '🎛 <b>Showband bot — idarə paneli</b>\n\n'
         'Avtomatik: <b>10:00</b> — ⭐ Showband promo · <b>17:00</b> — 📰 xəbər (bir gün hype, bir gün tədbir)\n\n'
-        'Təcili lazım olsa — düyməyə basın:\n⭐ <b>Promo video</b> — Showband haqqında Reels\n📰 <b>Xəbər</b> — yeni xəbər + Reels\n'
+        'Düymələr aşağıda, yazı sətrinin üstündədir:\n⭐ <b>Promo video</b> — Showband haqqında Reels\n📰 <b>Xəbər</b> — yeni xəbər + Reels\n'
         '📋 <b>Saytdakı xəbərlər</b> — siyahı və silmək'})
-    try: api('pinChatMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'message_id': m['message_id'], 'disable_notification': True})
-    except Exception as x: print('  ! pin:', x)
 
 
 def get_promo(**kw):

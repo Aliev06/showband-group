@@ -1,4 +1,4 @@
-// Showband Group — Telegram düymələri üçün ani webhook (v6).
+// Showband Group — Telegram düymələri üçün ani webhook (v7).
 // Cron Triggers: '0 6 * * *' → 10:00 hype, '0 13 * * *' → 17:00 tədbir (Bakı vaxtı)
 // Secrets: TG_TOKEN, CHAT_ID, GH_TOKEN, SECRET
 const REPO = 'Aliev06/showband-group';
@@ -32,6 +32,17 @@ export default {
     if (cmd) {
       await gh({ kind: 'cmd', cmd: cmd.toLowerCase(), chat_id: m.chat.id });
       if (cmd.toLowerCase() !== 'xeberler') await tg('sendMessage', { chat_id: m.chat.id, text: '🔎 Yeni xəbər axtarılır… ~2 dəqiqə' });
+      return new Response('ok');
+    }
+    // 🎛 Klaviatura düymələri (yazı sətrinin üstündə)
+    const KEYS = { '⭐ Promo video': ['gt:p', '⭐ Promo video hazırlanır… ~1 dəqiqə'],
+                   '📰 Xəbər': ['gt:n', '🔎 Yeni xəbər axtarılır… ~2 dəqiqə'],
+                   '📋 Saytdakı xəbərlər': ['gt:l', null] };
+    const key = m && String(m.chat.id) === String(env.CHAT_ID) && KEYS[(m.text || '').trim()];
+    if (key) {
+      const r = await gh({ data: key[0], message_id: m.message_id, chat_id: m.chat.id });
+      if (!r.ok) await tg('sendMessage', { chat_id: m.chat.id, text: '⚠️ GitHub xətası: ' + r.status });
+      else if (key[1]) await tg('sendMessage', { chat_id: m.chat.id, text: key[1] });
       return new Response('ok');
     }
     if (m && String(m.chat.id) === String(env.CHAT_ID) && m.text && m.reply_to_message?.from?.is_bot) {
