@@ -4,6 +4,9 @@ on:
     types: [tg]
   schedule: [{cron: '23 * * * *'}]
   workflow_dispatch:
+    inputs:
+      promo: {description: 'Showband promo Reels hazırla və Telegram-a göndər', type: boolean, default: false}
+      panel: {description: 'Telegram-a idarə panelini göndər və sancaqla', type: boolean, default: false}
 permissions: {contents: write}
 concurrency: {group: bot, cancel-in-progress: false}
 jobs:
@@ -23,20 +26,24 @@ jobs:
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
       - name: ffmpeg (Reels yenidən hazırlamaq üçün)
-        if: github.event_name == 'repository_dispatch' && (github.event.client_payload.kind == 'reply' || github.event.client_payload.cmd == 'yeni' || github.event.client_payload.cmd == 'tedbir' || startsWith(github.event.client_payload.data, 'gt:') || startsWith(github.event.client_payload.data, 'rw:') || startsWith(github.event.client_payload.data, 'ph:') || startsWith(github.event.client_payload.data, 'nx:'))
+        if: inputs.promo || github.event_name == 'repository_dispatch' && (github.event.client_payload.kind == 'reply' || github.event.client_payload.cmd == 'yeni' || github.event.client_payload.cmd == 'tedbir' || startsWith(github.event.client_payload.data, 'gt:') || startsWith(github.event.client_payload.data, 'rw:') || startsWith(github.event.client_payload.data, 'ph:') || startsWith(github.event.client_payload.data, 'nx:') || startsWith(github.event.client_payload.data, 'pv:') || startsWith(github.event.client_payload.data, 'tx:'))
         run: pip install -q pillow numpy imageio-ffmpeg && sudo ln -sf "$(python -c 'import imageio_ffmpeg as f; print(f.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg && ffmpeg -version | head -1
       - run: python news/tg.py poll
         if: github.event_name == 'repository_dispatch'
+      - run: python news/tg.py promo
+        if: inputs.promo
+      - run: python news/tg.py panel
+        if: inputs.panel
       - name: commit (sayt yenilənir → Netlify)
         run: |
           git config user.name "showband-bot"; git config user.email "bot@users.noreply.github.com"
           git add -A . && git commit -m "bot: paylaşım" || exit 0
           for i in 1 2 3 4; do git pull --rebase -X theirs -q && git push -q && break; git rebase --abort 2>/dev/null; sleep 5; done
       - name: AI yoxlama
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' && !inputs.promo && !inputs.panel
         run: python news/write.py --llm-test
       - name: Instagram yoxlama
-        if: github.event_name == 'workflow_dispatch' && env.IG_TOKEN != ''
+        if: github.event_name == 'workflow_dispatch' && !inputs.promo && !inputs.panel && env.IG_TOKEN != ''
         run: python news/publish.py --ig-check
       - name: Instagram
         if: env.IG_TOKEN != ''
