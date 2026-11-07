@@ -44,13 +44,14 @@ def header(d, sub):
     av = R.logo(150); return av, sub
 
 
-def layer_event(c, title=None):
+def layer_event(c, title=None, text=None):
     L = shade(True); d = ImageDraw.Draw(L)
     x = chip(d, 70, 170, 'CANLI · SHOWBAND', RED); chip(d, x + 14, 170, R.up(LABEL.get(c['e'], 'Tədbir')), (255, 255, 255, 40))
     tf, tl = R.fit(d, title or c['n'], 'unbounded-900', 74, W - 140, 3)
     y = 260
     for l in tl: d.text((70, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.18)
-    d.text((70, y + 14), 'Bu həftə səhnədə — Showband Group', font=F('montserrat-500', 34), fill=(230, 230, 236))
+    sf, sl = R.fit(d, text or 'Bu həftə səhnədə — Showband Group', 'montserrat-500', 34, W - 140, 3, 28)
+    for l in sl: d.text((70, y + 14), l, font=sf, fill=(230, 230, 236)); y += int(sf.size * 1.4)
     L.alpha_composite(shade(False))
     lg = R.logo(260); L.alpha_composite(lg, (W - 260 - 60, H - lg.height - 90))
     return L
@@ -76,14 +77,14 @@ def layer_review(rv, c, title=None):
     return L
 
 
-def layer_season(s, c, title=None):
+def layer_season(s, c, title=None, text=None):
     L = shade(True); d = ImageDraw.Draw(L)
     chip(d, 70, 170, s['chip'], RED)
     y = 270; tf = F('unbounded-900', s.get('size', 96))
     lines = s['title']
     if title: tf, lines = R.fit(d, title, 'unbounded-900', s.get('size', 96), W - 140, 4, 56)
     for l in lines: d.text((70, y), l, font=tf, fill=WHITE); y += int(tf.size * 1.15)
-    tf2, tl2 = R.fit(d, s['sub'], 'montserrat-600', 40, W - 140, 3, 30)
+    tf2, tl2 = R.fit(d, text or s['sub'], 'montserrat-600', 40, W - 140, 3, 30)
     for l in tl2: d.text((70, y + 20), l, font=tf2, fill=(235, 235, 240)); y += int(tf2.size * 1.4)
     L.alpha_composite(shade(False))
     lg = R.logo(260); L.alpha_composite(lg, (W - 260 - 60, H - lg.height - 90))
@@ -96,26 +97,39 @@ SEASONS = [
 ]
 
 
+BODY = {
+    'toy': ['{place} məkanında keçirilən toy mərasimində Showband Group komandası bütün gecə səhnədə oldu. Showman qonaqları ilk dəqiqədən oyuna qoşdu, canlı band və DJ isə rəqs meydançasını boş qoymadı.',
+            'Proqrama fleşmob, işıqlı rekvizitlər və bəy-gəlin üçün xüsusi sürprizlər daxil idi. Ssenari əvvəlcədən ailə ilə birlikdə hazırlanmışdı.'],
+    'korp': ['{place} məkanında keçirilən korporativ tədbirdə Showband Group aparıcı, DJ və şou proqramı ilə çıxış etdi. Komanda üçün müsabiqələr və interaktiv oyunlar təşkil olundu.',
+             'Tədbir şirkətin brend üslubunda, səs və işıq texnikası ilə birlikdə tam paket kimi hazırlandı.'],
+    'adgunu': ['{place} məkanında keçirilən ad günündə Showband Group DJ, showman və lazer şousu ilə qonaqları əyləndirdi.',
+               'Ad günü sahibi üçün xüsusi sürprizlər və oyunlar hazırlanmışdı — gecə rəqs və gülüşlə keçdi.'],
+    'party': ['{place}: Showband Group gecənin musiqi və şou hissəsini öz üzərinə götürdü. DJ setləri, canlı ifa və işıq şousu gecəni səhərə qədər davam etdirdi.'],
+    'acilis': ['Toy açılışı Showband Group-un xüsusi ssenarisi ilə başladı: işıq, musiqi və effektlər bəy-gəlinin səhnəyə çıxışını unudulmaz etdi.'],
+    'diger': ['{place} — Showband Group canlı ifa, showman və DJ ilə səhnədə.'],
+}
 # xəbər üslubu (mövcud kart dizaynı): «Showband ... etdi — siz də istəyirsinizsə»
 NEWS = {
     'toy': ('{place} toyunda Showband Group səhnəni alovlandırdı', 'Showman, canlı band və fleşmob — qonaqlar gecəni unutmayacaq. Toyunuzda da belə olsun?'),
     'korp': ('{place}: Showband Group korporativ gecəni şouya çevirdi', 'DJ, showman və müsabiqələr — komanda ruhu üçün ən yaxşı gecə. Korporativiniz üçün yazın.'),
-    'adgunu': ('{place}-da ad günü: Showband Group sürprizlərlə gəldi', 'DJ, showman, lazer şou — ad gününüz də belə yadda qalsın.'),
+    'adgunu': ('{place}: ad günü Showband Group sürprizləri ilə keçdi', 'DJ, showman, lazer şou — ad gününüz də belə yadda qalsın.'),
     'party': ('{place}: Showband Group ilə gecə səhərə qədər davam etdi', 'Party, son zəng, məzun gecəsi — Showband enerjisi ilə.'),
     'acilis': ('Toy açılışı: Showband Group xüsusi ssenari ilə qonaqları heyran etdi', 'Fərdi ssenari, işıq və musiqi — toyunuzun ilk dəqiqəsi möhtəşəm olsun.'),
     'diger': ('{place}: Showband Group səhnədə', 'Canlı ifa, showman və DJ — tədbiriniz üçün yazın.'),
 }
 
 
-def news_render(c, out_dir, title=None):
+def news_render(c, out_dir, title=None, text=None):
     import datetime
     place = c['n'].split('·')[-1].strip() if '·' in c['n'] else c['n']
-    t, cap = NEWS.get(c['e'], NEWS['diger'])
+    t, cap = NEWS.get(c['e'], NEWS['diger']); cap = text or cap
     img = next((f'video/ev_{c["k"]}{x}.jpg' for x in ('_hd', '') if os.path.exists(os.path.join(ROOT, f'video/ev_{c["k"]}{x}.jpg'))), None)
     p = {'slug': f'promo-news-{c["k"]}', 'title': title or t.format(place=place), 'category': 'Showband', 'date': datetime.date.today().isoformat(),
          'image': img, 'description': cap, 'reel': {'caption': cap}, 'mode': 'event'}
     R.render(p, out_dir)
-    return {'slug': p['slug'], 'mp4': os.path.join(out_dir, p['slug'] + '.mp4'), 'caption': p['title'] + ' 🎉\n' + cap}
+    body = [{'p': x.format(place=place)} for x in BODY.get(c['e'], BODY['diger'])] + [{'h': 'Tədbiriniz üçün'}, {'p': cap}]
+    return {'slug': p['slug'], 'mp4': os.path.join(out_dir, p['slug'] + '.mp4'), 'caption': p['title'] + ' 🎉\n' + cap,
+            'title': p['title'], 'text': cap, 'body': body, 'image': img}
 
 
 def video_frames(path, start, dur):
@@ -132,17 +146,17 @@ def duration(path):
     return float(subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries', 'format=duration', '-of', 'csv=p=0', path]))
 
 
-def render(kind, k=None, out_dir=None, seed=None, title=None):
+def render(kind, k=None, out_dir=None, seed=None, title=None, text=None):
     rnd = random.Random(seed)
     cl = [c for c in V.clips() if not c['w']]
     c = next((x for x in cl if x['k'] == k), None) or rnd.choice(cl)
-    if kind == 'news': return news_render(c, out_dir or os.path.join(HERE, 'out'), title)
+    if kind == 'news': return news_render(c, out_dir or os.path.join(HERE, 'out'), title, text)
     src = os.path.join(ROOT, 'video', f'ev_{c["k"]}.mp4')
-    if kind == 'event': ov = layer_event(c, title); slug = f'promo-event-{c["k"]}'; cap = f'{title or c["n"]} 🎉\nBu həftə səhnədə — Showband Group.'
+    if kind == 'event': ov = layer_event(c, title, text); slug = f'promo-event-{c["k"]}'; cap = f'{title or c["n"]} 🎉\n' + (text or 'Bu həftə səhnədə — Showband Group.')
     elif kind == 'review':
         rv = rnd.choice([r for r in reviews() if len(r['t']) > 30] or reviews()); ov = layer_review(rv, c, title); slug = f'promo-review-{c["k"]}'; cap = f'«{rv["t"]}» — {rv["u"]} ⭐️⭐️⭐️⭐️⭐️\nRəyiniz üçün təşəkkür edirik!'
     else:
-        s = SEASONS[0] if c['e'] == 'korp' else SEASONS[1] if c['e'] in ('toy', 'acilis') else rnd.choice(SEASONS); ov = layer_season(s, c, title); slug = f'promo-season-{c["k"]}'; cap = (title or ' '.join(s['title'])) + ' 📅\n' + s['sub']
+        s = SEASONS[0] if c['e'] == 'korp' else SEASONS[1] if c['e'] in ('toy', 'acilis') else rnd.choice(SEASONS); ov = layer_season(s, c, title, text); slug = f'promo-season-{c["k"]}'; cap = (title or ' '.join(s['title'])) + ' 📅\n' + (text or s['sub'])
     outro = R.outro_layer('event')
     d = duration(src); start = max(0., min(d - TOTAL - .2, d * .3))
     out_dir = out_dir or os.path.join(HERE, 'out'); os.makedirs(out_dir, exist_ok=True)
@@ -171,8 +185,8 @@ def render(kind, k=None, out_dir=None, seed=None, title=None):
 KINDS = ['event', 'news', 'review', 'season']  # promo növləri növbə ilə
 
 
-def make_draft(kind=None, exclude=None, k=None, title=None):
-    """Növbəti promo Reels-i hazırlayır və drafts/ qovluğuna qaralama yazır (yalnız Instagram Reels)."""
+def make_draft(kind=None, exclude=None, k=None, title=None, text=None):
+    """Növbəti promo Reels-i hazırlayır və drafts/ qovluğuna qaralama yazır (news növü saytda da çıxır, qalanları yalnız Reels)."""
     import datetime
     sp = os.path.join(HERE, 'promo_state.json')
     st = json.load(open(sp)) if os.path.exists(sp) else {'i': -1, 'used': []}
@@ -182,17 +196,29 @@ def make_draft(kind=None, exclude=None, k=None, title=None):
     fresh = [x for x in fresh if x != exclude] or fresh
     k = k or random.choice(fresh); st['used'] = (st['used'] + [k])[-50:]
     out = os.path.join(HERE, 'out')
-    r = render(kind, k, out, title=title)
+    r = render(kind, k, out, title=title, text=text)
     day = datetime.date.today().isoformat()
-    slug = f'{r["slug"]}-{day}-{datetime.datetime.now().strftime("%H%M%S")}'
+    now = datetime.datetime.now().strftime("%H%M")
+    if kind == 'news':
+        import write as W
+        slug = f'{W.slugify(r.get("title") or "showband-group")}-{now}'
+    else:
+        slug = f'{r["slug"]}-{day}-{now}'
     for ext in ('.mp4', '.jpg'):
         src = os.path.join(out, r['slug'] + ext)
         if os.path.exists(src): os.replace(src, os.path.join(out, slug + ext))
     c = next(x for x in V.clips() if x['k'] == k)
-    title = r['caption'].split('\n')[0]
-    d = {'slug': slug, 'title': title, 'lead': f'Promo Reels ({kind}) · video: {c["n"]}', 'category': 'Showband',
+    title = r.get('title') or r['caption'].split('\n')[0].rstrip(' 🎉📅⭐️')
+    text = r.get('text') or (r['caption'].split('\n')[1] if '\n' in r['caption'] else '')
+    d = {'slug': slug, 'title': title, 'lead': text, 'category': 'Showband',
          'date': day, 'source': {'name': 'Showband Group', 'url': V.SITE + '/videolar/'}, 'ig_caption': r['caption'],
-         'mode': 'promo', 'promo_kind': kind, 'clip': k, 'reels_only': True, 'viral': '—'}
+         'mode': 'promo', 'promo_kind': kind, 'clip': k, 'reels_only': kind != 'news', 'viral': '—', 'video_title': c['n']}
+    if kind == 'news':  # «Showband ... etdi» — saytda da xəbər olaraq çıxır
+        d.update({'description': text, 'body': r['body'], 'reel': {'caption': text},
+                  'tags': ['Showband Group', LABEL.get(c['e'], 'Tədbir'), 'Bakı', 'Canlı şou']})
+        if r.get('image'):
+            import shutil; os.makedirs(os.path.join(out, 'img'), exist_ok=True)
+            shutil.copy(os.path.join(ROOT, r['image']), os.path.join(out, 'img', slug + '.jpg'))
     os.makedirs(os.path.join(HERE, 'drafts'), exist_ok=True)
     json.dump(d, open(os.path.join(HERE, 'drafts', slug + '.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     json.dump(st, open(sp, 'w'))

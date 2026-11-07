@@ -76,10 +76,10 @@ def find_draft(key):
 def send(path):
     d = json.load(open(path, encoding='utf-8'))
     video = os.path.join(HERE, 'out', d['slug'] + '.mp4')
-    mk = kb(d['slug']) if not d.get('reels_only') else json.dumps({'inline_keyboard': [
+    mk = kb(d['slug']) if d.get('mode') != 'promo' else json.dumps({'inline_keyboard': [
         [{'text': '✅ Paylaş', 'callback_data': f'ok:{sid(d["slug"])}'}, {'text': '❌ Ləğv et', 'callback_data': f'no:{sid(d["slug"])}'}],
-        [{'text': '✏️ Başlığı dəyiş', 'callback_data': f'tt:{sid(d["slug"])}'}, {'text': '🎬 Başqa video', 'callback_data': f'pv:{sid(d["slug"])}'}],
-        [{'text': '🔄 Başqa növ', 'callback_data': f'nx:{sid(d["slug"])}'}]]})
+        [{'text': '✏️ Başlığı dəyiş', 'callback_data': f'tt:{sid(d["slug"])}'}, {'text': '📝 Mətni dəyiş', 'callback_data': f'tx:{sid(d["slug"])}'}],
+        [{'text': '🎬 Başqa video', 'callback_data': f'pv:{sid(d["slug"])}'}, {'text': '🔄 Başqa növ', 'callback_data': f'nx:{sid(d["slug"])}'}]]})
     data = {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': caption(d), 'parse_mode': 'HTML', 'reply_markup': mk,
             'supports_streaming': 'true'}
     m = api('sendVideo', data, {'video': video}) if os.path.exists(video) else api('sendMessage', {
@@ -137,10 +137,10 @@ def drop(chat, mid):
 def resend(path, old):
     """Reels-i yenidən hazırlayır, köhnə mesajı silir və yenisini göndərir."""
     d = json.load(open(path, encoding='utf-8'))
-    if d.get('reels_only'):  # promo: eyni növ + eyni video, yeni başlıqla
+    if d.get('mode') == 'promo':  # promo: eyni növ + eyni video, yeni başlıq/mətnlə
         d['status'] = 'rejected'; save(path, d)
         if old: drop(env('TELEGRAM_CHAT_ID'), old)
-        get_promo(kind=d.get('promo_kind'), k=d.get('clip'), title=d['title']); return
+        get_promo(kind=d.get('promo_kind'), k=d.get('clip'), title=d['title'], text=d.get('lead') or None); return
     prepare(path)
     if old: drop(env('TELEGRAM_CHAT_ID'), old)
     send(path)
@@ -153,6 +153,13 @@ def on_reply(e):
         p = os.path.join(dd, f)
         if not f.endswith('.json'): continue
         d = json.load(open(p, encoding='utf-8'))
+        if d.get('text_prompt') == e['reply_to'] and d.get('status') == 'pending':
+            new = ' '.join(e['text'].split())[:220]
+            if len(new) < 10: say('⚠️ Mətn çox qısadır — yenidən yazın.'); return
+            d['lead'] = new; prompt = d.pop('text_prompt'); save(p, d)
+            drop(env('TELEGRAM_CHAT_ID'), prompt)
+            resend(p, d.get('tg_message'))
+            return
         if d.get('title_prompt') == e['reply_to'] and d.get('status') == 'pending':
             new = ' '.join(e['text'].split())[:110]
             if len(new) < 10: say('⚠️ Başlıq çox qısadır — yenidən yazın.'); return
@@ -288,7 +295,12 @@ def poll():
         try: api(method, body)
         except Exception as x: print('  ! edit:', x)
 
-    if d.get('reels_only') and act in ('rw', 'nx', 'ph', 'pv'):  # promo: başqa növ / başqa video
+    if d.get('mode') == 'promo' and act == 'tx':  # mətni özün yaz
+        m = api('sendMessage', {'chat_id': chat, 'reply_to_message_id': mid,
+                                'text': '📝 Yeni mətni <b>bu mesaja cavab (reply)</b> olaraq yazın:', 'parse_mode': 'HTML',
+                                'reply_markup': {'force_reply': True, 'input_field_placeholder': 'Yeni mətn…'}})
+        d['text_prompt'] = m['message_id']; save(path, d); json.dump(st, open(STATE, 'w')); return
+    if d.get('mode') == 'promo' and act in ('rw', 'nx', 'ph', 'pv'):  # promo: başqa növ / başqa video
         d['status'] = 'rejected'; save(path, d)
         drop(chat, mid)
         if act == 'pv': get_promo(kind=d.get('promo_kind'), exclude=d.get('clip'))
@@ -347,7 +359,7 @@ def send_new():
         if not f.endswith('.json'): continue
         d = json.load(open(p, encoding='utf-8'))
         if d.get('status'): continue
-        if not d.get('reels_only'): prepare(p)  # promo videosu artıq hazırdır
+        if d.get('mode') != 'promo': prepare(p)  # promo videosu artıq hazırdır
         send(p)
 
 
