@@ -25,6 +25,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with: {python-version: '3.12'}
+      - run: bash news/pool_sync.sh pull
       - name: ffmpeg (Reels yenidən hazırlamaq üçün)
         if: inputs.promo || github.event_name == 'repository_dispatch' && (github.event.client_payload.kind == 'reply' || github.event.client_payload.cmd == 'yeni' || github.event.client_payload.cmd == 'tedbir' || startsWith(github.event.client_payload.data, 'gt:') || startsWith(github.event.client_payload.data, 'rw:') || startsWith(github.event.client_payload.data, 'ph:') || startsWith(github.event.client_payload.data, 'nx:') || startsWith(github.event.client_payload.data, 'pv:') || startsWith(github.event.client_payload.data, 'tx:'))
         run: pip install -q pillow numpy imageio-ffmpeg && sudo ln -sf "$(python -c 'import imageio_ffmpeg as f; print(f.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg && ffmpeg -version | head -1
@@ -34,7 +35,7 @@ jobs:
         if: inputs.promo
       - run: python news/tg.py panel
         if: inputs.panel
-      - name: commit (sayt yenilənir → Netlify)
+      - name: commit (sayt yenilənir → GitHub Pages)
         run: |
           git config user.name "showband-bot"; git config user.email "bot@users.noreply.github.com"
           git add -A . && git commit -m "bot: paylaşım" || exit 0
@@ -48,8 +49,11 @@ jobs:
       - name: Instagram
         if: env.IG_TOKEN != ''
         run: python news/publish.py --ig-queue
-      - name: commit IG status
-        if: env.IG_TOKEN != ''
+      - name: hovuz (bot-data)
+        if: always()
+        run: bash news/pool_sync.sh push
+      - name: commit IG status + köhnə mediaların təmizlənməsi
         run: |
-          git add -A news && git commit -m "bot: instagram" || exit 0
+          python news/cleanup.py
+          git add -A news reels && git commit -m "bot: instagram / təmizlik" || exit 0
           for i in 1 2 3 4; do git pull --rebase -X theirs -q && git push -q && break; git rebase --abort 2>/dev/null; sleep 5; done

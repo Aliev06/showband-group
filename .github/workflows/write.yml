@@ -20,14 +20,19 @@ jobs:
         with: {python-version: '3.12'}
       - run: pip install -q pillow numpy imageio-ffmpeg && sudo ln -sf "$(python -c 'import imageio_ffmpeg as f; print(f.get_ffmpeg_exe())')" /usr/local/bin/ffmpeg && ffmpeg -version | head -1
       - run: pip install -q pillow numpy
+      - run: bash news/pool_sync.sh pull
       - run: python news/collect.py
         if: ${{ !inputs.only_send }}
       - run: python news/write.py --n 1
         if: ${{ !inputs.only_send }}
       - run: python news/tg.py send-new
+      - name: hovuz (bot-data)
+        if: always()
+        run: bash news/pool_sync.sh push
       - name: commit
         if: always()
         run: |
           git config user.name "showband-bot"; git config user.email "bot@users.noreply.github.com"
-          git add -A news && git commit -m "bot: qaralama" || exit 0
+          python news/cleanup.py
+          git add -A news reels && git commit -m "bot: qaralama" || exit 0
           for i in 1 2 3 4; do git pull --rebase -X theirs -q && git push -q && break; git rebase --abort 2>/dev/null; sleep 5; done

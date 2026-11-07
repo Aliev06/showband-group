@@ -1,9 +1,10 @@
-// Showband Group — Telegram düymələri üçün ani webhook (v8).
+// Showband Group — Telegram düymələri üçün ani webhook (v9).
 // Cron Triggers: '0 6 * * *' → 10:00 hype, '0 13 * * *' → 17:00 tədbir (Bakı vaxtı)
 // Secrets: TG_TOKEN, CHAT_ID, GH_TOKEN, SECRET · D1 binding: DB (baxış sayğacı, /v)
 const REPO = 'Aliev06/showband-group';
 const TXT = { ok: '⏳ Paylaşılır… 1-2 dəqiqə', no: 'Ləğv edilir…', rw: '✍️ Yenidən yazılır… ~1 dəqiqə',
-  tt: '✏️ Yeni başlığı cavab olaraq yazın', dl: '🗑 Təsdiq gözlənilir', dy: '🗑 Silinir… ~1 dəqiqə', dn: 'Ləğv edildi', gt: '🔎 Yeni xəbər axtarılır… ~2 dəqiqə', ph: '🖼 Şəkilsiz hazırlanır… ~1 dəqiqə', nx: '🔄 Başqa xəbər axtarılır… ~2 dəqiqə' };
+  tt: '✏️ Yeni başlığı cavab olaraq yazın', dl: '🗑 Təsdiq gözlənilir', dy: '🗑 Silinir… ~1 dəqiqə', dn: 'Ləğv edildi', gt: '🔎 Yeni xəbər axtarılır… ~2 dəqiqə', ph: '🖼 Şəkilsiz hazırlanır… ~1 dəqiqə', nx: '🔄 Başqa variant hazırlanır… ~2 dəqiqə',
+  tx: '📝 Yeni mətni cavab olaraq yazın', pv: '🎬 Başqa video hazırlanır… ~1 dəqiqə' };
 
 // 👁 Baxış sayğacı — yalnız real insanlar: sayt JS-i 10 san / scroll-dan sonra göndərir, botlar UA ilə süzülür,
 // bir cihaz (IP+brauzer) bir xəbəri gündə 1 dəfə sayılır.
