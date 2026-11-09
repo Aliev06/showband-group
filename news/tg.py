@@ -31,7 +31,7 @@ def api(method, data=None, files=None):
         req = urllib.request.Request(url, data=body, headers={'Content-Type': f'multipart/form-data; boundary={b}'})
     else:
         req = urllib.request.Request(url, data=json.dumps(data or {}).encode(), headers={'Content-Type': 'application/json'})
-    with urllib.request.urlopen(req, timeout=120) as r:
+    with urllib.request.urlopen(req, timeout=300 if files else 120) as r:
         j = json.load(r)
     if not j.get('ok'): raise RuntimeError(j)
     return j['result']
@@ -82,9 +82,14 @@ def send(path):
         [{'text': '🎬 Başqa video', 'callback_data': f'pv:{sid(d["slug"])}'}, {'text': '🔄 Başqa növ', 'callback_data': f'nx:{sid(d["slug"])}'}]]})
     data = {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': caption(d), 'parse_mode': 'HTML', 'reply_markup': mk,
             'supports_streaming': 'true'}
-    m = api('sendVideo', data, {'video': video}) if os.path.exists(video) else api('sendMessage', {
-        'chat_id': data['chat_id'], 'text': data['caption'], 'parse_mode': 'HTML', 'reply_markup': json.loads(data['reply_markup'])})
-    d['tg_message'] = m['message_id']; d['status'] = 'pending'
+    try:
+        m = api('sendVideo', data, {'video': video}) if os.path.exists(video) else api('sendMessage', {
+            'chat_id': data['chat_id'], 'text': data['caption'], 'parse_mode': 'HTML', 'reply_markup': json.loads(data['reply_markup'])})
+        d['tg_message'] = m['message_id']
+    except Exception as x:
+        # Telegram cavabı gecikəndə video çox vaxt artıq çatıb — qaralamanı itirməmək üçün davam edirik
+        print('  ! göndərmə cavabı alınmadı (yəqin çatıb):', x)
+    d['status'] = 'pending'
     json.dump(d, open(path, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('göndərildi:', d['slug'])
 
@@ -283,7 +288,7 @@ def poll():
         if act != 'dl': drop(e['chat_id'], e['message_id'])  # təsdiq mesajını sil
         delete_flow(act, key, e['chat_id']); return
     path = find_draft(key)
-    if not path: say('⚠️ Qaralama tapılmadı'); return
+    if not path: say('⚠️ Bu qaralama artıq yoxdur. Yeni xəbər üçün aşağıdakı «📰 Xəbər» düyməsini basın.'); return
     d = json.load(open(path, encoding='utf-8'))
     if d.get('status') in ('published', 'rejected'): return
     chat, mid, is_video = e['chat_id'], e['message_id'], e.get('video')

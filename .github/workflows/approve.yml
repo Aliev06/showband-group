@@ -36,6 +36,7 @@ jobs:
       - run: python news/tg.py panel
         if: inputs.panel
       - name: commit (sayt yenilənir → GitHub Pages)
+        if: always()   # skript xəta versə belə qaralamalar saxlanılsın (yoxsa düymələr «Qaralama tapılmadı» verir)
         run: |
           git config user.name "showband-bot"; git config user.email "bot@users.noreply.github.com"
           git add -A . && git commit -m "bot: paylaşım" || exit 0
@@ -53,6 +54,7 @@ jobs:
         if: always()
         run: bash news/pool_sync.sh push
       - name: commit IG status + köhnə mediaların təmizlənməsi
+        if: always()
         run: |
           python news/cleanup.py
           git add -A news reels && git commit -m "bot: instagram / təmizlik" || exit 0
