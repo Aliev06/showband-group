@@ -10,9 +10,10 @@ WA = f'https://wa.me/{CFG["whatsapp"]}?text='
 # slug, CL-dəki e, başlıq (h1 üçün), qısa ad (düymə), WhatsApp mətni
 CATS = [
     ('toy', 'toy', 'Toy və nişan', 'Toy', 'Salam! Toy üçün məlumat almaq istəyirəm.'),
+    ('instrumental-band', 'band', 'İnstrumental Band', 'İnstrumental Band', 'Salam! İnstrumental band üçün məlumat almaq istəyirəm.'),
     ('korporativ', 'korp', 'Korporativ', 'Korporativ', 'Salam! Korporativ tədbir üçün məlumat almaq istəyirəm.'),
     ('ad-gunu', 'adgunu', 'Ad günü', 'Ad günü', 'Salam! Ad günü üçün məlumat almaq istəyirəm.'),
-    ('party', 'party', 'Party', 'Party', 'Salam! Party üçün məlumat almaq istəyirəm.'),
+    ('party', 'party', 'Son Zəng & Party', 'Son Zəng & Party', 'Salam! Son zəng / party üçün məlumat almaq istəyirəm.'),
     ('acilis', 'acilis', 'Toy açılışı', 'Açılış', 'Salam! Toy açılışı üçün məlumat almaq istəyirəm.'),
     ('diger', 'diger', 'Digər çıxışlar', 'Digər', 'Salam! Tədbir üçün məlumat almaq istəyirəm.'),
 ]
@@ -58,9 +59,9 @@ def page(slug, items, allc, cur):
     else:
         wa_t = 'Salam! Tədbir üçün məlumat almaq istəyirəm.'
         title = 'Videolar — Showband Group | Bakı'
-        desc = 'Showband Group-un toy, korporativ, ad günü, party və açılış tədbirlərindən canlı videolar. Bakı.'
+        desc = 'Showband Group-un toy, korporativ, ad günü, son zəng, party, açılış və instrumental band tədbirlərindən canlı videolar. Bakı.'
         h1h = 'Səhnədən <em>canlı</em>'
-        lead = f'Toy, korporativ, ad günü, party və açılışlardan {len(items)} video.'
+        lead = f'Toy, korporativ, ad günü, son zəng, party, açılış və instrumental band çıxışlarından {len(items)} video.'
     wa = WA + wa_t.replace(' ', '%20')
     og = f'video/ev_{items[0]["k"]}.jpg' if items else 'img/og.jpg'
     crumbs = [{'@type': 'ListItem', 'position': 1, 'name': 'Ana səhifə', 'item': SITE + '/'},
