@@ -139,7 +139,7 @@ h1 em{font-style:normal;color:var(--red2)}
 .rc .u{display:flex;gap:12px;align-items:center}.rc .u i{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--red),#4a0711);display:grid;place-items:center;font:700 16px var(--d);font-style:normal}
 .rc .u b{display:block;font-size:15px}.rc .u span{font-size:12px;color:var(--mute)}
 .rc p{margin:0;color:#d8d8de;font-size:15px;line-height:1.55}.rc small{color:var(--red2);letter-spacing:2px}
-@media (max-width:560px){.rc{width:280px}}
+@media (max-width:560px){.rc{width:250px;padding:14px 16px;gap:8px;border-radius:16px}.rc .u{gap:10px}.rc .u i{width:32px;height:32px;font-size:14px}.rc .u b{font-size:14px}.rc .u span{font-size:11px}.rc p{font-size:13.5px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.rc small{font-size:12px}.tk{margin-top:20px}.tk .tt{gap:10px;animation-duration:70s}}
 .rg{margin-top:26px;display:flex;justify-content:center}
 .pkn{margin:18px 0 0;color:var(--mute);font-size:13px;line-height:1.5;max-width:720px}
 @media (prefers-reduced-motion:reduce){.tk .tt{animation:none}.tk .tr{overflow-x:auto}}
@@ -477,7 +477,7 @@ var CLN=6;function renderCl(){ var all=CL.map(function(c,i){c.i=i;return c}).fil
 function renderTm(){ $('team').innerHTML=TM.map(function(m){return '<div class="tmc"><div class="ph">'+(m.img?'<img src="'+m.img+'" alt="'+pick(m.n)+' — Showband" loading="lazy">':t('t_ph'))+'</div><div class="tx"><h3>'+pick(m.n)+'</h3><p>'+m.r[li]+'</p></div></div>'}).join('')}
 function renderRv(){ var card=function(r){return '<div class="rc"><div class="u"><i>'+r.u.charAt(0).toUpperCase()+'</i><div><b>'+r.u+'</b><span>'+t('r_src')+'</span></div></div><p>“'+r.t+'”</p><small>★★★★★</small></div>'};
  var row=function(list,rev){var h=list.map(card).join('');return '<div class="tr'+(rev?' rv2':'')+'"><div class="tt">'+h+h+'</div></div>'};
- $('rv').innerHTML=row(RV.slice(0,4),false)+row(RV.slice(4).concat(RV.slice(0,1)),true)}
+ $('rv').innerHTML=(window.matchMedia&&matchMedia('(max-width:560px)').matches)?row(RV,false):row(RV.slice(0,4),false)+row(RV.slice(4).concat(RV.slice(0,1)),true)}
 function renderSteps(){ $('steps').innerHTML=[['s1','s1b','📝'],['s2','s2b','💬'],['s3','s3b','✅']].map(function(s,i){return '<div'+(i===0?' class="now"':'')+'><i>'+s[2]+'</i><span><b>'+(i+1)+'. '+t(s[0])+'</b><small>'+t(s[1])+'</small></span></div>'}).join('')}
 function renderForm(){ var tv=$('ftype').value||'toy',pv=$('fpk').value;
  $('ftype').innerHTML=EV.map(function(e){return '<option value="'+e.id+'">'+e.n[li]+'</option>'}).join('');$('ftype').value=EVF||tv;
