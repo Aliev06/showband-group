@@ -43,5 +43,6 @@
  "mode": "event",
  "track": "DJ Orxan Abbasov & Feyyazbeats — Sehirli Xalat",
  "tg_message": 92,
- "status": "pending"
+ "status": "published",
+ "ig_status": "queued"
 }
