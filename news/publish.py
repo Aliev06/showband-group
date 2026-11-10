@@ -85,14 +85,15 @@ def graph(path, params, method='POST'):
 def ig_publish(d, again=True):
     """Sayt yeniləndikdən sonra çağırılır (video URL artıq açıq olmalıdır)."""
     url = f'{site_url()}/reels/{d["slug"]}.mp4'
-    for _ in range(20):  # GitHub Pages yeniləyənə qədər gözlə
+    local = os.path.exists(os.path.join(ROOT, 'reels', d['slug'] + '.mp4'))
+    for _ in range(0 if local else 40):  # video lokal varsa birbaşa yüklənir; yoxsa saytı 10 dəq gözlə
         try:
             with urllib.request.urlopen(urllib.request.Request(url, method='HEAD'), timeout=20) as r:
                 if r.status == 200: break
         except Exception: pass
         time.sleep(15)
     else:
-        raise TimeoutError('video saytda hələ yoxdur')
+        if not local: raise TimeoutError('video saytda hələ yoxdur')
     # video faylını birbaşa Meta-ya yükləyirik (resumable upload) — URL-dən yükləmə xətalarından qaçmaq üçün
     c = graph(f'{env("IG_USER_ID")}/media', {'media_type': 'REELS', 'upload_type': 'resumable', 'caption': d.get('ig_caption', ''),
                                              'share_to_feed': 'false',  # yalnız Reels bölməsi

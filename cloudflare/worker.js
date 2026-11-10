@@ -1,4 +1,4 @@
-// Showband Group — Telegram düymələri üçün ani webhook (v9).
+// Showband Group — Telegram düymələri üçün ani webhook (v10).
 // Cron Triggers: '0 6 * * *' → 10:00 hype, '0 13 * * *' → 17:00 tədbir (Bakı vaxtı)
 // Secrets: TG_TOKEN, CHAT_ID, GH_TOKEN, SECRET · D1 binding: DB (baxış sayğacı, /v)
 const REPO = 'Aliev06/showband-group';
@@ -49,12 +49,15 @@ async function views(req, env) {
 export default {
   async scheduled(ev, env) {
     if (env.DB) try { await env.DB.prepare("DELETE FROM seen WHERE d < date('now','-2 day')").run(); } catch (e) {}
+    // hər saat :23 — Instagram növbəsi (GitHub schedule etibarsızdır)
+    const igq = ev.cron === '23 * * * *';
     const cmd = ev.cron === '0 13 * * *' ? 'tedbir' : 'yeni';
     await fetch(`https://api.github.com/repos/${REPO}/dispatches`, {
       method: 'POST',
       headers: { authorization: `Bearer ${env.GH_TOKEN}`, accept: 'application/vnd.github+json',
                  'user-agent': 'showband-bot', 'content-type': 'application/json' },
-      body: JSON.stringify({ event_type: 'tg', client_payload: { kind: 'cmd', cmd, chat_id: env.CHAT_ID } }) });
+      body: JSON.stringify(igq ? { event_type: 'igq', client_payload: {} }
+                               : { event_type: 'tg', client_payload: { kind: 'cmd', cmd, chat_id: env.CHAT_ID } }) });
   },
   async fetch(req, env) {
     if (new URL(req.url).pathname === '/v') return views(req, env);
