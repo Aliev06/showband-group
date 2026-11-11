@@ -18,6 +18,23 @@ def env(k):
     return v.strip() if v else v
 
 
+CTYPE = {'.mp4': 'video/mp4', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png'}
+
+
+def vmeta(video):
+    """Telegram-a videonun ölçüsünü və müddətini bildiririk — yoxsa iPhone-da kvadrat (sıxılmış) göstərir."""
+    import re, subprocess
+    data, files = {'width': 1080, 'height': 1920}, {'video': video}
+    try:
+        err = subprocess.run(['ffmpeg', '-i', video], capture_output=True, text=True).stderr
+        m = re.search(r'Video:.*?(\d{3,4})x(\d{3,4})', err)
+        if m: data['width'], data['height'] = int(m.group(1)), int(m.group(2))
+        h, mi, sec = re.search(r'Duration: (\d+):(\d+):([\d.]+)', err).groups()
+        data['duration'] = round(int(h) * 3600 + int(mi) * 60 + float(sec))
+    except Exception: pass
+    return data, files
+
+
 def api(method, data=None, files=None):
     url = f'https://api.telegram.org/bot{env("TELEGRAM_TOKEN")}/{method}'
     if files:
@@ -26,7 +43,7 @@ def api(method, data=None, files=None):
             body += f'--{b}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode()
         for k, path in files.items():
             body += (f'--{b}\r\nContent-Disposition: form-data; name="{k}"; filename="{os.path.basename(path)}"\r\n'
-                     f'Content-Type: application/octet-stream\r\n\r\n').encode() + open(path, 'rb').read() + b'\r\n'
+                     f'Content-Type: {CTYPE.get(os.path.splitext(path)[1].lower(), "application/octet-stream")}\r\n\r\n').encode() + open(path, 'rb').read() + b'\r\n'
         body += f'--{b}--\r\n'.encode()
         req = urllib.request.Request(url, data=body, headers={'Content-Type': f'multipart/form-data; boundary={b}'})
     else:
@@ -83,7 +100,8 @@ def send(path):
     data = {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': caption(d), 'parse_mode': 'HTML', 'reply_markup': mk,
             'supports_streaming': 'true'}
     try:
-        m = api('sendVideo', data, {'video': video}) if os.path.exists(video) else api('sendMessage', {
+        if os.path.exists(video): vd, vf = vmeta(video)
+        m = api('sendVideo', {**data, **vd}, vf) if os.path.exists(video) else api('sendMessage', {
             'chat_id': data['chat_id'], 'text': data['caption'], 'parse_mode': 'HTML', 'reply_markup': json.loads(data['reply_markup'])})
         d['tg_message'] = m['message_id']
     except Exception as x:
@@ -122,8 +140,8 @@ def send_tiktok(d):
     cap = '📱 <b>TikTok üçün</b> — videonu yadda saxlayın, mətnə toxunub kopyalayın:\n\n<code>' + html.escape(txt) + '</code>'
     if len(cap) > 1000: cap = '📱 <b>TikTok üçün</b> — videonu yadda saxlayın, mətn aşağıda 👇'
     try:
-        api('sendVideo', {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': cap, 'parse_mode': 'HTML', 'supports_streaming': 'true'},
-            {'video': video})
+        vd, vf = vmeta(video)
+        api('sendVideo', {'chat_id': env('TELEGRAM_CHAT_ID'), 'caption': cap, 'parse_mode': 'HTML', 'supports_streaming': 'true', **vd}, vf)
         if not cap.endswith('</code>'):
             api('sendMessage', {'chat_id': env('TELEGRAM_CHAT_ID'), 'text': '<code>' + html.escape(txt) + '</code>', 'parse_mode': 'HTML'})
     except Exception as e: print('  ! tiktok:', e)
