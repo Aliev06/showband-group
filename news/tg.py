@@ -226,6 +226,9 @@ def get_news(mode='hype'):
     try: write.main(1, mode)
     except SystemExit as x: say(f'⚠️ Hazırda uyğun yeni xəbər tapılmadı ({x}). Bir az sonra yenidən yoxlayın.'); return
     except RuntimeError as x: say('⚠️ AI modelləri (Gemini, Groq, OpenRouter) hazırda cavab vermir. 10-15 dəqiqə sonra «📰» düyməsini basın.'); print(x); return
+    except Exception as x:
+        import traceback; traceback.print_exc()
+        say('⚠️ Bu dəfə xəbər hazırlana bilmədi. Bir azdan «📰 Xəbər» düyməsini yenidən basın.'); return
     send_new()
 
 

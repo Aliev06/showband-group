@@ -100,6 +100,16 @@ def pick(pool, n, mode='hype'):
     res = gemini('Sən "Showband Group" saytının redaktorusan. Başlıqları qiymətləndir.\n' + rules +
                  '\nHər biri üçün: {"i":indeks,"music":bool,"allowed":bool,"viral":1-10}. Yalnız JSON massiv.\nBaşlıqlar:\n' +
                  '\n'.join(f'{i}. {x["title"]}' for i, x in enumerate(pool)), temp=0.2)
+    # Ehtiyat modellər (Groq/OpenRouter) cavabı fərqli formada qaytara bilər: {"items":[...]} və ya qarışıq massiv
+    if isinstance(res, dict):
+        res = next((v for v in res.values() if isinstance(v, list)), [res])
+    rows = []
+    for r in res if isinstance(res, list) else []:
+        if not isinstance(r, dict): continue
+        try: r['i'] = int(r.get('i', -1)); r['viral'] = int(float(r.get('viral', 0) or 0))
+        except (TypeError, ValueError): continue
+        rows.append(r)
+    res = rows
     ok = [r for r in res if r.get('music') and r.get('allowed') and 0 <= r.get('i', -1) < len(pool)]
     if mode != 'hype': ok = [r for r in ok if r.get('viral', 0) >= 4]
     ok.sort(key=lambda r: r.get('viral', 0), reverse=True)
