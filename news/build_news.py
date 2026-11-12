@@ -43,6 +43,8 @@ def head(title, desc, url, rel, og_type='website', extra='', og_img='img/og.jpg'
 {GA}
 <meta name="description" content="{E(desc)}">
 <link rel="canonical" href="{url}">
+<link rel="alternate" hreflang="az" href="{url}">
+<meta http-equiv="content-language" content="az">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta property="og:site_name" content="{E(CFG['site_name'])}">
 <meta property="og:locale" content="az_AZ">
