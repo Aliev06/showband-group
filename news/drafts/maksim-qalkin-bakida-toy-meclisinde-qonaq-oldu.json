@@ -41,5 +41,6 @@
  "mode": "event",
  "track": "DJ Orxan Abbasov — Daba Daba",
  "tg_message": 142,
- "status": "pending"
+ "status": "published",
+ "ig_status": "queued"
 }
