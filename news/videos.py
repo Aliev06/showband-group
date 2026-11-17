@@ -30,6 +30,10 @@ CSS = '''<style>
 .vg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:30px}
 .vc{margin:0}
 .vc video{width:100%;aspect-ratio:9/16;border-radius:20px;background:#000;object-fit:cover;display:block}
+.vc .yt{position:relative;display:block;width:100%;aspect-ratio:9/16;border:0;padding:0;border-radius:20px;overflow:hidden;background:#000;cursor:pointer}
+.vc .yt img{width:100%;height:100%;object-fit:cover;display:block}
+.vc .yt i{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-style:normal;font-size:24px;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.vc iframe{width:100%;aspect-ratio:9/16;border:0;border-radius:20px;display:block;background:#000}
 .vc figcaption{margin-top:10px;font-weight:600;font-size:14px;line-height:1.35}
 .vc figcaption span{display:block;color:var(--mute);font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:2px}
 .vbt{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
@@ -37,13 +41,19 @@ CSS = '''<style>
 @media(max-width:640px){.vg{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.vc figcaption{font-size:13px}}
 </style>'''
 
-PLAY1 = '<script>document.addEventListener("play",function(e){document.querySelectorAll(".vg video").forEach(function(v){if(v!==e.target)v.pause()})},true)</script>'
+PLAY1 = '<script>document.addEventListener("play",function(e){document.querySelectorAll(".vg video").forEach(function(v){if(v!==e.target)v.pause()})},true);document.querySelectorAll(".vc .yt").forEach(function(b){b.onclick=function(){document.querySelectorAll(".vg video").forEach(function(v){v.pause()});var f=document.createElement("iframe");f.src="https://www.youtube-nocookie.com/embed/"+b.dataset.yt+"?autoplay=1&rel=0&playsinline=1";f.allow="autoplay; encrypted-media; picture-in-picture";f.allowFullscreen=true;b.replaceWith(f)}})</script>'
 
 
 def clips():
     s = open(os.path.join(ROOT, 'index.html'), encoding='utf-8').read()
     m = re.search(r"var CL=\[\n(.*?)\n\];", s, re.S)
-    return [{'e': e, 'k': k, 'w': bool(wd), 'n': n} for e, k, wd, n in re.findall(r"\{e:'(\w+)',k:'(\w+)',(w:1,)?n:\['([^']*)'", m.group(1))]
+    out = []
+    for line in m.group(1).split('\n'):
+        r = re.search(r"\{e:'(\w+)',k:'(\w+)',(w:1,)?n:\['([^']*)'", line)
+        if not r: continue
+        y = re.search(r"url:'[^']*?([\w-]{11})'", line)
+        out.append({'e': r.group(1), 'k': r.group(2), 'w': bool(r.group(3)), 'n': r.group(4), 'yt': y.group(1) if y else ''})
+    return out
 
 
 def page(slug, items, allc, cur):
@@ -71,6 +81,7 @@ def page(slug, items, allc, cur):
     for c in items:
         v = {'@type': 'VideoObject', 'name': f'Showband Group — {c["n"]}', 'description': f'{c["n"]}: Showband Group canlı şou. Bakı.',
              'thumbnailUrl': f'{SITE}/video/ev_{c["k"]}.jpg', 'contentUrl': f'{SITE}/video/ev_{c["k"]}.mp4', 'uploadDate': '2026-11-06'}
+        if c['yt']: v['embedUrl'] = f'https://www.youtube.com/embed/{c["yt"]}'
         vids.append(v)
     ld = {'@context': 'https://schema.org', '@graph': [{'@type': 'BreadcrumbList', 'itemListElement': crumbs}] + vids}
     extra = CSS + '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>'
@@ -79,7 +90,8 @@ def page(slug, items, allc, cur):
         f'<a href="{rel}videolar/{s}/"{" class=on" if cur and cur[0] == s else ""}>{E(sh)} <small>{count(e)}</small></a>'
         for s, e, _, sh, _ in CATS if count(e))
     grid = ''.join(
-        f'<figure class="vc"><video{" style=\"object-fit:contain\"" if c["w"] else ""} controls playsinline preload="none" poster="{rel}video/ev_{c["k"]}.jpg" src="{rel}video/ev_{c["k"]}.mp4" aria-label="{E(c["n"])}"></video>'
+        (f'<figure class="vc"><button class="yt" data-yt="{c["yt"]}" aria-label="{E(c["n"])} — video"><img src="{rel}video/ev_{c["k"]}.jpg" alt="{E(c["n"])}" loading="lazy"{" style=\"object-fit:contain\"" if c["w"] else ""}><i>▶</i></button>' if c['yt'] else
+         f'<figure class="vc"><video{" style=\"object-fit:contain\"" if c["w"] else ""} controls playsinline preload="none" poster="{rel}video/ev_{c["k"]}.jpg" src="{rel}video/ev_{c["k"]}.mp4" aria-label="{E(c["n"])}"></video>') +
         f'<figcaption><span>{E(lab.get(c["e"], ""))}</span>{E(c["n"])}</figcaption></figure>' for c in items)
     bc = (f'<a href="{rel}">Ana səhifə</a><span>›</span>' + (f'<a href="{rel}videolar/">Videolar</a><span>›</span><em>{E(cur[2])}</em>' if cur else '<em>Videolar</em>'))
     return head(title, desc, url, rel, 'website', extra, og).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">').replace(f'<a href="{rel}#video">', f'<a class="on" href="{rel}#video">') + f'''
