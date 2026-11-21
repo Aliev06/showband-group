@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Showband Oyun — idarə paneli</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#0b0b0e">
+<link rel="icon" href="/img/favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Montserrat:wght@500;600;700&display=swap">
+<style>
+:root{--bg:#0b0b0e;--card:#18181d;--card2:#202027;--fg:#f4f4f6;--mute:#9a9aa6;--red:#e3122b;--red2:#ff4a5c;--line:rgba(255,255,255,.08);
+  --ok:#22c55e;--bad:#ef4444;--gold:#f5c542;--a0:#e3122b;--a1:#1f6feb;--a2:#e0a100;--a3:#16a34a;
+  --d:"Unbounded",system-ui,sans-serif;--s:"Montserrat",system-ui,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:500 15px/1.45 var(--s);padding:env(safe-area-inset-top) max(16px,env(safe-area-inset-right)) env(safe-area-inset-bottom) max(16px,env(safe-area-inset-left))}
+button,select,input{font:inherit;color:inherit}
+button{border:0;background:none;cursor:pointer}
+.wrap{max-width:760px;margin:0 auto;padding:16px 0 60px;display:grid;gap:16px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.top img{height:28px}
+.tabs{display:flex;background:var(--card);border-radius:14px;padding:4px;gap:4px}
+.tabs button{flex:1;padding:10px 14px;border-radius:10px;font-weight:700;color:var(--mute)}
+.tabs button[aria-pressed=true]{background:var(--card2);color:var(--fg)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;display:grid;gap:14px;min-width:0}
+h2{font:600 18px var(--d);margin:0}
+.k{font-size:12px;font-weight:700;color:var(--mute);text-transform:uppercase;letter-spacing:.06em}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{background:var(--card2);border-radius:14px;padding:12px}
+.stat b{display:block;font:800 24px var(--d);font-variant-numeric:tabular-nums;margin-top:2px}
+.btn{padding:15px 18px;border-radius:14px;background:var(--red);font:600 16px var(--d);text-align:center}
+.btn.big{padding:20px;font-size:19px}
+.btn.gh{background:var(--card2);font:700 14px var(--s)}
+.btn.dg{background:transparent;color:var(--red2);font:700 14px var(--s);box-shadow:inset 0 0 0 1px rgba(255,74,92,.4)}
+.btn:disabled{opacity:.4}
+.row{display:flex;gap:10px;flex-wrap:wrap}.row>*{flex:1 1 160px}
+select,input[type=text],input[type=password],textarea{width:100%;background:var(--card2);border:1px solid transparent;border-radius:12px;padding:12px 14px;outline:none}
+select:focus,input:focus,textarea:focus{border-color:var(--red)}
+textarea{resize:vertical;min-height:60px;font:600 15px var(--s)}
+.qtxt{font:600 18px/1.3 var(--d)}
+.dist{display:grid;gap:8px}
+.dr{position:relative;display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;background:var(--card2);overflow:hidden;font-weight:600}
+.dr i{position:absolute;inset:0 auto 0 0;opacity:.35;transition:width .4s}
+.dr span{position:relative}
+.dr.ok{outline:2px solid var(--ok)}
+.board{display:grid;gap:6px;max-height:520px;overflow:auto}
+.br{display:flex;gap:10px;align-items:center;padding:10px 12px;background:var(--card2);border-radius:10px;font-weight:600}
+.br .r{width:26px;color:var(--mute);font-family:var(--d)}
+.br .n{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.br .g{color:var(--ok);font-size:12px}
+.br .s{font:800 15px var(--d);font-variant-numeric:tabular-nums}
+.up{color:var(--ok)}.dn{color:var(--bad)}
+.ph{display:inline-block;padding:6px 12px;border-radius:99px;background:var(--card2);font-weight:700;font-size:13px}
+.ph.live{background:rgba(227,18,43,.18);color:var(--red2)}
+.q{background:var(--card2);border-radius:16px;padding:14px;display:grid;gap:10px}
+.q .h{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700;color:var(--mute)}
+.q .h .row{flex-wrap:nowrap}.q .h .row>*{flex:0 0 auto}
+.oi{display:flex;gap:8px;align-items:center}
+.oi input[type=radio]{width:22px;height:22px;accent-color:var(--ok);flex:none}
+.oi .c{width:10px;align-self:stretch;border-radius:4px;flex:none}
+.sets{display:grid;gap:8px}
+.set{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--card2);padding:12px 14px;border-radius:12px}
+.set b{display:block}.set small{color:var(--mute)}
+.err{color:var(--red2);font-weight:600;min-height:1.2em;margin:0}
+.muted{color:var(--mute);margin:0}
+.qr{display:grid;place-items:center;gap:12px}
+.qr canvas{width:min(320px,100%);height:auto;border-radius:16px;background:#fff}
+.lnk{word-break:break-all;color:var(--mute);font-size:13px;text-align:center}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px}.dot.off{background:var(--bad)}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><img src="../logo.webp" alt="Showband Group" width="98" height="28"><span class="ph"><span class="dot off" id="dot"></span>İdarə paneli</span></div>
+
+  <form class="card" id="login" novalidate>
+    <h2>Giriş</h2>
+    <input type="password" id="pin" inputmode="numeric" placeholder="PIN kod" autocomplete="current-password">
+    <p class="err" id="perr"></p>
+    <button class="btn">Daxil ol</button>
+  </form>
+
+  <div id="main" hidden style="display:grid;gap:16px">
+    <div class="tabs" role="group"><button data-tab="game" aria-pressed="true">Oyun</button><button data-tab="qs" aria-pressed="false">Suallar</button><button data-tab="qr" aria-pressed="false">QR kod</button></div>
+
+    <section id="t-game" style="display:grid;gap:16px">
+      <div class="card">
+        <div class="row" style="align-items:center"><span class="ph" id="phase">—</span><span class="muted" id="setname" style="text-align:right"></span></div>
+        <div class="stats"><div class="stat"><span class="k">Oyunçu</span><b id="np">0</b></div><div class="stat"><span class="k">Cavab</span><b id="na">0</b></div><div class="stat"><span class="k">Vaxt</span><b id="tl">—</b></div></div>
+        <button class="btn big" id="next">Başla</button>
+        <div class="row"><button class="btn dg" id="end">Oyunu bitir</button></div>
+      </div>
+      <div class="card" id="qcard" hidden><span class="k" id="qn"></span><div class="qtxt" id="qt"></div><div class="dist" id="dist"></div></div>
+      <div class="card"><h2>Lider cədvəli</h2><div class="board" id="board"><p class="muted">Hələ oyunçu yoxdur</p></div></div>
+      <div class="card"><h2>Yeni oyun</h2><p class="muted">Dəsti seç və «Yeni oyun» bas — oyunçular sıfırlanır, hamı yenidən adını yazır.</p>
+        <div class="row"><select id="gset"></select><button class="btn gh" id="newg">Yeni oyun</button></div><p class="err" id="gerr"></p></div>
+    </section>
+
+    <section id="t-qs" hidden style="display:grid;gap:16px">
+      <div class="card"><div class="row" style="align-items:center"><h2>Sual dəstləri</h2><button class="btn gh" id="addset" style="flex:0 0 auto">+ Yeni dəst</button></div>
+        <div class="sets" id="sets"></div><button class="btn gh" id="sample">Nümunə dəst əlavə et (8 sual)</button></div>
+      <form class="card" id="ed" hidden novalidate>
+        <h2 id="edh">Dəst</h2>
+        <input type="text" id="sname" maxlength="60" placeholder="Dəstin adı (məs. Toy viktorinası)">
+        <div id="qlist" style="display:grid;gap:12px"></div>
+        <button type="button" class="btn gh" id="addq">+ Sual əlavə et</button>
+        <p class="err" id="eerr"></p>
+        <div class="row"><button class="btn">Yadda saxla</button><button type="button" class="btn gh" id="edx">Bağla</button></div>
+      </form>
+    </section>
+
+    <section id="t-qr" hidden>
+      <div class="card qr"><h2>Masalar üçün QR</h2><canvas id="qrc" width="1200" height="1500"></canvas><div class="lnk" id="qrl"></div>
+        <button class="btn" id="qrd" style="width:100%">PNG yüklə (çap üçün)</button></div>
+    </section>
+  </div>
+</div>
+<script src="qrcode.js"></script>
+<script src="../net.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const COL=['var(--a0)','var(--a1)','var(--a2)','var(--a3)'],SH=['▲','◆','●','■'];
+const PLAY_URL='https://showbandgroup.az/oyun/';
+let A=null,pin='',edit=null,raf=0,authed=false;
+try{pin=sessionStorage.getItem('sbq_pin')||''}catch(e){}
+
+const net=Net('admin',onMsg,on=>$('#dot').classList.toggle('off',!on));
+net.onopen=()=>{if(pin)net.send({t:'auth',pin})};
+
+function onMsg(m){
+  if(m.t==='err'){if(m.e==='pin'){authed=false;$('#perr').textContent='PIN səhvdir';$('#login').hidden=false;$('#main').hidden=true;try{sessionStorage.removeItem('sbq_pin')}catch(e){}}
+    if(m.e==='set')$('#gerr').textContent='Bu dəstdə sual yoxdur';return}
+  if(m.t==='admin'){if(!authed){authed=true;try{sessionStorage.setItem('sbq_pin',pin)}catch(e){}$('#login').hidden=true;$('#main').hidden=false;drawQR()}A=m;render()}
+}
+$('#login').onsubmit=e=>{e.preventDefault();pin=$('#pin').value.trim();$('#perr').textContent='';net.send({t:'auth',pin})};
+
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x===b));['game','qs','qr'].forEach(t=>$('#t-'+t).hidden=t!==b.dataset.tab);if(b.dataset.tab==='qr')drawQR()});
+
+const PH={lobby:'Gözləmə zalı',q:'Sual gedir',reveal:'Nəticə',final:'Oyun bitdi'};
+function render(){
+  const a=A;$('#np').textContent=a.players;$('#na').textContent=a.phase==='q'?`${a.answered}/${a.players}`:'—';
+  $('#phase').textContent=a.q&&a.phase!=='lobby'?`${PH[a.phase]} · ${a.q.i+1}/${a.q.total}`:PH[a.phase];$('#phase').classList.toggle('live',a.phase==='q');
+  const set=a.sets.find(s=>s.id===a.setId);$('#setname').textContent=set?set.name:'Dəst seçilməyib';
+  const nx=$('#next'),last=a.q&&a.q.i+1>=a.q.total;
+  nx.disabled=!a.setId||a.phase==='final';
+  nx.textContent=!a.setId?'Əvvəlcə dəst seç':a.phase==='lobby'?'▶ Oyunu başla':a.phase==='q'?'Sualı bağla':a.phase==='reveal'?(last?'🏆 Nəticələri göstər':'Növbəti sual →'):'Oyun bitdi';
+  $('#end').hidden=a.phase==='final'||a.phase==='lobby';
+  // question
+  $('#qcard').hidden=!a.q||a.phase==='lobby';
+  if(a.q){$('#qn').textContent=`Sual ${a.q.i+1} / ${a.q.total}`;$('#qt').textContent=a.q.text;
+    const tot=Math.max(1,a.dist.reduce((x,y)=>x+y,0)),showOk=a.phase!=='q';
+    $('#dist').innerHTML=a.q.opts.map((o,k)=>`<div class="dr${showOk&&k===a.q.correct?' ok':''}"><i style="width:${a.dist[k]/tot*100}%;background:${COL[k]}"></i><span>${SH[k]} ${esc(o)}${k===a.q.correct?' ✓':''}</span><span>${a.dist[k]}</span></div>`).join('')}
+  cancelAnimationFrame(raf);
+  if(a.phase==='q'){const off=a.now-Date.now();const t=()=>{const l=Math.max(0,a.endsAt-(Date.now()+off));$('#tl').textContent=Math.ceil(l/1000)+'s';if(l>0)raf=requestAnimationFrame(t)};t()}else $('#tl').textContent='—';
+  // board
+  $('#board').innerHTML=a.board.length?a.board.map(r=>{const mv=r.prev?r.prev-r.rank:0;return `<div class="br"><span class="r">${r.rank}</span><span class="n">${esc(r.name)}${r.streak>=3?' 🔥':''}</span>${r.gain?`<span class="g">+${r.gain}</span>`:''}<span class="${mv>0?'up':mv<0?'dn':''}" style="width:28px;font-size:12px">${mv>0?'▲'+mv:mv<0?'▼'+(-mv):''}</span><span class="s">${r.score}</span></div>`}).join(''):'<p class="muted">Hələ oyunçu yoxdur</p>';
+  // sets
+  const opt=a.sets.map(s=>`<option value="${esc(s.id)}" ${s.id===a.setId?'selected':''}>${esc(s.name)} (${s.qs.length})</option>`).join('');
+  const cur=$('#gset').value;$('#gset').innerHTML=opt||'<option value="">Dəst yoxdur — «Suallar» bölməsində yarat</option>';if(cur&&a.sets.some(s=>s.id===cur))$('#gset').value=cur;
+  $('#sets').innerHTML=a.sets.length?a.sets.map(s=>`<div class="set"><div><b>${esc(s.name)}</b><small>${s.qs.length} sual</small></div><div class="row" style="flex:0 0 auto"><button class="btn gh" data-ed="${esc(s.id)}">Düzəlt</button><button class="btn dg" data-del="${esc(s.id)}">Sil</button></div></div>`).join(''):'<p class="muted">Hələ dəst yoxdur</p>';
+}
+
+/* controls with inline confirm */
+function confirmBtn(btn,label,fn){if(btn.dataset.sure){delete btn.dataset.sure;fn();return}const t=btn.textContent;btn.dataset.sure=1;btn.textContent=label;setTimeout(()=>{if(btn.dataset.sure){delete btn.dataset.sure;btn.textContent=t}},3000)}
+$('#next').onclick=()=>net.send({t:'next'});
+$('#end').onclick=e=>confirmBtn(e.target,'Əminsən? Yenə bas',()=>net.send({t:'end'}));
+$('#newg').onclick=e=>{$('#gerr').textContent='';const id=$('#gset').value;if(!id){$('#gerr').textContent='Əvvəlcə dəst yarat';return}
+  if(A.phase==='lobby'&&!A.players)return net.send({t:'newGame',setId:id});
+  confirmBtn(e.target,'Oyunçular sıfırlanacaq — yenə bas',()=>net.send({t:'newGame',setId:id}))};
+$('#sets').onclick=e=>{const d=e.target.closest('[data-del]'),ed=e.target.closest('[data-ed]');
+  if(d)confirmBtn(d,'Əminsən?',()=>net.send({t:'delSet',id:d.dataset.del}));
+  if(ed)openEd(A.sets.find(s=>s.id===ed.dataset.ed))};
+
+/* editor */
+const blankQ=()=>({text:'',opts:['','','',''],correct:0,dur:20});
+$('#addset').onclick=()=>openEd(null);
+function openEd(s){edit=s?JSON.parse(JSON.stringify(s)):{id:'',name:'',qs:[blankQ()]};
+  edit.qs.forEach(q=>{while(q.opts.length<4)q.opts.push('')});
+  $('#ed').hidden=false;$('#edh').textContent=s?'Dəsti düzəlt':'Yeni dəst';$('#sname').value=edit.name;$('#eerr').textContent='';drawQs();$('#ed').scrollIntoView({behavior:'smooth'})}
+function drawQs(){$('#qlist').innerHTML=edit.qs.map((q,i)=>`<div class="q" data-i="${i}"><div class="h"><span>Sual ${i+1}</span><div class="row" style="flex:0 0 auto;align-items:center"><select data-f="dur" style="width:auto">${[10,15,20,30].map(d=>`<option value="${d}" ${q.dur==d?'selected':''}>${d} san</option>`).join('')}</select><button type="button" class="btn dg" data-rm="${i}" style="padding:8px 12px">Sil</button></div></div>
+  <textarea data-f="text" maxlength="200" placeholder="Sualın mətni">${esc(q.text)}</textarea>
+  ${q.opts.map((o,k)=>`<label class="oi"><span class="c" style="background:${COL[k]}"></span><input type="radio" name="c${i}" value="${k}" ${q.correct===k?'checked':''} aria-label="Düzgün cavab"><input type="text" data-o="${k}" maxlength="80" value="${esc(o)}" placeholder="Variant ${k+1}${k>1?' (istəyə görə)':''}"></label>`).join('')}
+  <span class="muted" style="font-size:13px">● işarəsi = düzgün cavab</span></div>`).join('')}
+$('#qlist').oninput=$('#qlist').onchange=e=>{const box=e.target.closest('.q');if(!box)return;const q=edit.qs[+box.dataset.i];
+  if(e.target.dataset.f==='text')q.text=e.target.value;if(e.target.dataset.f==='dur')q.dur=+e.target.value;
+  if(e.target.dataset.o!==undefined)q.opts[+e.target.dataset.o]=e.target.value;if(e.target.type==='radio')q.correct=+e.target.value};
+$('#qlist').onclick=e=>{const r=e.target.closest('[data-rm]');if(r){edit.qs.splice(+r.dataset.rm,1);drawQs()}};
+$('#addq').onclick=()=>{edit.qs.push(blankQ());drawQs();$('#qlist').lastElementChild.querySelector('textarea').focus()};
+$('#edx').onclick=()=>{$('#ed').hidden=true;edit=null};
+$('#ed').onsubmit=e=>{e.preventDefault();edit.name=$('#sname').value.trim();
+  const qs=[];for(const [i,q] of edit.qs.entries()){const opts=q.opts.map(s=>s.trim());
+    if(!q.text.trim()&&!opts.some(Boolean))continue;
+    if(!q.text.trim())return $('#eerr').textContent=`Sual ${i+1}: mətn boşdur`;
+    if(!opts[q.correct])return $('#eerr').textContent=`Sual ${i+1}: düzgün cavab boşdur`;
+    const keep=opts.map((o,k)=>[o,k]).filter(([o])=>o);if(keep.length<2)return $('#eerr').textContent=`Sual ${i+1}: ən azı 2 variant lazımdır`;
+    qs.push({text:q.text.trim(),opts:keep.map(x=>x[0]),correct:keep.findIndex(x=>x[1]===q.correct),dur:q.dur})}
+  if(!edit.name)return $('#eerr').textContent='Dəstin adını yaz';if(!qs.length)return $('#eerr').textContent='Ən azı 1 sual əlavə et';
+  net.send({t:'saveSet',set:{id:edit.id,name:edit.name,qs}});$('#ed').hidden=true;edit=null};
+$('#sample').onclick=()=>net.send({t:'saveSet',set:{name:'Musiqi viktorinası (nümunə)',qs:[
+  {text:'«Bohemian Rhapsody» mahnısı hansı qrupundur?',opts:['Queen','The Beatles','ABBA','Coldplay'],correct:0,dur:20},
+  {text:'Azərbaycan 2011-ci ildə Eurovision-u hansı mahnı ilə qazandı?',opts:['Always','Running Scared','Drip Drop','Miracle'],correct:1,dur:20},
+  {text:'Eurovision 2012 Bakıda hansı məkanda keçirildi?',opts:['Bakı Olimpiya Stadionu','Heydər Əliyev Sarayı','Bakı Kristal Zalı','Milli Gimnastika Arenası'],correct:2,dur:20},
+  {text:'Üzeyir Hacıbəylinin «Leyli və Məcnun» operası ilk dəfə hansı ildə səhnəyə qoyulub?',opts:['1908','1925','1937','1945'],correct:0,dur:20},
+  {text:'Klassik gitarada neçə sim olur?',opts:['4','5','6','8'],correct:2,dur:15},
+  {text:'Michael Jackson-un «Thriller» albomu hansı ildə çıxıb?',opts:['1979','1982','1987','1991'],correct:1,dur:20},
+  {text:'Tar hansı növ musiqi alətidir?',opts:['Zərb','Nəfəs','Simli','Klavişli'],correct:2,dur:15},
+  {text:'Showband Group-un sifarişlə ən çox çıxış etdiyi tədbir hansıdır?',opts:['Toy','Ad günü','Korporativ','Hamısı 🎉'],correct:3,dur:15}]}});
+
+/* QR for tables */
+function drawQR(){const c=$('#qrc'),x=c.getContext('2d'),W=c.width,H=c.height;
+  x.fillStyle='#0b0b0e';x.fillRect(0,0,W,H);
+  x.fillStyle='#fff';x.textAlign='center';x.font='800 92px Unbounded, sans-serif';x.fillText('OYUNA',W/2,190);x.fillStyle='#e3122b';x.fillText('QOŞUL!',W/2,300);
+  x.fillStyle='#fff';x.beginPath();x.roundRect(170,380,860,860,48);x.fill();
+  if(window.qrcode){const q=qrcode(0,'M');q.addData(PLAY_URL);q.make();const n=q.getModuleCount(),s=Math.floor(760/n),o=600-(n*s)/2;x.fillStyle='#0b0b0e';
+    for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect(o+k*s,810-(n*s)/2+r*s,s,s)}
+  x.fillStyle='#9a9aa6';x.font='600 46px Montserrat, sans-serif';x.fillText('Kameranı yönəlt · adını yaz · qazan',W/2,1340);
+  x.fillStyle='#fff';x.font='800 40px Unbounded, sans-serif';x.fillText('SHOWBAND GROUP',W/2,1430);
+  $('#qrl').textContent=PLAY_URL}
+$('#qrd').onclick=()=>{const a=document.createElement('a');a.download='showband-oyun-qr.png';a.href=$('#qrc').toDataURL('image/png');a.click()};
+document.fonts&&document.fonts.ready.then(()=>{if(authed)drawQR()});
+</script>
+</body>
+</html>
