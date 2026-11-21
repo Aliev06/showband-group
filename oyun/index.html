@@ -144,7 +144,8 @@ function showJoin(){
     <button class="btn" id="jb">Qoşul</button>
   </form>`,'join');
   $('#jf').onsubmit=e=>{e.preventDefault();const n=$('#nm').value.trim();if(n.length<2){$('#jerr').textContent='Adını yaz (ən azı 2 hərf)';return}
-    ls.set('sbq_name',n);$('#jb').disabled=true;net.send({t:'join',id:pid,name:n})};
+    ls.set('sbq_name',n);$('#jb').disabled=true;$('#jerr').textContent=net.open?'':'Serverə qoşulur…';net.send({t:'join',id:pid,name:n});
+    setTimeout(()=>{if(view==='join'){$('#jb').disabled=false;$('#jerr').textContent='Serverə qoşulmaq alınmır. İnterneti yoxla və ya Wi-Fi ↔ mobil internet dəyiş.'}},7000)};
 }
 
 function showLobby(){

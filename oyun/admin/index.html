@@ -133,9 +133,11 @@ net.onopen=()=>{if(pin)net.send({t:'auth',pin})};
 function onMsg(m){
   if(m.t==='err'){if(m.e==='pin'){authed=false;$('#perr').textContent='PIN səhvdir';$('#login').hidden=false;$('#main').hidden=true;try{sessionStorage.removeItem('sbq_pin')}catch(e){}}
     if(m.e==='set')$('#gerr').textContent='Bu dəstdə sual yoxdur';return}
-  if(m.t==='admin'){if(!authed){authed=true;try{sessionStorage.setItem('sbq_pin',pin)}catch(e){}$('#login').hidden=true;$('#main').hidden=false;drawQR()}A=m;render()}
+  if(m.t==='admin'){if(!authed){authed=true;$('#perr').textContent='';try{sessionStorage.setItem('sbq_pin',pin)}catch(e){}$('#login').hidden=true;$('#main').hidden=false;try{drawQR()}catch(e){}}A=m;render()}
 }
-$('#login').onsubmit=e=>{e.preventDefault();pin=$('#pin').value.trim();$('#perr').textContent='';net.send({t:'auth',pin})};
+$('#login').onsubmit=e=>{e.preventDefault();pin=$('#pin').value.trim();if(!pin){$('#perr').textContent='PIN yaz';return}
+  $('#perr').textContent=net.open?'Yoxlanılır…':'Serverə qoşulur…';net.send({t:'auth',pin});
+  setTimeout(()=>{if(!authed&&!/səhv/.test($('#perr').textContent))$('#perr').textContent='Serverə qoşulmaq alınmır. İnterneti yoxla və ya Wi-Fi ↔ mobil internet dəyiş.'},7000)};
 
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x===b));['game','qs','qr'].forEach(t=>$('#t-'+t).hidden=t!==b.dataset.tab);if(b.dataset.tab==='qr')drawQR()});
 
@@ -213,7 +215,7 @@ $('#sample').onclick=()=>net.send({t:'saveSet',set:{name:'Musiqi viktorinası (n
 function drawQR(){const c=$('#qrc'),x=c.getContext('2d'),W=c.width,H=c.height;
   x.fillStyle='#0b0b0e';x.fillRect(0,0,W,H);
   x.fillStyle='#fff';x.textAlign='center';x.font='800 92px Unbounded, sans-serif';x.fillText('OYUNA',W/2,190);x.fillStyle='#e3122b';x.fillText('QOŞUL!',W/2,300);
-  x.fillStyle='#fff';x.beginPath();x.roundRect(170,380,860,860,48);x.fill();
+  x.fillStyle='#fff';x.beginPath();if(x.roundRect)x.roundRect(170,380,860,860,48);else x.rect(170,380,860,860);x.fill();
   if(window.qrcode){const q=qrcode(0,'M');q.addData(PLAY_URL);q.make();const n=q.getModuleCount(),s=Math.floor(760/n),o=600-(n*s)/2;x.fillStyle='#0b0b0e';
     for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect(o+k*s,810-(n*s)/2+r*s,s,s)}
   x.fillStyle='#9a9aa6';x.font='600 46px Montserrat, sans-serif';x.fillText('Kameranı yönəlt · adını yaz · qazan',W/2,1340);

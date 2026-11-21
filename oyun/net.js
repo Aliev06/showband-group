@@ -2,14 +2,18 @@
 (function () {
   const q = new URLSearchParams(location.search);
   const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) || location.protocol === 'file:';
-  const API = q.get('api') || (local ? 'ws://127.0.0.1:8787/ws' : 'wss://showband-oyun.murad-f6f.workers.dev/ws');
+  const APIS = q.get('api') ? [q.get('api')] : local ? ['ws://127.0.0.1:8787/ws'] : ['wss://oyun.showbandgroup.az/ws', 'wss://showband-oyun.murad-f6f.workers.dev/ws'];
+  let ai = 0;
 
   window.Net = function (role, onMsg, onStatus) {
     let ws = null, tries = 0, alive = false, pingT = null, queue = [];
     const self = { off: 0, rtt: 0, open: false };
     function connect() {
-      ws = new WebSocket(API + '?role=' + role);
+      let opened = false;
+      try { ws = new WebSocket(APIS[ai % APIS.length] + '?role=' + role); } catch (x) { ai++; return setTimeout(connect, 500); }
+      const guard = setTimeout(() => { if (!opened) { try { ws.close(); } catch (x) {} } }, 5000);
       ws.onopen = () => {
+        opened = true; clearTimeout(guard);
         tries = 0; self.open = true; onStatus && onStatus(true);
         self.onopen && self.onopen();
         queue.splice(0).forEach((m) => ws.send(m));
@@ -26,6 +30,7 @@
         onMsg(m);
       };
       ws.onclose = () => {
+        clearTimeout(guard); if (!opened) ai++;
         self.open = false; clearInterval(pingT); onStatus && onStatus(false);
         const wait = Math.min(4000, 300 * Math.pow(1.6, tries++));
         setTimeout(connect, wait);

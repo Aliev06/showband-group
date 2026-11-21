@@ -2,6 +2,7 @@ name = "showband-oyun"
 main = "worker.js"
 compatibility_date = "2025-09-01"
 workers_dev = true
+routes = [{ pattern = "oyun.showbandgroup.az", custom_domain = true }]
 
 [[durable_objects.bindings]]
 name = "ROOM"
