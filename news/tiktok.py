@@ -45,6 +45,18 @@ def find_user():
     return profs[0]['username']
 
 
+def _tiktok_result(res):
+    """results həm dict ({'tiktok': {...}}), həm də list ([{'platform': 'tiktok', ...}]) ola bilər."""
+    if isinstance(res, dict):
+        t = res.get('tiktok')
+        return t if isinstance(t, dict) else {}
+    if isinstance(res, list):
+        for t in res:
+            if isinstance(t, dict) and str(t.get('platform', '')).lower() == 'tiktok': return t
+        if len(res) == 1 and isinstance(res[0], dict): return res[0]
+    return {}
+
+
 def post(video, caption, key=None):
     if not _env('UPLOADPOST_API_KEY'): return {'ok': False, 'error': 'UPLOADPOST_API_KEY yoxdur'}
     try:
@@ -61,11 +73,12 @@ def post(video, caption, key=None):
         if key: hdr['Idempotency-Key'] = 'showband-' + key   # təkrar göndərilsə dublikat olmasın
         code, j = _req('/upload', body, hdr, timeout=180)
         if code in (200, 201, 202) and j.get('success', True) is not False:
-            tt = (j.get('results') or {}).get('tiktok') or {}
-            if isinstance(tt, dict) and tt.get('success') is False:
-                return {'ok': False, 'error': tt.get('error') or tt.get('message') or 'TikTok rədd etdi'}
+            try: tt = _tiktok_result(j.get('results'))
+            except Exception: tt = {}   # cavab formatı dəyişsə belə — yükləmə uğurludur
+            if tt.get('success') is False:
+                return {'ok': False, 'error': str(tt.get('error') or tt.get('message') or 'TikTok rədd etdi')}
             return {'ok': True, 'user': user, 'id': j.get('post_id') or tt.get('post_id') or j.get('request_id'),
-                    'url': tt.get('url') if isinstance(tt, dict) else None, 'warnings': j.get('warnings') or []}
+                    'url': tt.get('url'), 'warnings': j.get('warnings') or []}
         return {'ok': False, 'error': f'{code}: ' + str(j.get('message') or j.get('error') or j)[:300]}
     except Exception as e:
         return {'ok': False, 'error': str(e)[:300]}
