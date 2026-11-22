@@ -28,25 +28,39 @@ if(n)gtag('event',n,{link_url:h,link_text:(a.textContent||'').trim().slice(0,60)
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Montserrat:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="../../xeberler/news.css">
 <style>
-.pkx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:start;padding-top:24px}
-.pkimg{border-radius:28px;overflow:hidden;aspect-ratio:1;position:sticky;top:96px;box-shadow:0 30px 80px rgba(227,18,43,.18)}
-.pkimg img{width:100%;height:100%;object-fit:cover;display:block}
-.pkx h1{font:900 clamp(34px,4.6vw,60px)/1.02 var(--d);letter-spacing:-.035em;margin:14px 0 16px;text-wrap:balance}
-.pkx .lead{font-size:19px;line-height:1.6;color:#e2e2e8;margin:0 0 24px}
-.pkpr{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:baseline;padding:18px 22px;border-radius:20px;background:var(--card,#16161c);border:1px solid var(--line,#26262e);margin-bottom:22px}
-.pkpr b{font:900 34px var(--d);color:var(--fg)}.pkpr b s{font-size:20px;opacity:.45;margin-right:8px}.pkpr b small{font-size:18px}
-.pkpr span{color:var(--mut,#a9a9b3);font-size:15px}
-.pkbt{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}
-.pkx h2{font:700 22px/1.3 var(--d);margin:0 0 14px}
-.pkl{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:10px}
-.pkl li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px}
-.pkl li i{width:34px;height:34px;border-radius:50%;background:rgba(227,18,43,.14);color:var(--red2);font:800 14px/34px var(--d);text-align:center;font-style:normal}
-.pkl b{display:block;font-weight:700}.pkl p{margin:4px 0 0;color:var(--mut,#a9a9b3);font-size:15px;line-height:1.55}
-.pkex{margin:0 0 28px;padding:0;list-style:none;display:grid;gap:8px}.pkex li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line,#26262e);padding:10px 0}.pkex li span{color:var(--red2);font-weight:700;white-space:nowrap}
-.pknote{color:var(--mut,#a9a9b3);font-size:14px;line-height:1.6}
-.pko{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-@media(max-width:900px){.pkx{grid-template-columns:1fr;gap:28px}.pkimg{position:static;max-width:480px}}
-</style><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Service", "name": "Toy Disko", "description": "Toyunuzun ən enerjili saatını biz idarə edirik: işıqlı geyimdə DJ, canlı perkussiya, flashmob və şou effektləri ilə 1 saatlıq disko şou.", "url": "https://showbandgroup.az/paket/toy-disko/", "image": "https://showbandgroup.az/img/pk_toydisko.webp", "areaServed": {"@type": "City", "name": "Bakı"}, "provider": {"@type": "EntertainmentBusiness", "name": "Showband Group", "url": "https://showbandgroup.az/", "telephone": "+994556118787"}, "offers": {"@type": "Offer", "price": 600, "priceCurrency": "AZN", "url": "https://showbandgroup.az/paket/toy-disko/"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Ana səhifə", "item": "https://showbandgroup.az/"}, {"@type": "ListItem", "position": 2, "name": "Paketlər", "item": "https://showbandgroup.az/#paket"}, {"@type": "ListItem", "position": 3, "name": "Toy Disko", "item": "https://showbandgroup.az/paket/toy-disko/"}]}]}</script>
+.ah{position:relative;margin:0 calc(50% - 50vw);min-height:min(86vh,760px);display:flex;align-items:flex-end;overflow:hidden}
+.ah img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.ah:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,14,.15) 0%,rgba(11,11,14,.35) 45%,var(--bg) 100%),linear-gradient(90deg,rgba(11,11,14,.85),rgba(11,11,14,0) 70%)}
+.ahi{position:relative;z-index:2;width:min(1180px,100% - 40px);margin:0 auto;padding:0 0 56px}
+.ahi .chip{background:rgba(227,18,43,.18);border-color:rgba(255,74,92,.5)}
+.ahi h1{font:900 clamp(44px,7vw,96px)/.95 var(--d);letter-spacing:-.04em;margin:16px 0 18px;max-width:900px;text-wrap:balance}
+.ahi p{font-size:19px;line-height:1.6;color:#e7e7ec;max-width:640px;margin:0 0 28px}
+.arow{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
+.apr{font:900 40px var(--d)}.apr s{font-size:22px;opacity:.45;margin-right:8px}.apr small{font-size:20px}
+.adur{color:var(--mute);font-size:15px;border-left:1px solid var(--line);padding-left:20px}
+.abt{display:flex;gap:12px}.abt .btn{padding:16px 26px;font-size:16px}
+.asec{padding:70px 0 10px}
+.asec h2{font:800 clamp(28px,3.4vw,44px)/1.1 var(--d);letter-spacing:-.03em;margin:0 0 30px}.asec h2 em{font-style:normal;color:var(--red2)}
+.agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ac{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;transition:transform .3s,border-color .3s}
+.ac:hover{transform:translateY(-4px);border-color:rgba(255,74,92,.45)}
+.ac .ic{width:48px;height:48px;border-radius:14px;background:rgba(227,18,43,.14);color:var(--red2);display:grid;place-items:center;margin-bottom:16px}.ac .ic svg{width:24px;height:24px}
+.ac b{display:block;font:700 17px/1.3 var(--s)}.ac p{margin:8px 0 0;color:var(--mute);font-size:14.5px;line-height:1.55}
+.aex{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.aex div{background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--line)}.aex b{display:block;font-weight:700;font-size:14.5px}.aex span{display:block;margin-top:8px;color:var(--red2);font:800 17px var(--d)}
+.anote{color:var(--mute);font-size:14px;line-height:1.6;max-width:820px;margin-top:22px}
+.aoth{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.aoth a{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;display:flex;align-items:flex-end;padding:16px;color:#fff;text-decoration:none}
+.aoth a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}.aoth a:hover img{transform:scale(1.05)}
+.aoth a:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85))}
+.aoth a span{position:relative;z-index:1;font:800 17px/1.15 var(--d)}.aoth a small{display:block;font:600 13px var(--s);color:var(--red2);margin-top:4px}
+.abar{display:none}.abar s,.aoth s{margin-right:6px;opacity:.55;font-size:.8em}
+@media(max-width:900px){.agrid{grid-template-columns:1fr 1fr}.aex{grid-template-columns:1fr 1fr}.aoth{grid-template-columns:1fr 1fr}.ah{min-height:78vh}.abt{display:none}
+ .abar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(11,11,14,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+ .abar b{font:900 22px var(--d)}.abar small{display:block;color:var(--mute);font:500 12px var(--s)}.abar .btn{padding:14px 22px}
+ .sticky{display:none!important}}
+@media(max-width:560px){.agrid{grid-template-columns:1fr}.adur{border:0;padding:0}}
+.aoth s{margin-right:6px;opacity:.6}</style><script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Service", "name": "Toy Disko", "description": "Toyunuzun ən enerjili saatını biz idarə edirik: işıqlı geyimdə DJ, canlı perkussiya, flashmob və şou effektləri ilə 1 saatlıq disko şou.", "url": "https://showbandgroup.az/paket/toy-disko/", "image": "https://showbandgroup.az/img/pk_toydisko.webp", "areaServed": {"@type": "City", "name": "Bakı"}, "provider": {"@type": "EntertainmentBusiness", "name": "Showband Group", "url": "https://showbandgroup.az/", "telephone": "+994556118787"}, "offers": {"@type": "Offer", "price": 600, "priceCurrency": "AZN", "url": "https://showbandgroup.az/paket/toy-disko/"}}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Ana səhifə", "item": "https://showbandgroup.az/"}, {"@type": "ListItem", "position": 2, "name": "Paketlər", "item": "https://showbandgroup.az/#paket"}, {"@type": "ListItem", "position": 3, "name": "Toy Disko", "item": "https://showbandgroup.az/paket/toy-disko/"}]}]}</script>
 </head>
 <body>
 <div class="w">
@@ -58,32 +72,15 @@ if(n)gtag('event',n,{link_url:h,link_text:(a.textContent||'').trim().slice(0,60)
  <div class="mnav" id="mnav" hidden><a href="../../#xidmet">Xidmətlər</a><a href="../../#paket">Paketlər</a><a href="../../#video">Videolar</a><a href="../../#komanda">Komanda</a><a href="../../#rey">Rəylər</a><a href="../../xeberler/">Xəbərlər</a><a href="../../#elaqe">Əlaqə</a><a class="btn" href="../../#bron">Tarix seç</a></div>
  <script>(function(){var b=document.getElementById('burger'),m=document.getElementById('mnav');b.onclick=function(){var o=m.hidden;m.hidden=!o;b.classList.toggle('x',o);b.setAttribute('aria-expanded',o)};m.querySelectorAll('a').forEach(function(a){a.onclick=function(){m.hidden=true;b.classList.remove('x')}})})();</script>
 
- <nav class="bc" aria-label="breadcrumb"><a href="../../">Ana səhifə</a><span>›</span><a href="../../#paket">Paketlər</a><span>›</span><em>Toy Disko</em></nav>
- <article class="svp">
-  <div class="pkx">
-   <div class="pkimg"><img src="../../img/pk_toydisko.webp" alt="Toy Disko — Showband Group" width="720" height="720"></div>
-   <div>
-    <span class="chip">Toy şou paketi</span>
-    <h1>Toy Disko</h1>
-    <p class="lead">Toyunuzun ən enerjili saatını biz idarə edirik: işıqlı geyimdə DJ, canlı perkussiya, flashmob və şou effektləri ilə 1 saatlıq disko şou.</p>
-    <div class="pkpr"><b>600 AZN</b><span>Müddət: 1 saat</span></div>
-    <div class="pkbt"><a class="btn" href="../../?pk=toydisko#bron">Rezerv et</a><a class="btn o" href="https://wa.me/994556118787?text=Salam!%20«Toy%20Disko»%20paketi%20ilə%20maraqlanıram." target="_blank" rel="noopener">WhatsApp</a></div>
-    <h2>Paketə nə daxildir</h2>
-    <ul class="pkl"><li><i>1</i><div><b>DJ işıqlı (LED) geyimdə</b><p>Bütün disko proqramını aparır.</p></div></li><li><i>2</i><div><b>Canlı perkussiya solisti</b><p>İşıqlı geyimdə, DJ-in yanında darbuka, davul və afro alətlərində canlı ifa.</p></div></li><li><i>3</i><div><b>Qarışıq repertuar</b><p>Dünya hitləri, müasir və modern mahnılar, 70-ci, 80-ci, 90-cı illərin sevilən mahnıları, disko mahnıları və halay bölməsi.</p></div></li><li><i>4</i><div><b>İnteraktiv şou</b><p>Qonaqlarla birlikdə flashmob, mahnıların qonaqlarla birgə ifası.</p></div></li><li><i>5</i><div><b>Şou effektləri</b><p>2 ədəd pul atan tapança və 2 ədəd konfetti (feyerverk) tapançası — bəy və gəlinə 1-1 ədəd.</p></div></li><li><i>6</i><div><b>İşıqlı çubuqlar</b><p>Flashmob üçün — bəy, gəlin və müəyyən sayda qonaq üçün.</p></div></li></ul>
-    <p class="pknote">• 100 AZN əlavə ödənişlə 1 ədəd tüstü tapançası sifariş edə bilərsiniz.</p>
-    <h2 style="margin-top:28px">Əlavə xidmətlər</h2>
-    <ul class="pkex"><li>İşıqlı eynəklər və flashmob çubuqları<span>100 AZN</span></li><li>Reels maker (videoqraf)<span>200 AZN</span></li><li>Müğənni<span>razılaşma ilə</span></li><li>Gitarist qrup<span>razılaşma ilə</span></li><li>Rəqs qrupları<span>razılaşma ilə</span></li></ul>
-    <p class="pknote">Qiymətlər yalnız Bakı şəhəri daxilində keçirilən tədbirlər üçündür. Bölgələr, rayonlar və xarici ölkələr üçün, özəl bayram günlərində, otellərdə və bəzi restoranlarda qiymət dəyişə bilər. Xaricdə də çıxış edirik — istənilən ölkəyə uçuruq.</p>
-    <p class="pknote"><a href="../../files/Showband_Paketler_2026.pdf" target="_blank" rel="noopener" style="color:var(--red2)">📄 Bütün paketlər — PDF kataloq</a></p>
-    <h2 style="margin-top:28px">Digər paketlər</h2>
-    <div class="pko"><a class="btn o sm" href="../mega-disco-show/">Mega Disco Show</a><a class="btn o sm" href="../kino-acilis/">Kino Açılış</a><a class="btn o sm" href="../nisan/">Nişan paketi</a><a class="btn o sm" href="../ad-gunu/">Ad günü paketi</a><a class="btn o sm" href="../mezun-gecesi/">Məzun gecəsi və Party</a><a class="btn o sm" href="../korporativ/">Korporativ paket</a><a class="btn o sm" href="../instrumental-band/">Instrumental Band</a></div>
-   </div>
-  </div>
- </article>
- <aside class="cta">
-  <div><span class="k">Showband Group</span><h2>Tarixinizi <em>bron</em> edin</h2><p>Tarix, məkan və qonaq sayını yazın — paketi və ssenarini birlikdə seçək.</p></div>
-  <div class="cb"><a class="btn" href="../../?pk=toydisko#bron">Rezerv et</a><a class="btn o" href="https://wa.me/994556118787?text=Salam!%20«Toy%20Disko»%20paketi%20ilə%20maraqlanıram." target="_blank" rel="noopener">WhatsApp</a></div>
- </aside>
+ <section class="ah"><img src="../../img/pk_toydisko.webp" alt="Toy Disko — Showband Group" width="1600" height="1000">
+  <div class="ahi"><span class="chip">Toy şou paketi</span><h1>Toy Disko</h1><p>Toyunuzun ən enerjili saatını biz idarə edirik: işıqlı geyimdə DJ, canlı perkussiya, flashmob və şou effektləri ilə 1 saatlıq disko şou.</p>
+   <div class="arow"><span class="apr">600 AZN</span><span class="adur">Müddət: 1 saat</span>
+   <div class="abt"><a class="btn" href="../../?pk=toydisko#bron">Rezerv et</a><a class="btn o" href="https://wa.me/994556118787?text=Salam!%20«Toy%20Disko»%20paketi%20ilə%20maraqlanıram." target="_blank" rel="noopener">WhatsApp</a></div></div></div></section>
+ <section class="asec"><h2>Paketə nə <em>daxildir</em></h2><div class="agrid"><div class="ac"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3a9 9 0 0 1 9 9"/></svg></div><b>DJ işıqlı (LED) geyimdə</b><p>Bütün disko proqramını aparır.</p></div><div class="ac"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8M8 3l3 4M16 3l-3 4"/></svg></div><b>Canlı perkussiya solisti</b><p>İşıqlı geyimdə, DJ-in yanında darbuka, davul və afro alətlərində canlı ifa.</p></div><div class="ac"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></div><b>Qarışıq repertuar</b><p>Dünya hitləri, müasir və modern mahnılar, 70-ci, 80-ci, 90-cı illərin sevilən mahnıları, disko mahnıları və halay bölməsi.</p></div><div class="ac"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></svg></div><b>İnteraktiv şou</b><p>Qonaqlarla birlikdə flashmob, mahnıların qonaqlarla birgə ifası.</p></div><div class="ac"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/></svg></div><b>Şou effektləri</b><p>2 ədəd pul atan tapança və 2 ədəd konfetti (feyerverk) tapançası — bəy və gəlinə 1-1 ədəd.</p></div><div class="ac"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/></svg></div><b>İşıqlı çubuqlar</b><p>Flashmob üçün — bəy, gəlin və müəyyən sayda qonaq üçün.</p></div></div><p class="anote">• 100 AZN əlavə ödənişlə 1 ədəd tüstü tapançası sifariş edə bilərsiniz.</p></section>
+ <section class="asec"><h2>Əlavə <em>xidmətlər</em></h2><div class="aex"><div><b>İşıqlı eynəklər və flashmob çubuqları</b><span>100 AZN</span></div><div><b>Reels maker (videoqraf)</b><span>200 AZN</span></div><div><b>Müğənni</b><span>razılaşma ilə</span></div><div><b>Gitarist qrup</b><span>razılaşma ilə</span></div><div><b>Rəqs qrupları</b><span>razılaşma ilə</span></div></div>
+  <p class="anote">Qiymətlər yalnız Bakı şəhəri daxilində keçirilən tədbirlər üçündür. Bölgələr, rayonlar və xarici ölkələr üçün, özəl bayram günlərində, otellərdə və bəzi restoranlarda qiymət dəyişə bilər. Xaricdə də çıxış edirik — istənilən ölkəyə uçuruq.</p><p class="anote"><a href="../../files/Showband_Paketler_2026.pdf" target="_blank" rel="noopener" style="color:var(--red2)">📄 Bütün paketlər — PDF kataloq</a></p></section>
+ <section class="asec" style="padding-bottom:70px"><h2>Digər <em>paketlər</em></h2><div class="aoth"><a href="../mega-disco-show/"><img src="../../img/pk_mega.webp" alt="" loading="lazy"><span>Mega Disco Show<small><s>1000</s>800 AZN</small></span></a><a href="../kino-acilis/"><img src="../../img/pk_kino.webp" alt="" loading="lazy"><span>Kino Açılış<small>1000 AZN<small>-dən</small></small></span></a><a href="../nisan/"><img src="../../img/pk_nisan.webp" alt="" loading="lazy"><span>Nişan paketi<small>1500 AZN</small></span></a><a href="../ad-gunu/"><img src="../../img/pk_adgunu.webp" alt="" loading="lazy"><span>Ad günü paketi<small>1000 AZN</small></span></a><a href="../mezun-gecesi/"><img src="../../img/pk_mezun.webp" alt="" loading="lazy"><span>Məzun gecəsi və Party<small>1000 AZN<small>-dən</small></small></span></a><a href="../korporativ/"><img src="../../img/pk_korp.webp" alt="" loading="lazy"><span>Korporativ paket<small>2000 AZN</small></span></a><a href="../instrumental-band/"><img src="../../img/pk_band.webp" alt="" loading="lazy"><span>Instrumental Band<small>300 AZN<small>-dən</small></small></span></a></div></section>
+ <div class="abar"><div><small>Toy Disko</small><b>600 AZN</b></div><a class="btn" href="../../?pk=toydisko#bron">Rezerv et</a></div>
 
  <footer>
   <a class="logo" href="../../"><img src="../../img/logo.png" alt="Showband Group" width="900" height="258"></a>

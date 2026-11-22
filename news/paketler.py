@@ -102,25 +102,61 @@ EXTRAS = [('İşıqlı eynəklər və flashmob çubuqları', '100 AZN'), ('Reels
           ('Müğənni', 'razılaşma ilə'), ('Gitarist qrup', 'razılaşma ilə'), ('Rəqs qrupları', 'razılaşma ilə')]
 
 CSS = '''<style>
-.pkx{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:56px;align-items:start;padding-top:24px}
-.pkimg{border-radius:28px;overflow:hidden;aspect-ratio:1;position:sticky;top:96px;box-shadow:0 30px 80px rgba(227,18,43,.18)}
-.pkimg img{width:100%;height:100%;object-fit:cover;display:block}
-.pkx h1{font:900 clamp(34px,4.6vw,60px)/1.02 var(--d);letter-spacing:-.035em;margin:14px 0 16px;text-wrap:balance}
-.pkx .lead{font-size:19px;line-height:1.6;color:#e2e2e8;margin:0 0 24px}
-.pkpr{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:baseline;padding:18px 22px;border-radius:20px;background:var(--card,#16161c);border:1px solid var(--line,#26262e);margin-bottom:22px}
-.pkpr b{font:900 34px var(--d);color:var(--fg)}.pkpr b s{font-size:20px;opacity:.45;margin-right:8px}.pkpr b small{font-size:18px}
-.pkpr span{color:var(--mut,#a9a9b3);font-size:15px}
-.pkbt{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:34px}
-.pkx h2{font:700 22px/1.3 var(--d);margin:0 0 14px}
-.pkl{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:10px}
-.pkl li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:12px;background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px}
-.pkl li i{width:34px;height:34px;border-radius:50%;background:rgba(227,18,43,.14);color:var(--red2);font:800 14px/34px var(--d);text-align:center;font-style:normal}
-.pkl b{display:block;font-weight:700}.pkl p{margin:4px 0 0;color:var(--mut,#a9a9b3);font-size:15px;line-height:1.55}
-.pkex{margin:0 0 28px;padding:0;list-style:none;display:grid;gap:8px}.pkex li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line,#26262e);padding:10px 0}.pkex li span{color:var(--red2);font-weight:700;white-space:nowrap}
-.pknote{color:var(--mut,#a9a9b3);font-size:14px;line-height:1.6}
-.pko{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-@media(max-width:900px){.pkx{grid-template-columns:1fr;gap:28px}.pkimg{position:static;max-width:480px}}
-</style>'''
+.ah{position:relative;margin:0 calc(50% - 50vw);min-height:min(86vh,760px);display:flex;align-items:flex-end;overflow:hidden}
+.ah img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%}
+.ah:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,14,.15) 0%,rgba(11,11,14,.35) 45%,var(--bg) 100%),linear-gradient(90deg,rgba(11,11,14,.85),rgba(11,11,14,0) 70%)}
+.ahi{position:relative;z-index:2;width:min(1180px,100% - 40px);margin:0 auto;padding:0 0 56px}
+.ahi .chip{background:rgba(227,18,43,.18);border-color:rgba(255,74,92,.5)}
+.ahi h1{font:900 clamp(44px,7vw,96px)/.95 var(--d);letter-spacing:-.04em;margin:16px 0 18px;max-width:900px;text-wrap:balance}
+.ahi p{font-size:19px;line-height:1.6;color:#e7e7ec;max-width:640px;margin:0 0 28px}
+.arow{display:flex;flex-wrap:wrap;align-items:center;gap:14px 26px}
+.apr{font:900 40px var(--d)}.apr s{font-size:22px;opacity:.45;margin-right:8px}.apr small{font-size:20px}
+.adur{color:var(--mute);font-size:15px;border-left:1px solid var(--line);padding-left:20px}
+.abt{display:flex;gap:12px}.abt .btn{padding:16px 26px;font-size:16px}
+.asec{padding:70px 0 10px}
+.asec h2{font:800 clamp(28px,3.4vw,44px)/1.1 var(--d);letter-spacing:-.03em;margin:0 0 30px}.asec h2 em{font-style:normal;color:var(--red2)}
+.agrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.ac{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:24px;transition:transform .3s,border-color .3s}
+.ac:hover{transform:translateY(-4px);border-color:rgba(255,74,92,.45)}
+.ac .ic{width:48px;height:48px;border-radius:14px;background:rgba(227,18,43,.14);color:var(--red2);display:grid;place-items:center;margin-bottom:16px}.ac .ic svg{width:24px;height:24px}
+.ac b{display:block;font:700 17px/1.3 var(--s)}.ac p{margin:8px 0 0;color:var(--mute);font-size:14.5px;line-height:1.55}
+.aex{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.aex div{background:var(--card);border-radius:18px;padding:18px;border:1px solid var(--line)}.aex b{display:block;font-weight:700;font-size:14.5px}.aex span{display:block;margin-top:8px;color:var(--red2);font:800 17px var(--d)}
+.anote{color:var(--mute);font-size:14px;line-height:1.6;max-width:820px;margin-top:22px}
+.aoth{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.aoth a{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:4/3;display:flex;align-items:flex-end;padding:16px;color:#fff;text-decoration:none}
+.aoth a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}.aoth a:hover img{transform:scale(1.05)}
+.aoth a:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85))}
+.aoth a span{position:relative;z-index:1;font:800 17px/1.15 var(--d)}.aoth a small{display:block;font:600 13px var(--s);color:var(--red2);margin-top:4px}
+.abar{display:none}.abar s,.aoth s{margin-right:6px;opacity:.55;font-size:.8em}
+@media(max-width:900px){.agrid{grid-template-columns:1fr 1fr}.aex{grid-template-columns:1fr 1fr}.aoth{grid-template-columns:1fr 1fr}.ah{min-height:78vh}.abt{display:none}
+ .abar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(11,11,14,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
+ .abar b{font:900 22px var(--d)}.abar small{display:block;color:var(--mute);font:500 12px var(--s)}.abar .btn{padding:14px 22px}
+ .sticky{display:none!important}}
+@media(max-width:560px){.agrid{grid-template-columns:1fr}.adur{border:0;padding:0}}
+.aoth s{margin-right:6px;opacity:.6}</style>'''
+
+ICON = {
+ 'mic': '<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3M8 21h8"/>',
+ 'spk': '<rect x="6" y="3" width="12" height="18" rx="2"/><circle cx="12" cy="14" r="3.2"/><circle cx="12" cy="7.5" r="1.3"/>',
+ 'note': '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
+ 'drum': '<ellipse cx="12" cy="8" rx="8" ry="3"/><path d="M4 8v8c0 1.7 3.6 3 8 3s8-1.3 8-3V8M8 3l3 4M16 3l-3 4"/>',
+ 'star': '<path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/>',
+ 'disc': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 3a9 9 0 0 1 9 9"/>',
+ 'spark': '<path d="M12 2v6M12 16v6M2 12h6M16 12h6M5 5l4 4M15 15l4 4M19 5l-4 4M9 15l-4 4"/>',
+ 'doc': '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7"/>',
+ 'film': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/>',
+ 'gift': '<rect x="3" y="8" width="18" height="13" rx="1"/><path d="M12 8v13M3 12h18M12 8c-2-4-6-4-6-1s6 1 6 1zM12 8c2-4 6-4 6-1s-6 1-6 1z"/>',
+}
+def icon_for(t):
+    t = t.lower()
+    for k, ic in (('səs', 'spk'), ('texniki', 'spk'), ('aparıcı', 'mic'), ('müğənni', 'mic'), ('tar', 'note'), ('qarşılanma', 'note'), ('ritm', 'drum'), ('perkussiya', 'drum'),
+                  ('band', 'star'), ('dj', 'disc'), ('disko', 'spark'), ('effekt', 'spark'), ('çubuq', 'spark'), ('ssenari', 'doc'), ('hazırlıq', 'doc'), ('rəsmi', 'doc'),
+                  ('film', 'film'), ('hədiyyə', 'gift'), ('interaktiv', 'star'), ('repertuar', 'note'), ('giriş', 'star'), ('açılış', 'film'), ('rekvizit', 'spark')):
+        if k in t: return ICON[ic]
+    return ICON['star']
+svg = lambda t: f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{icon_for(t)}</svg>'
+
 
 
 def price_html(p):
@@ -144,38 +180,21 @@ def page(p):
             {'@type': 'ListItem', 'position': 3, 'name': p['name'], 'item': url}]}]}
     extra = CSS + '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>'
     wa = WA + (f'Salam! «{p["name"]}» paketi ilə maraqlanıram.').replace(' ', '%20')
-    others = ''.join(f'<a class="btn o sm" href="../{o["slug"]}/">{E(o["name"])}</a>' for o in P if o is not p)
-    items = ''.join(f'<li><i>{i}</i><div><b>{E(t)}</b><p>{E(d)}</p></div></li>' for i, (t, d) in enumerate(p['items'], 1))
-    extra_p = ''.join(f'<p class="pknote">• {E(x)}</p>' for x in p['extra'])
+    others = ''.join(f'<a href="../{o["slug"]}/"><img src="{rel}img/{o["img"]}.webp" alt="" loading="lazy"><span>{E(o["name"])}<small>{price_html(o)}</small></span></a>' for o in P if o is not p)
+    items = ''.join(f'<div class="ac"><div class="ic">{svg(t)}</div><b>{E(t)}</b><p>{E(d)}</p></div>' for t, d in p['items'])
+    extra_p = ''.join(f'<p class="anote">• {E(x)}</p>' for x in p['extra'])
     return head(title, p['desc'][:155], url, rel, 'website', extra, f'img/{p["img"]}.webp').replace(
         '<a class="on" href="../../xeberler/">', '<a href="../../xeberler/">').replace(
         '<a href="../../#paket">', '<a class="on" href="../../#paket">', 1) + f'''
- <nav class="bc" aria-label="breadcrumb"><a href="{rel}">Ana səhifə</a><span>›</span><a href="{rel}#paket">Paketlər</a><span>›</span><em>{E(p["name"])}</em></nav>
- <article class="svp">
-  <div class="pkx">
-   <div class="pkimg"><img src="{rel}img/{p["img"]}.webp" alt="{E(p["name"])} — Showband Group" width="720" height="720"></div>
-   <div>
-    <span class="chip">{E(p["eb"])}</span>
-    <h1>{E(p["name"])}</h1>
-    <p class="lead">{E(p["desc"])}</p>
-    <div class="pkpr"><b>{price_html(p)}</b><span>Müddət: {E(p["dur"])}</span></div>
-    <div class="pkbt"><a class="btn" href="{rel}?pk={p["id"]}#bron">Rezerv et</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
-    <h2>Paketə nə daxildir</h2>
-    <ul class="pkl">{items}</ul>
-    {extra_p}
-    <h2 style="margin-top:28px">Əlavə xidmətlər</h2>
-    <ul class="pkex">{"".join(f"<li>{E(a)}<span>{E(b)}</span></li>" for a, b in EXTRAS)}</ul>
-    <p class="pknote">{E(NOTE)}</p>
-    <p class="pknote"><a href="{rel}{PDF}" target="_blank" rel="noopener" style="color:var(--red2)">📄 Bütün paketlər — PDF kataloq</a></p>
-    <h2 style="margin-top:28px">Digər paketlər</h2>
-    <div class="pko">{others}</div>
-   </div>
-  </div>
- </article>
- <aside class="cta">
-  <div><span class="k">Showband Group</span><h2>Tarixinizi <em>bron</em> edin</h2><p>Tarix, məkan və qonaq sayını yazın — paketi və ssenarini birlikdə seçək.</p></div>
-  <div class="cb"><a class="btn" href="{rel}?pk={p["id"]}#bron">Rezerv et</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
- </aside>
+ <section class="ah"><img src="{rel}img/{p["img"]}.webp" alt="{E(p["name"])} — Showband Group" width="1600" height="1000">
+  <div class="ahi"><span class="chip">{E(p["eb"])}</span><h1>{E(p["name"])}</h1><p>{E(p["desc"])}</p>
+   <div class="arow"><span class="apr">{price_html(p)}</span><span class="adur">Müddət: {E(p["dur"])}</span>
+   <div class="abt"><a class="btn" href="{rel}?pk={p["id"]}#bron">Rezerv et</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div></div></div></section>
+ <section class="asec"><h2>Paketə nə <em>daxildir</em></h2><div class="agrid">{items}</div>{extra_p}</section>
+ <section class="asec"><h2>Əlavə <em>xidmətlər</em></h2><div class="aex">{"".join(f"<div><b>{E(a)}</b><span>{E(b)}</span></div>" for a, b in EXTRAS)}</div>
+  <p class="anote">{E(NOTE)}</p><p class="anote"><a href="{rel}{PDF}" target="_blank" rel="noopener" style="color:var(--red2)">📄 Bütün paketlər — PDF kataloq</a></p></section>
+ <section class="asec" style="padding-bottom:70px"><h2>Digər <em>paketlər</em></h2><div class="aoth">{others}</div></section>
+ <div class="abar"><div><small>{E(p["name"])}</small><b>{price_html(p)}</b></div><a class="btn" href="{rel}?pk={p["id"]}#bron">Rezerv et</a></div>
 ''' + foot(rel)
 
 
