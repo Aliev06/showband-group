@@ -16,16 +16,18 @@ def load_pk():
     for line in blk.splitlines()[1:]:
         m = re.search(r"id:'(\w+)'", line)
         if not m: continue
-        out[m.group(1)] = {'pr': int(re.search(r'pr:(\d+)', line).group(1)), 'hr': 'hr:1' in line, 'inc': 'inc:1' in line,
+        q = lambda k: re.search(k + r":\['([^']*)'", line)
+        out[m.group(1)] = {'pr': int(re.search(r'pr:(\d+)', line).group(1)), 'from': 'from:1' in line,
+                           'n': q('n').group(1), 'dur': q('dur').group(1), 'h': q('h').group(1),
                            'it': re.findall(r"\['([^']*)','[^']*','[^']*'\]", line[line.index('it:'):])}
     return out
 
 
 PK = load_pk()
 # səhifə → paket və paketə əlavə edilə bilən xidmətlər (ana səhifədəki SV xidmətlərindən)
-PKMAP = {'toy': ('toy', ['Səs, işıq və səhnə', 'Dekorasiya və məkan dizaynı', 'Foto, video və Love Story']),
-         'korporativ': ('korp', ['Dekorasiya və brend dizaynı', 'Foto və video']),
-         'ad-gunu': ('party', ['Dekorasiya və tematik dizayn', 'Foto və video'])}
+PKMAP = {'toy': (['toydisko', 'mega', 'kino', 'nisan'], ['Səs, işıq və səhnə', 'Dekorasiya və məkan dizaynı', 'Foto, video və Love Story']),
+         'korporativ': (['korp', 'band'], ['Dekorasiya və brend dizaynı', 'Foto və video']),
+         'ad-gunu': (['adgunu', 'mezun', 'band'], ['Dekorasiya və tematik dizayn', 'Foto və video'])}
 
 PAGES = [
  {'slug': 'toy', 'video': 'toy', 'img': 'img/pk_toy.webp',
@@ -65,7 +67,7 @@ PAGES = [
 
 FAQ = [
  ('Qiymət nə qədərdir?', 'Qiymət tarixdən, məkandan, qonaq sayından və seçdiyiniz proqramdan asılıdır. WhatsApp-a yazın və ya saytda tarix seçin — paketi və dəqiq qiyməti dəqiqləşdirək.'),
- ('Səs, işıq və dekor paketə daxildir?', 'Korporativ və ad günü paketlərinə səs sistemi, lazer və LED işıq şousu daxildir. Dekorasiya, foto-video və toy üçün səs-işıq əlavə xidmət kimi razılaşdırılır — hamısı bir komandadan, ayrı-ayrı podratçı axtarmağa ehtiyac yoxdur.'),
+ ('Səs, işıq və dekor paketə daxildir?', 'Nişan, ad günü, məzun gecəsi və korporativ paketlərinə peşəkar səs sistemi daxildir. Dekorasiya, foto-video və əlavə işıq ayrıca razılaşdırılır — hamısı bir komandadan, ayrı-ayrı podratçı axtarmağa ehtiyac yoxdur.'),
  ('Tarixi necə bron etmək olar?', 'Saytda «Tarix seç» düyməsi ilə və ya WhatsApp vasitəsilə: tarix, məkan və tədbir növünü yazın, sizinlə əlaqə saxlayaq.'),
 ]
 
@@ -76,7 +78,7 @@ SEO = {
   'p': ['Toy təşkili — bir gündə onlarla detalı eyni vaxtda idarə etməkdir: musiqi, aparıcı, səs, işıq, dekor, gəlin-bəyin girişi, ilk rəqs, tort anı və qonaqların əhvalı. Showband Group bütün bunları bir komanda kimi götürür — ayrı-ayrı müğənni, DJ, işıqçı və dekorçu axtarmağa ehtiyac qalmır.',
         'Hazırlıq tarixi seçməkdən başlayır. Sonra məkanla, qonaq sayı ilə və sizin istəklərinizlə tanış olur, toyun ssenarisini yazırıq: hansı anda hansı mahnı səslənəcək, sürprizlər nə vaxt olacaq, milli rəqslər və müasir hissə necə növbələşəcək. Toy günü komandamız tədbirin əvvəlindən sonuna qədər zaldadır və proqramı vaxtında aparır.',
         'Musiqidə canlı band, saksafon, nağara, saz və DJ birləşir — həm milli, həm müasir repertuar. Showman qonaqları oyunlara, fleşmoba və rəqsə qatır. İşıq şousu, lazer, işıqlı eynəklər və fleşmob çubuqları gecənin final hissəsini yadda qalan edir.',
-        'Toy paketi saatlıq hesablanır və 500 AZN-dən başlayır. Dəqiq qiymət tarixdən, məkandan və proqramdan asılıdır. Bakıda, rayonlarda və xaricdə — istənilən ölkədə toy təşkil edirik.'],
+        'Toy üçün paketlər: Toy Disko — 600 AZN (1 saat), Mega Disco Show (band + disko) — 800 AZN, Kino Açılış — 1000 AZN-dən, Nişan paketi — 1500 AZN. Qiymətlər Bakı üçündür; rayonlarda, bayram günlərində və bəzi məkanlarda dəyişə bilər. Xaricdə də — istənilən ölkədə çıxış edirik.'],
   'faq': [('Toy təşkilinə nə qədər əvvəl müraciət etmək lazımdır?', 'Yay və payız mövsümündə həftəsonu tarixlər tez dolur, ona görə 1–3 ay əvvəl yazmağı məsləhət görürük. Boş tarix olarsa, daha qısa müddətdə də hazırlaşırıq.'),
           ('Nişan da təşkil edirsiniz?', 'Bəli. Nişan və toy üçün eyni komanda ilə proqram hazırlayırıq — musiqi, aparıcı, səs-işıq və dekor.')]},
  'korporativ': {
@@ -84,7 +86,7 @@ SEO = {
   'p': ['Korporativ tədbir şirkətin üzüdür: əməkdaşlar, tərəfdaşlar və qonaqlar tədbirdən sonra brendi necə xatırlayacaqlar — bu, təşkilatdan asılıdır. Showband Group korporativ gecələri, təqdimatları, Yeni il və bayram proqramlarını, şirkətin ildönümlərini və mükafatlandırma mərasimlərini bir komanda ilə təşkil edir.',
         'İş brief ilə başlayır: tədbirin məqsədi, qonaqların sayı, məkan, rəsmi hissənin müddəti və brend tələbləri. Bunun əsasında ssenari hazırlayırıq — rəsmi çıxışlardan əyləncə hissəsinə rahat keçid, interaktiv oyunlar, müsabiqələr və şou nömrələri.',
         'Aparıcı, Live Band və ya DJ, səs sistemi, işıq və lazer şousu, səhnə və brend rənglərində dekor bir komandadan gəlir. Bu, podratçılar arasında koordinasiya problemini aradan qaldırır və tədbir vaxtında, planlı keçir.',
-        'Korporativ paket 1500 AZN-dən başlayır; dəqiq qiymət qonaq sayından və proqramdan asılıdır. Bakıda, regionlarda və xaricdə tədbirlər təşkil edirik.'],
+        'Korporativ paket — 2000 AZN, hər şey daxil: hazırlıq, ssenari, aparıcı, tar, müğənni-gitarist, show band, ritm ansamblı, 1 saatlıq diskoteka, səs sistemi və gedişat. Qiymət Bakı üçündür; regionlarda və xaricdə dəyişə bilər.'],
   'faq': [('Yeni il korporativi üçün nə vaxt bron etmək lazımdır?', 'Dekabr tarixləri tez dolur, ona görə 1–2 ay əvvəl yazmağı məsləhət görürük.'),
           ('Tədbiri şirkətin brend rənglərində hazırlaya bilərsiniz?', 'Bəli. Səhnə, işıq, ekranlar və dekor brend rənglərinizə və üslubunuza uyğun hazırlanır.')]},
  'ad-gunu': {
@@ -92,7 +94,7 @@ SEO = {
   'p': ['Ad günü təşkili kiçik detallardan ibarətdir: musiqi, aparıcı, oyunlar, dekor, işıq və foto. Showband Group həm uşaq, həm böyük ad günlərini, eləcə də party və məzun gecələrini bir komanda ilə təşkil edir.',
         'Əvvəlcə ad günü sahibinin zövqünü, qonaq sayını və məkanı öyrənirik, sonra proqramı qururuq: DJ setləri, showman-ın oyunları və müsabiqələri, sürpriz anlar, tort çıxışı və final. Tematik dekor rəngləri və detalları ilə tədbirin üslubunu tamamlayır.',
         'Lazer və işıq şousu adi zalı bir neçə dəqiqəyə klub atmosferinə çevirir. Fotoqraf gecənin ən yaxşı anlarını çəkir ki, ad günü yalnız yaddaşda deyil, şəkillərdə də qalsın.',
-        'Ad günü və party paketi 800 AZN-dən başlayır və toy paketindəki hər şeyi əhatə edir; dəqiq qiymət proqramdan asılıdır. Bakıda və xaricdə tədbirlər təşkil edirik.'],
+        'Ad günü paketi — 1000 AZN (aparıcı, tar, ritm alətləri, Showband, DJ və 1 saatlıq diskoteka), məzun gecəsi və party paketi — 1000 AZN-dən. Qiymətlər Bakı üçündür; rayonlarda, bayram günlərində və bəzi məkanlarda dəyişə bilər.'],
   'faq': [('Uşaq ad günləri də təşkil edirsiniz?', 'Bəli. Uşaq ad günləri üçün yaşa uyğun oyunlar, aparıcı və musiqi ilə ayrıca proqram hazırlayırıq.'),
           ('Ad günü kiçik məkanda da keçirilə bilər?', 'Bəli, məkanın ölçüsünə görə səs və işıq avadanlığını uyğunlaşdırırıq — restoran, kafe və ya digər məkan.')]},
 }
@@ -112,6 +114,8 @@ CSS = '''<style>
 .inc{list-style:none;padding:0;margin:0 0 10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .inc li{background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px;font-weight:600}
 .inc li:before{content:"✓ ";color:var(--red2)}
+.pkb{margin:0 0 22px}.pkh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.pkh h3{font:700 19px var(--d);margin:0}.pkh b{color:var(--red2);font:800 19px var(--d);white-space:nowrap}.pkm{margin:4px 0 12px;color:var(--mut,#a9a9b3);font-size:14px}
+.pkp a{color:var(--red2)}
 .pkp{margin:4px 0 0;color:var(--mut,#a9a9b3);font-size:15px;line-height:1.6}.pkp b{color:var(--fg);font-size:18px}
 .faq details{border-bottom:1px solid var(--line,#26262e);padding:14px 0}
 .faq summary{cursor:pointer;font-weight:600;color:var(--fg)}
@@ -126,14 +130,18 @@ def links(rel, cur=''):
     return '<div class="svl">' + ''.join(f'<a class="btn o sm" href="{rel}{s}/">{n}</a>' for s, n in names.items() if s != cur) + '</div>'
 
 
+def pkblock(pk):
+    pr = f'{pk["pr"]} AZN' + ('-dən' if pk['from'] else '')
+    return (f'<div class="pkb"><div class="pkh"><h3>{E(pk["n"])}</h3><b>{E(pr)}</b></div>'
+            f'<p class="pkm">{E(pk["h"])} · {E(pk["dur"])}</p>'
+            f'<ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in pk["it"])}</ul></div>')
+
+
 def page(p):
     rel = '../'
     url = f'{SITE}/{p["slug"]}/'
     seo = SEO.get(p['slug'], {})
-    pk_id, extra_sv = PKMAP[p['slug']]
-    pk = PK[pk_id]
-    pk_name = {'toy': 'Toy paketi', 'korp': 'Korporativ paket', 'party': 'Ad günü / Party paketi'}[pk_id]
-    pk_items = (['Toy paketindəki hər şey: ' + ', '.join(x.split(':')[0] for x in PK['toy']['it'])] if pk['inc'] else []) + pk['it']
+    pk_ids, extra_sv = PKMAP[p['slug']]
     faq = seo.get('faq', []) + FAQ
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'Service', 'name': re.sub('<[^>]+>', '', p['h1']), 'description': p['desc'], 'url': url,
@@ -159,9 +167,9 @@ def page(p):
    </div>
    <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
    <div class="svb">
-    <h2>{E(pk_name)} — nə daxildir</h2>
-    <ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in pk_items)}</ul>
-    <p class="pkp"><b>{pk["pr"]} AZN</b>-dən{" / saat" if pk["hr"] else ""} · <span>Əlavə edilə bilər: {E(", ".join(extra_sv))}</span></p>
+    <h2>Paketlər və qiymətlər</h2>
+    {"".join(pkblock(PK[i]) for i in pk_ids)}
+    <p class="pkp"><span>Əlavə edilə bilər: {E(", ".join(extra_sv))}</span> · <a href="{rel}files/Showband_Paketler_2026.pdf" target="_blank" rel="noopener">Bütün paketlər — PDF</a></p>
     <div class="svbt"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
    </div>
   </div>
