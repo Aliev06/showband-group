@@ -114,7 +114,7 @@ CSS = '''<style>
 .inc{list-style:none;padding:0;margin:0 0 10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .inc li{background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:16px;padding:14px 16px;font-weight:600}
 .inc li:before{content:"✓ ";color:var(--red2)}
-.pkb{margin:0 0 22px}.pkh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.pkh h3{font:700 19px var(--d);margin:0}.pkh b{color:var(--red2);font:800 19px var(--d);white-space:nowrap}.pkm{margin:4px 0 12px;color:var(--mut,#a9a9b3);font-size:14px}
+.pkbs{display:grid;gap:12px;margin-bottom:16px}.pkb{display:block;color:inherit;text-decoration:none;background:var(--card,#16161c);border:1px solid var(--line,#26262e);border-radius:18px;padding:16px 18px;transition:border-color .2s}.pkb:hover{border-color:var(--red2)}.pkb .pkg{color:var(--red2);font-weight:700;font-size:14px}.pkh b s{opacity:.45;font-size:.75em;margin-right:6px}.pkh b small{font-size:.7em}.pkh{display:flex;justify-content:space-between;align-items:baseline;gap:12px}.pkh h3{font:700 19px var(--d);margin:0}.pkh b{color:var(--red2);font:800 19px var(--d);white-space:nowrap}.pkm{margin:4px 0 12px;color:var(--mut,#a9a9b3);font-size:14px}
 .pkp a{color:var(--red2)}
 .pkp{margin:4px 0 0;color:var(--mut,#a9a9b3);font-size:15px;line-height:1.6}.pkp b{color:var(--fg);font-size:18px}
 .faq details{border-bottom:1px solid var(--line,#26262e);padding:14px 0}
@@ -130,11 +130,11 @@ def links(rel, cur=''):
     return '<div class="svl">' + ''.join(f'<a class="btn o sm" href="{rel}{s}/">{n}</a>' for s, n in names.items() if s != cur) + '</div>'
 
 
-def pkblock(pk):
-    pr = f'{pk["pr"]} AZN' + ('-dən' if pk['from'] else '')
-    return (f'<div class="pkb"><div class="pkh"><h3>{E(pk["n"])}</h3><b>{E(pr)}</b></div>'
-            f'<p class="pkm">{E(pk["h"])} · {E(pk["dur"])}</p>'
-            f'<ul class="inc">{"".join(f"<li>{E(i)}</li>" for i in pk["it"])}</ul></div>')
+def pkblock(pk_id, rel):
+    import paketler
+    pk = next(x for x in paketler.P if x['id'] == pk_id)
+    return (f'<a class="pkb" href="{rel}paket/{pk["slug"]}/"><div class="pkh"><h3>{E(pk["name"])}</h3><b>{paketler.price_html(pk)}</b></div>'
+            f'<p class="pkm">{E(pk["desc"])}</p><span class="pkg">Ətraflı →</span></a>')
 
 
 def page(p):
@@ -168,7 +168,7 @@ def page(p):
    <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
    <div class="svb">
     <h2>Paketlər və qiymətlər</h2>
-    {"".join(pkblock(PK[i]) for i in pk_ids)}
+    <div class="pkbs">{"".join(pkblock(i, rel) for i in pk_ids)}</div>
     <p class="pkp"><span>Əlavə edilə bilər: {E(", ".join(extra_sv))}</span> · <a href="{rel}files/Showband_Paketler_2026.pdf" target="_blank" rel="noopener">Bütün paketlər — PDF</a></p>
     <div class="svbt"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
    </div>
@@ -192,4 +192,5 @@ def page(p):
 
 def build():
     for p in PAGES: w(f'{p["slug"]}/index.html', page(p))
+    import paketler; paketler.build()
     return [p['slug'] for p in PAGES]
