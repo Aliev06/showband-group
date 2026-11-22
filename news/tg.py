@@ -133,10 +133,21 @@ def tiktok_caption(d):
 
 
 def send_tiktok(d):
-    """Paylaşdıqdan sonra TikTok üçün video + hazır mətn göndərir (əl ilə paylaşmaq üçün)."""
+    """Paylaşdıqdan sonra TikTok: əvvəlcə avtomatik (Upload-Post); alınmasa — video + mətn Telegram-a (əl ilə)."""
     video = os.path.join(HERE, 'out', d['slug'] + '.mp4')
     if not os.path.exists(video): return
     txt = tiktok_caption(d)
+    if env('UPLOADPOST_API_KEY'):
+        import tiktok
+        r = tiktok.post(video, txt, key=d['slug'])
+        if r['ok']:
+            d['tiktok'] = {'id': r.get('id'), 'user': r.get('user')}
+            try: save(os.path.join(HERE, 'drafts', d['slug'] + '.json'), d)
+            except Exception: pass
+            say('🎵 <b>TikTok-a göndərildi</b>' + (f' · <a href="{r["url"]}">bax</a>' if r.get('url') else '') +
+                '\n<i>TikTok 1–3 dəqiqəyə göstərəcək</i>')
+            return
+        say('⚠️ <b>TikTok avtomatik alınmadı</b>: ' + html.escape(r['error']) + '\nVideo aşağıda — əl ilə paylaşın 👇')
     cap = '📱 <b>TikTok üçün</b> — videonu yadda saxlayın, mətnə toxunub kopyalayın:\n\n<code>' + html.escape(txt) + '</code>'
     if len(cap) > 1000: cap = '📱 <b>TikTok üçün</b> — videonu yadda saxlayın, mətn aşağıda 👇'
     try:

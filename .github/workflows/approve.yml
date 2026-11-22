@@ -20,6 +20,8 @@ jobs:
       OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       IG_TOKEN: ${{ secrets.IG_TOKEN }}
       IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      UPLOADPOST_API_KEY: ${{ secrets.UPLOADPOST_API_KEY }}
+      UPLOADPOST_USER: ${{ secrets.UPLOADPOST_USER }}
       TG_EVENT: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload) || '' }}
     steps:
       - uses: actions/checkout@v4
