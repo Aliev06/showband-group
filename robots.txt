@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /oyun/
 Sitemap: https://showbandgroup.az/sitemap.xml
