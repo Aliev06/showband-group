@@ -71,5 +71,23 @@ def post(video, caption, key=None):
         return {'ok': False, 'error': str(e)[:300]}
 
 
-if __name__ == '__main__':   # yoxlama: python3 news/tiktok.py  → hansı profil tapılır
-    print('profil:', find_user())
+def check():
+    """Heç nə paylaşmadan: hansı profillərə hansı TikTok qoşulub — Telegram-a yazır."""
+    import html
+    from tg import say
+    code, j = _req('/uploadposts/users')
+    if code != 200:
+        return say(f'⚠️ <b>Upload-Post</b>: profil siyahısı alınmadı ({code}) — açar səhv ola bilər')
+    lines = []
+    for p in j.get('profiles', []):
+        tt = (p.get('social_accounts') or {}).get('tiktok')
+        acc = ('@' + str(tt.get('handle') or tt.get('display_name') or '?')) if isinstance(tt, dict) else '— TikTok qoşulmayıb'
+        lines.append(f'• <code>{html.escape(p.get("username", ""))}</code> → {html.escape(acc)}')
+    cur = _env('UPLOADPOST_USER')
+    say('🔎 <b>Upload-Post profilləri</b>\n' + ('\n'.join(lines) or 'profil yoxdur') +
+        (f'\n\nİndi seçilib: <code>{html.escape(cur)}</code> — avtomatik TikTok aktivdir ✅' if cur else
+         '\n\nAvtomatik TikTok hələ <b>söndürülüb</b>. Düzgün profilin adını GitHub secret <code>UPLOADPOST_USER</code> kimi yazın.'))
+
+
+if __name__ == '__main__':   # python3 news/tiktok.py check
+    check()

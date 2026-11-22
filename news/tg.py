@@ -137,7 +137,7 @@ def send_tiktok(d):
     video = os.path.join(HERE, 'out', d['slug'] + '.mp4')
     if not os.path.exists(video): return
     txt = tiktok_caption(d)
-    if env('UPLOADPOST_API_KEY'):
+    if env('UPLOADPOST_API_KEY') and env('UPLOADPOST_USER'):   # profil təsdiqlənəndən sonra avtomatik
         import tiktok
         r = tiktok.post(video, txt, key=d['slug'])
         if r['ok']:
