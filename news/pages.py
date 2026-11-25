@@ -3,6 +3,8 @@
 build_news.py tərəfindən çağırılır; sitemap-ə də o əlavə edir."""
 import json, re
 from build_news import head, foot, SITE, CFG, E, w
+from i18n_site import LANGS, pre, localize
+import pages_i18n as I
 
 WA = f'https://wa.me/{CFG["whatsapp"]}?text='
 
@@ -125,51 +127,58 @@ CSS = '''<style>
 </style>'''
 
 
-def links(rel, cur=''):
-    names = {'toy': 'Toy və nişan', 'korporativ': 'Korporativ', 'ad-gunu': 'Ad günü və party'}
+def links(rel, cur='', lang='az'):
+    names = {'toy': 'Toy və nişan', 'korporativ': 'Korporativ', 'ad-gunu': 'Ad günü və party'} if lang == 'az' else I.UI[lang]['links']
     return '<div class="svl">' + ''.join(f'<a class="btn o sm" href="{rel}{s}/">{n}</a>' for s, n in names.items() if s != cur) + '</div>'
 
 
-def pkblock(pk_id, rel):
+def pkblock(pk_id, rel, lang='az'):
     import paketler
-    pk = next(x for x in paketler.P if x['id'] == pk_id)
-    return (f'<a class="pkb" href="{rel}paket/{pk["slug"]}/"><div class="pkh"><h3>{E(pk["name"])}</h3><b>{paketler.price_html(pk)}</b></div>'
-            f'<p class="pkm">{E(pk["desc"])}</p><span class="pkg">Ətraflı →</span></a>')
+    pk0 = next(x for x in paketler.P if x['id'] == pk_id)
+    pk = paketler.loc(pk0, lang)
+    more = 'Ətraflı →' if lang == 'az' else I.UI[lang]['more']
+    return (f'<a class="pkb" href="{rel}paket/{pk["slug"]}/"><div class="pkh"><h3>{E(pk["name"])}</h3><b>{paketler.price_html(pk, lang)}</b></div>'
+            f'<p class="pkm">{E(pk["desc"])}</p><span class="pkg">{more}</span></a>')
 
 
-def page(p):
-    rel = '../'
-    url = f'{SITE}/{p["slug"]}/'
-    seo = SEO.get(p['slug'], {})
+def page(p0, lang='az'):
+    p = p0 if lang == 'az' else dict(p0, **I.PAGES[lang][p0['slug']])
+    rel = '../' if lang == 'az' else '../../'
+    url = f'{SITE}/{pre(lang)}{p["slug"]}/'
+    seo = SEO.get(p['slug'], {}) if lang == 'az' else I.SEO[lang].get(p['slug'], {})
     pk_ids, extra_sv = PKMAP[p['slug']]
-    faq = seo.get('faq', []) + FAQ
+    if lang != 'az': extra_sv = I.UI[lang]['extra'][p['slug']]
+    faq = seo.get('faq', []) + (FAQ if lang == 'az' else I.FAQ[lang])
+    L = dict(pk='Paketlər və qiymətlər', add='Əlavə edilə bilər', pdf='Bütün paketlər — PDF', faq='Tez-tez verilən suallar',
+             other='Digər xidmətlər', chip='Showband Group · Bakı', home='Ana səhifə', video='video') if lang == 'az' else I.UI[lang]
     ld = {'@context': 'https://schema.org', '@graph': [
         {'@type': 'Service', 'name': re.sub('<[^>]+>', '', p['h1']), 'description': p['desc'], 'url': url,
          'areaServed': [{'@type': 'City', 'name': 'Bakı'}, {'@type': 'Country', 'name': 'Azərbaycan'}], 'image': f'{SITE}/{p["img"].replace(".webp", ".jpg")}',
          'provider': {'@type': 'EntertainmentBusiness', 'name': 'Showband Group', 'url': SITE + '/', 'telephone': '+994556118787'}},
         {'@type': 'FAQPage', 'mainEntity': [{'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in faq]},
         {'@type': 'BreadcrumbList', 'itemListElement': [
-            {'@type': 'ListItem', 'position': 1, 'name': 'Ana səhifə', 'item': SITE + '/'},
+            {'@type': 'ListItem', 'position': 1, 'name': L['home'], 'item': SITE + '/'},
             {'@type': 'ListItem', 'position': 2, 'name': re.sub('<[^>]+>', '', p['h1']), 'item': url}]}]}
     extra = CSS + '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>'
     wa = WA + p['wa'].replace(' ', '%20')
     plain = re.sub('<[^>]+>', '', p['h1'])
     body = ''.join(f'<h2>{E(h)}</h2><p>{E(t)}</p>' for h, t in p['about'])
-    return head(f'{p["title"]} | Showband Group', p['desc'], url, rel, 'website', extra,
-                p['img'].replace('.webp', '.jpg')).replace('<a class="on" href="../xeberler/">', '<a href="../xeberler/">').replace('<a href="../#xidmet">', '<a class="on" href="../#xidmet">') + f'''
- <nav class="bc" aria-label="breadcrumb"><a href="{rel}">Ana səhifə</a><span>›</span><em>{E(plain)}</em></nav>
+    hd = head(f'{p["title"]} | Showband Group', p['desc'], url, rel, 'website', extra,
+                p['img'].replace('.webp', '.jpg')).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">').replace(f'<a href="{rel}#xidmet">', f'<a class="on" href="{rel}#xidmet">')
+    return localize(hd + f'''
+ <nav class="bc" aria-label="breadcrumb"><a href="{rel}">{L["home"]}</a><span>›</span><em>{E(plain)}</em></nav>
  <article class="svp">
   <div class="svx">
    <div class="sva">
-    <span class="chip">Showband Group · Bakı</span>
+    <span class="chip">{L["chip"]}</span>
     <h1>{p["h1"]}</h1>
     <p class="lead">{E(p["lead"])}</p>
    </div>
-   <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — video"></video></div>
+   <div class="svv"><video controls playsinline preload="none" poster="{rel}video/ev_{p["video"]}_hd.jpg" src="{rel}video/ev_{p["video"]}.mp4" aria-label="{E(plain)} — {L["video"]}"></video></div>
    <div class="svb">
-    <h2>Paketlər və qiymətlər</h2>
-    <div class="pkbs">{"".join(pkblock(i, rel) for i in pk_ids)}</div>
-    <p class="pkp"><span>Əlavə edilə bilər: {E(", ".join(extra_sv))}</span> · <a href="{rel}files/Showband_Paketler_2026.pdf" target="_blank" rel="noopener">Bütün paketlər — PDF</a></p>
+    <h2>{L["pk"]}</h2>
+    <div class="pkbs">{"".join(pkblock(i, rel, lang) for i in pk_ids)}</div>
+    <p class="pkp"><span>{L["add"]}: {E(", ".join(extra_sv))}</span> · <a href="{rel}files/Showband_Paketler_2026.pdf" target="_blank" rel="noopener">{L["pdf"]}</a></p>
     <div class="svbt"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
    </div>
   </div>
@@ -177,20 +186,21 @@ def page(p):
    {body}
    <p>{E(p["venues"])}</p>
    {(f'<h2>{E(seo["h2"])}</h2>' + "".join(f"<p>{E(x)}</p>" for x in seo["p"])) if seo else ""}
-   <h2>Tez-tez verilən suallar</h2>
+   <h2>{L["faq"]}</h2>
    <div class="faq">{"".join(f"<details><summary>{E(q)}</summary><p>{E(a)}</p></details>" for q, a in faq)}</div>
-   <h2>Digər xidmətlər</h2>
-   {links(rel, p["slug"])}
+   <h2>{L["other"]}</h2>
+   {links(rel, p["slug"], lang)}
   </div>
  </article>
  <aside class="cta">
   <div><span class="k">Showband Group</span><h2>Tarixinizi <em>bron</em> edin</h2><p>Tarix, məkan və tədbir növünü yazın — paketi və qiyməti dəqiqləşdirək.</p></div>
   <div class="cb"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
  </aside>
-''' + foot(rel)
+''' + foot(rel), lang, rel, f'{p["slug"]}/')
 
 
 def build():
-    for p in PAGES: w(f'{p["slug"]}/index.html', page(p))
+    for lang in LANGS:
+        for p in PAGES: w(f'{pre(lang)}{p["slug"]}/index.html', page(p, lang))
     import paketler; paketler.build()
     return [p['slug'] for p in PAGES]

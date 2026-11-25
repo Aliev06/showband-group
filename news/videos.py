@@ -4,6 +4,7 @@ Klip siyahısı index.html-dəki `var CL=[...]`-dan oxunur (yeni video ora əlav
 build_news.py tərəfindən çağırılır."""
 import json, os, re
 from build_news import head, foot, SITE, CFG, E, w, ROOT
+from i18n_site import LANGS, pre, localize
 
 WA = f'https://wa.me/{CFG["whatsapp"]}?text='
 
@@ -17,6 +18,42 @@ CATS = [
     ('acilis', 'acilis', 'Toy açılışı', 'Açılış', 'Salam! Toy açılışı üçün məlumat almaq istəyirəm.'),
     ('diger', 'diger', 'Digər çıxışlar', 'Digər', 'Salam! Tədbir üçün məlumat almaq istəyirəm.'),
 ]
+
+# RU / EN: başlıq (h1), qısa ad, WhatsApp mətni — CATS sırası ilə
+CATS_T = {
+ 'ru': [('Свадьба и помолвка', 'Свадьба', 'Здравствуйте! Хочу узнать о свадьбе.'),
+        ('Instrumental Band', 'Instrumental Band', 'Здравствуйте! Хочу узнать об инструментальном бэнде.'),
+        ('Корпоратив', 'Корпоратив', 'Здравствуйте! Хочу узнать о корпоративе.'),
+        ('День рождения', 'День рождения', 'Здравствуйте! Хочу узнать о дне рождения.'),
+        ('Последний звонок и Party', 'Последний звонок и Party', 'Здравствуйте! Хочу узнать о последнем звонке / party.'),
+        ('Открытие свадьбы', 'Открытие', 'Здравствуйте! Хочу узнать об открытии свадьбы.'),
+        ('Другие выступления', 'Другое', 'Здравствуйте! Хочу узнать о мероприятии.')],
+ 'en': [('Weddings & engagements', 'Weddings', 'Hello! I would like to know more about a wedding.'),
+        ('Instrumental Band', 'Instrumental Band', 'Hello! I would like to know more about the instrumental band.'),
+        ('Corporate', 'Corporate', 'Hello! I would like to know more about a corporate event.'),
+        ('Birthday', 'Birthday', 'Hello! I would like to know more about a birthday party.'),
+        ('Last Bell & Party', 'Last Bell & Party', 'Hello! I would like to know more about a last bell / party.'),
+        ('Wedding opening', 'Opening', 'Hello! I would like to know more about a wedding opening.'),
+        ('Other performances', 'Other', 'Hello! I would like to know more about an event.')],
+}
+TX = {
+ 'ru': dict(t_cat='Видео: {} — Showband Group | Баку', d_cat='Живые видео Showband Group с мероприятий «{}»: DJ, шоумен, инструментальный бэнд и шоу. Баку.',
+            h_cat='{} <em>видео</em>', l_cat='{n} видео с наших мероприятий «{h}». Смотрите — и бронируйте дату.',
+            t_all='Видео — Showband Group | Баку', d_all='Живые видео Showband Group: свадьбы, корпоративы, дни рождения, последний звонок, party, открытия и инструментальный бэнд. Баку.',
+            h_all='Живьём <em>со сцены</em>', l_all='{n} видео со свадеб, корпоративов, дней рождения, последних звонков, party, открытий и выступлений инструментального бэнда.',
+            wa_all='Здравствуйте! Хочу узнать о мероприятии.', home='Главная', vids='Видео', all='Все', chip='Showband Group · Видео', cats='Категории'),
+ 'en': dict(t_cat='{} videos — Showband Group | Baku', d_cat='Live videos from Showband Group {} events: DJ, showman, instrumental band and show. Baku.',
+            h_cat='{} <em>videos</em>', l_cat='{n} videos from our {h} events. Watch — and book your date.',
+            t_all='Videos — Showband Group | Baku', d_all='Live videos from Showband Group weddings, corporate events, birthdays, last bell, parties, openings and instrumental band shows. Baku.',
+            h_all='Live <em>from the stage</em>', l_all='{n} videos from weddings, corporate events, birthdays, last bell, parties, openings and instrumental band shows.',
+            wa_all='Hello! I would like to know more about an event.', home='Home', vids='Videos', all='All', chip='Showband Group · Videos', cats='Categories'),
+}
+
+
+def cats(lang):
+    if lang == 'az': return CATS
+    return [(s, e, *CATS_T[lang][i]) for i, (s, e, *_r) in enumerate(CATS)]
+
 
 CSS = '''<style>
 .vh{padding-top:24px;max-width:860px}
@@ -49,18 +86,29 @@ def clips():
     m = re.search(r"var CL=\[\n(.*?)\n\];", s, re.S)
     out = []
     for line in m.group(1).split('\n'):
-        r = re.search(r"\{e:'(\w+)',k:'(\w+)',(w:1,)?n:\['([^']*)'", line)
+        r = re.search(r"\{e:'(\w+)',k:'(\w+)',(w:1,)?n:\['([^']*)','([^']*)','([^']*)'", line)
         if not r: continue
         y = re.search(r"url:'[^']*?([\w-]{11})'", line)
-        out.append({'e': r.group(1), 'k': r.group(2), 'w': bool(r.group(3)), 'n': r.group(4), 'yt': y.group(1) if y else ''})
+        out.append({'e': r.group(1), 'k': r.group(2), 'w': bool(r.group(3)), 'n': r.group(4), 'nl': {'az': r.group(4), 'ru': r.group(5), 'en': r.group(6)},
+                    'yt': y.group(1) if y else ''})
     return out
 
 
-def page(slug, items, allc, cur):
-    rel = '../../' if slug else '../'
-    url = f'{SITE}/videolar/{slug + "/" if slug else ""}'
-    lab = {c[1]: c[3] for c in CATS}
-    if cur:
+def page(slug, items, allc, cur, lang='az'):
+    rel = ('../../' if slug else '../') + ('' if lang == 'az' else '../')
+    url = f'{SITE}/{pre(lang)}videolar/{slug + "/" if slug else ""}'
+    CS = cats(lang)
+    lab = {c[1]: c[3] for c in CS}
+    items = [dict(c, n=c['nl'][lang]) for c in items]
+    X = TX.get(lang)
+    if lang != 'az':
+        if cur:
+            _, e, h1, short, wa_t = cur
+            title, desc = X['t_cat'].format(h1), X['d_cat'].format(h1)
+            h1h, lead = X['h_cat'].format(E(h1)), X['l_cat'].format(n=len(items), h=h1)
+        else:
+            wa_t, title, desc, h1h, lead = X['wa_all'], X['t_all'], X['d_all'], X['h_all'], X['l_all'].format(n=len(items))
+    elif cur:
         _, e, h1, short, wa_t = cur
         title = f'{h1} videoları — Showband Group | Bakı'
         desc = f'Showband Group-un {h1.lower()} tədbirlərindən canlı videolar: DJ, showman, instrumental band və şou. Bakı.'
@@ -74,8 +122,9 @@ def page(slug, items, allc, cur):
         lead = f'Toy, korporativ, ad günü, son zəng, party, açılış və instrumental band çıxışlarından {len(items)} video.'
     wa = WA + wa_t.replace(' ', '%20')
     og = f'video/ev_{items[0]["k"]}.jpg' if items else 'img/og.jpg'
-    crumbs = [{'@type': 'ListItem', 'position': 1, 'name': 'Ana səhifə', 'item': SITE + '/'},
-              {'@type': 'ListItem', 'position': 2, 'name': 'Videolar', 'item': SITE + '/videolar/'}]
+    home, vl, allw, chip, catw = ('Ana səhifə', 'Videolar', 'Hamısı', 'Showband Group · Videolar', 'Kateqoriyalar') if lang == 'az' else (X['home'], X['vids'], X['all'], X['chip'], X['cats'])
+    crumbs = [{'@type': 'ListItem', 'position': 1, 'name': home, 'item': SITE + '/'},
+              {'@type': 'ListItem', 'position': 2, 'name': vl, 'item': f'{SITE}/{pre(lang)}videolar/'}]
     if cur: crumbs.append({'@type': 'ListItem', 'position': 3, 'name': cur[2], 'item': url})
     vids = []
     for c in items:
@@ -86,40 +135,41 @@ def page(slug, items, allc, cur):
     ld = {'@context': 'https://schema.org', '@graph': [{'@type': 'BreadcrumbList', 'itemListElement': crumbs}] + vids}
     extra = CSS + '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>'
     count = lambda e: sum(1 for c in allc if c['e'] == e)
-    tabs = f'<a href="{rel}videolar/"{" class=on" if not cur else ""}>Hamısı <small>{len(allc)}</small></a>' + ''.join(
+    tabs = f'<a href="{rel}videolar/"{" class=on" if not cur else ""}>{allw} <small>{len(allc)}</small></a>' + ''.join(
         f'<a href="{rel}videolar/{s}/"{" class=on" if cur and cur[0] == s else ""}>{E(sh)} <small>{count(e)}</small></a>'
-        for s, e, _, sh, _ in CATS if count(e))
+        for s, e, _, sh, _ in CS if count(e))
     grid = ''.join(
         (f'<figure class="vc"><button class="yt" data-yt="{c["yt"]}" aria-label="{E(c["n"])} — video"><img src="{rel}video/ev_{c["k"]}.jpg" alt="{E(c["n"])}" loading="lazy"{" style=\"object-fit:contain\"" if c["w"] else ""}><i>▶</i></button>' if c['yt'] else
          f'<figure class="vc"><video{" style=\"object-fit:contain\"" if c["w"] else ""} controls playsinline preload="none" poster="{rel}video/ev_{c["k"]}.jpg" src="{rel}video/ev_{c["k"]}.mp4" aria-label="{E(c["n"])}"></video>') +
         f'<figcaption><span>{E(lab.get(c["e"], ""))}</span>{E(c["n"])}</figcaption></figure>' for c in items)
-    bc = (f'<a href="{rel}">Ana səhifə</a><span>›</span>' + (f'<a href="{rel}videolar/">Videolar</a><span>›</span><em>{E(cur[2])}</em>' if cur else '<em>Videolar</em>'))
-    return head(title, desc, url, rel, 'website', extra, og).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">').replace(f'<a href="{rel}#video">', f'<a class="on" href="{rel}#video">') + f'''
+    bc = (f'<a href="{rel}">{home}</a><span>›</span>' + (f'<a href="{rel}videolar/">{vl}</a><span>›</span><em>{E(cur[2])}</em>' if cur else f'<em>{vl}</em>'))
+    return localize(head(title, desc, url, rel, 'website', extra, og).replace(f'<a class="on" href="{rel}xeberler/">', f'<a href="{rel}xeberler/">').replace(f'<a href="{rel}#video">', f'<a class="on" href="{rel}#video">') + f'''
  <nav class="bc" aria-label="breadcrumb">{bc}</nav>
  <section class="vh">
-  <span class="chip">Showband Group · Videolar</span>
+  <span class="chip">{chip}</span>
   <h1>{h1h}</h1>
   <p class="lead">{E(lead)}</p>
   <div class="vbt"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
  </section>
- <nav class="vcat" aria-label="Kateqoriyalar">{tabs}</nav>
+ <nav class="vcat" aria-label="{catw}">{tabs}</nav>
  <div class="vg">{grid}</div>
  <aside class="cta">
   <div><span class="k">Showband Group</span><h2>Tarixinizi <em>bron</em> edin</h2><p>Tarix, məkan və tədbir növünü yazın — paketi və qiyməti dəqiqləşdirək.</p></div>
   <div class="cb"><a class="btn" href="{rel}#bron">Tarix seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
  </aside>
-''' + PLAY1 + foot(rel)
+''' + PLAY1 + foot(rel), lang, rel, f'videolar/{slug + "/" if slug else ""}')
 
 
 def build():
     allc = clips()
-    w('videolar/index.html', page('', allc, allc, None))
-    out = ['videolar']
-    for cat in CATS:
-        items = [c for c in allc if c['e'] == cat[1]]
-        if not items: continue
-        w(f'videolar/{cat[0]}/index.html', page(cat[0], items, allc, cat))
-        out.append(f'videolar/{cat[0]}')
+    out = []
+    for lang in LANGS:
+        w(f'{pre(lang)}videolar/index.html', page('', allc, allc, None, lang)); out.append(f'{pre(lang)}videolar')
+        for cat in cats(lang):
+            items = [c for c in allc if c['e'] == cat[1]]
+            if not items: continue
+            w(f'{pre(lang)}videolar/{cat[0]}/index.html', page(cat[0], items, allc, cat, lang))
+            out.append(f'{pre(lang)}videolar/{cat[0]}')
     return out
 
 

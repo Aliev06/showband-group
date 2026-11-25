@@ -160,13 +160,7 @@ svg = lambda t: f'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 
 
 
-LANGS = ('az', 'ru', 'en')
-LOC = {'az': 'az_AZ', 'ru': 'ru_RU', 'en': 'en_US'}
-NAV_AZ = ['Xidmətlər', 'Paketlər', 'Videolar', 'Komanda', 'Rəylər', 'Xəbərlər', 'Əlaqə']
-
-
-def pre(lang):  # URL prefiksi
-    return '' if lang == 'az' else lang + '/'
+from i18n_site import LANGS, pre, localize
 
 
 def price_html(p, lang='az'):
@@ -181,34 +175,6 @@ def loc(p, lang):
     q = dict(p, az_items=p['items'])
     if lang != 'az': q.update(T[lang][p['id']])
     return q
-
-
-def localize(html, lang, rel, slug):
-    """head/foot AZ şablonunu dilə uyğunlaşdırır + dil keçidi."""
-    alts = ''.join(f'<link rel="alternate" hreflang="{l}" href="{SITE}/{pre(l)}paket/{slug}/">' for l in LANGS)
-    alts += f'<link rel="alternate" hreflang="x-default" href="{SITE}/paket/{slug}/">'
-    html = html.replace(f'<link rel="alternate" hreflang="az" href="{SITE}/{pre(lang)}paket/{slug}/">', alts)
-    sw = '<div class="lsw">' + ''.join(
-        f'<a href="{rel}{pre(l)}paket/{slug}/"{" class=on" if l == lang else ""} hreflang="{l}">{l.upper()}</a>' for l in LANGS) + '</div>'
-    css = ('<style>.lsw{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}'
-           '.lsw a{font:700 12px var(--s);color:var(--mute);text-decoration:none;padding:7px 10px;border-radius:999px}'
-           '.lsw a.on{background:var(--red);color:#fff}@media(max-width:640px){.lsw a{padding:6px 8px;font-size:11px}}</style>')
-    html = html.replace('<div class="nr">', css + '<div class="nr">' + sw, 1)
-    # dil seçimini ana səhifə üçün yadda saxla
-    html = html.replace('</head>', f"<script>try{{localStorage.setItem('sb_lang','{lang}')}}catch(e){{}}</script>\n</head>", 1)
-    if lang == 'az': return html
-    u = UI[lang]
-    html = (html.replace('<html lang="az">', f'<html lang="{lang}">')
-            .replace('<meta http-equiv="content-language" content="az">', f'<meta http-equiv="content-language" content="{lang}">')
-            .replace('content="az_AZ"', f'content="{LOC[lang]}"'))
-    for a, b in zip(NAV_AZ, u['nav']): html = html.replace(f'>{a}</a>', f'>{b}</a>')
-    html = html.replace('>Tarix seç</a>', f'>{u["date"]}</a>').replace('aria-label="Menyu"', 'aria-label="Menu"')
-    html = html.replace('Toy, nişan, ad günü və korporativ tədbirlər üçün canlı musiqi və şou. Bakı.', u['foot'])
-    for a, b in zip(['Toy və nişan', 'Korporativ', 'Ad günü'], u['foot2']): html = html.replace(f'>{a}</a> ', f'>{b}</a> ').replace(f'>{a}</a></p>', f'>{b}</a></p>')
-    for a, b in zip(['Ana səhifə', 'Xəbərlər', 'Bron'], u['foot3']): html = html.replace(f'>{a}</a>', f'>{b}</a>')
-    # ana səhifə linkləri seçilmiş dildə açılsın
-    html = html.replace(f'href="{rel}#', f'href="{rel}?lang={lang}#').replace(f'href="{rel}"', f'href="{rel}?lang={lang}"')
-    return html
 
 
 def page(p0, lang='az'):
@@ -233,7 +199,7 @@ def page(p0, lang='az'):
     wmsg = (f'Salam! «{p["name"]}» paketi ilə maraqlanıram.' if lang == 'az' else u['wa'].format(p['name']))
     wa = WA + wmsg.replace(' ', '%20')
     book = 'Rezerv et' if lang == 'az' else u['book']
-    bron = f'{rel}?pk={p["id"]}#bron' if lang == 'az' else f'{rel}?lang={lang}&pk={p["id"]}#bron'
+    bron = f'{rel}?pk={p["id"]}#bron'
     others = ''.join(f'<a href="../{o["slug"]}/"><img src="{rel}img/{o["img"]}.webp" alt="" loading="lazy"><span>{E(loc(o, lang)["name"])}<small>{price_html(o, lang)}</small></span></a>' for o in P if o is not p0)
     items = ''.join(f'<div class="ac"><div class="ic">{svg(ta)}</div><b>{E(t)}</b><p>{E(d)}</p></div>' for (t, d), (ta, _) in zip(p['items'], p['az_items']))
     extra_p = ''.join(f'<p class="anote">• {E(x)}</p>' for x in p['extra'])
@@ -257,7 +223,7 @@ def page(p0, lang='az'):
  <section class="asec" style="padding-bottom:70px"><h2>{h_oth}</h2><div class="aoth">{others}</div></section>
  <div class="abar"><div><small>{E(p["name"])}</small><b>{price_html(p, lang)}</b></div><a class="btn" href="{bron}">{book}</a></div>
 '''
-    return localize(hd + body + foot(rel), lang, rel, p['slug'])
+    return localize(hd + body + foot(rel), lang, rel, f'paket/{p["slug"]}/')
 
 
 def build():

@@ -515,7 +515,7 @@ function renderForm(){ var tv=$('ftype').value||'toy',pv=$('fpk').value;
  $('ftype').innerHTML=EV.map(function(e){return '<option value="'+e.id+'">'+e.n[li]+'</option>'}).join('');$('ftype').value=EVF||tv;
  $('fpk').innerHTML='<option value="">'+t('f_pk0')+'</option>'+PK.map(function(p){return '<option value="'+p.id+'">'+p.n[li]+'</option>'}).join('');$('fpk').value=pv}
 function setNt(){var e=evById(EVF||'toy');$('nt').textContent=e.n[li]+' · '+t('np')}
-function apply(){ li=LI[L];document.documentElement.lang=L;
+function apply(){ li=LI[L];document.documentElement.lang=L;document.querySelectorAll('a[href]').forEach(function(a){var h=a.getAttribute('href'),m=h.match(/^(?:(?:ru|en)\/)?((?:toy|korporativ|ad-gunu|videolar|paket)\/.*)$/);if(m)a.setAttribute('href',(L==='az'?'':L+'/')+m[1])});
  document.querySelectorAll('[data-i]').forEach(function(el){el.innerHTML=t(el.dataset.i)});
  document.querySelectorAll('[data-ph]').forEach(function(el){el.placeholder=t(el.dataset.ph)});
  document.querySelectorAll('#lang button').forEach(function(b){b.classList.toggle('on',b.dataset.l===L)});$('lbtn').innerHTML=L.toUpperCase()+' <small>▾</small>';
