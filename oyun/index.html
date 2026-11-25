@@ -150,14 +150,9 @@ function showJoin(){
 
 function showLobby(){
   if(view==='lobby')return;
-  const skip=ls.get('sbq_rev')==='1';
   setV(`<div class="center"><div class="big">🎤</div><h1 style="margin-top:14px">Xoş gəldin, ${esc(S.me.name)}!</h1>
     <p class="sub" style="margin-top:8px">Oyun tezliklə başlayır. Telefonu yanında saxla 😉</p></div>
-  ${skip?'':`<div class="card" id="rv"><div class="rev"><div class="st">⭐</div><div><b>Bizə Google-da rəy yaz</b><p>Oyunu gözləyərkən — 30 saniyə, bizim üçün çox önəmlidir</p></div></div>
-    <div class="row2" style="margin-top:16px"><a class="btn" style="text-align:center;text-decoration:none;color:#fff;flex:2" href="${REVIEW}" target="_blank" rel="noopener" id="rgo">Rəy yaz</a><button class="btn ghost" style="flex:1" id="rskip">Keç</button></div></div>`}
   <p class="foot">Oyunda olanlar: <b id="lc">${S.players}</b></p>`,'lobby');
-  const hide=()=>{ls.set('sbq_rev','1');$('#rv')&&$('#rv').remove()};
-  $('#rskip')&&($('#rskip').onclick=hide);$('#rgo')&&($('#rgo').onclick=()=>setTimeout(hide,500));
 }
 
 function showQ(){
