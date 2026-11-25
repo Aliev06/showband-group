@@ -16,5 +16,10 @@
  "viral": "—",
  "video_title": "Ad günü · Neolit",
  "tg_message": 213,
- "status": "pending"
+ "status": "published",
+ "ig_status": "queued",
+ "tiktok": {
+  "id": "834ff4eb8ba24523a4a839c931e3b458",
+  "user": "showbandgroup"
+ }
 }
