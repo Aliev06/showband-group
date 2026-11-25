@@ -206,7 +206,7 @@ def sitemap():
     urls = [(SITE + '/', today, '1.0'), (SITE + '/xeberler/', POSTS[0]['date'] if POSTS else today, '0.8')]
     urls += [(f'{SITE}/{s}/', today, '0.9') for s in ('toy', 'korporativ', 'ad-gunu')]  # xidmət səhifələri (pages.py)
     try:
-        import paketler; urls += [(f'{SITE}/paket/{p["slug"]}/', today, '0.8') for p in paketler.P]  # paket səhifələri
+        import paketler; urls += [(f'{SITE}/{paketler.pre(l)}paket/{p["slug"]}/', today, '0.8' if l == 'az' else '0.7') for l in paketler.LANGS for p in paketler.P]  # paket səhifələri (az/ru/en)
     except Exception as e: print('paketler:', e)
     try:
         import videos; urls += [(f'{SITE}/{s}/', today, '0.7') for s in videos.build()]  # video səhifələri (videos.py)

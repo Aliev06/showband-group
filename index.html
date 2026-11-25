@@ -488,7 +488,7 @@ var RV=[
  {u:'Kenan C.',t:'Çox maraqlı tedbir aparirlar, Ugurlar'},
  {u:'cekat.az',t:'Vəziyyəti yaxşı idarə edirlər.'}
 ];
-var LI={az:0,ru:1,en:2},L='az',li=0;try{var sl=localStorage.getItem('sb_lang');if(sl&&sl in LI)L=sl}catch(e){}
+var LI={az:0,ru:1,en:2},L='az',li=0;try{var sl=localStorage.getItem('sb_lang');if(sl&&sl in LI)L=sl}catch(e){}var ql=(location.search.match(/[?&]lang=(az|ru|en)/)||[])[1];if(ql){L=ql;try{localStorage.setItem('sb_lang',L)}catch(e){}}
 var t=function(k){return (T[k]||[k])[li]},pick=function(v){return Array.isArray(v)?v[li]:v};
 var EVF=null,CLF='all';
 function evById(id){return EV.filter(function(e){return e.id===id})[0]}
@@ -498,7 +498,7 @@ function price(p){var o=p.old?'<s>'+p.old+'</s> ':'',f=p.from?(li===0?'<small>-d
 var PKF='all',PKG=[['all',['Hamısı','Все','All']],['toy',['Toy','Свадьба','Wedding']],['nisan',['Nişan','Помолвка','Engagement']],['adgunu',['Ad günü','День рождения','Birthday']],['mezun',['Məzun · Party','Выпускной · Party','Graduation · Party']],['korp',['Korporativ','Корпоратив','Corporate']],['band',['Band','Бэнд','Band']]];
 function renderPk(){ var ch=$('pkf');if(ch)ch.innerHTML=PKG.map(function(g){return '<button type="button" class="pkc'+(PKF===g[0]?' on':'')+'" data-g="'+g[0]+'">'+g[1][li]+'</button>'}).join('');
  $('alb').innerHTML=PK.filter(function(p){return PKF==='all'||p.g===PKF}).map(function(p){var on=!EVF||p.tags.indexOf(EVF)>-1;
- return '<a class="al '+(EVF?(on?'hl':'dim'):'')+'" href="paket/'+p.s+'/"><div class="cov c-'+p.id+'"><small>'+t('pk_s')+'</small><b>'+p.n[li].toUpperCase().replace(/\S{10,}/g,function(w){var k=Math.ceil(w.length/2);return w.slice(0,k)+'\u00AD'+w.slice(k)})+'</b></div><p class="pkdesc">'+p.d[li]+'</p><div class="meta"><span>'+p.dur[li]+'</span><span class="pr">'+price(p)+'</span></div><span class="btn">'+t('pk_more2')+'</span></a>'}).join('');
+ return '<a class="al '+(EVF?(on?'hl':'dim'):'')+'" href="'+(L==='az'?'':L+'/')+'paket/'+p.s+'/"><div class="cov c-'+p.id+'"><small>'+t('pk_s')+'</small><b>'+p.n[li].toUpperCase().replace(/\S{10,}/g,function(w){var k=Math.ceil(w.length/2);return w.slice(0,k)+'\u00AD'+w.slice(k)})+'</b></div><p class="pkdesc">'+p.d[li]+'</p><div class="meta"><span>'+p.dur[li]+'</span><span class="pr">'+price(p)+'</span></div><span class="btn">'+t('pk_more2')+'</span></a>'}).join('');
  $('alb').querySelectorAll('[data-pk]').forEach(function(a){a.onclick=function(){$('fpk').value=a.dataset.pk}});
  if(ch)ch.querySelectorAll('[data-g]').forEach(function(b){b.onclick=function(){PKF=b.dataset.g;renderPk()}})}
 function renderSv(){ $('svc').innerHTML=SV.map(function(x){return '<div class="sv'+(x.e?' go':'')+'"'+(x.e?' data-e="'+x.e+'"':'')+'><div class="ic">'+ICO[x.i]+'</div><div><h3>'+x.n[li]+'</h3><p>'+x.d[li]+'</p></div></div>'}).join('');
