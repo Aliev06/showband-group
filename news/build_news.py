@@ -13,8 +13,51 @@ SITE = CFG['site_url'].rstrip('/')
 E = lambda s: html.escape(str(s), quote=True)
 AY = ['yanvar','fevral','mart','aprel','may','iyun','iyul','avqust','sentyabr','oktyabr','noyabr','dekabr']
 
-def fdate(d):
-    d = dt.date.fromisoformat(d); return f'{d.day} {AY[d.month-1]} {d.year}'
+AYL = {'az': AY, 'ru': ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],
+       'en': ['January','February','March','April','May','June','July','August','September','October','November','December']}
+
+def fdate(d, lang='az'):
+    d = dt.date.fromisoformat(d)
+    return f'{d.day} {AYL[lang][d.month-1]} {d.year}' if lang != 'en' else f'{d.day} {AYL["en"][d.month-1]} {d.year}'
+
+# Xəbərlərin RU / EN versiyası: posts.json-da p['i18n'][lang] = {title, description, lead, body, tags}
+# (köhnələri əl ilə tərcümə olunub, yeniləri publish.py-də avtomatik). Tərcümə yoxdursa — AZ mətn göstərilir.
+CATN = {'Konsert': ('Концерт', 'Concert'), 'Toy və nişan': ('Свадьбы', 'Weddings'), 'Yeni mahnı': ('Новая песня', 'New song'),
+        'Şou-biznes': ('Шоу-бизнес', 'Showbiz'), 'Showband': ('Showband', 'Showband'), 'Avroviziya': ('Евровидение', 'Eurovision'),
+        'Yeni klip': ('Новый клип', 'New video'), 'Artist': ('Артисты', 'Artists'), 'Festival': ('Фестиваль', 'Festival')}
+NT = {
+ 'az': dict(home='Ana səhifə', news='Xəbərlər', read='dəq oxu', mn='dəq', views='baxış', src='Mənbə', badge='SHOWBAND GROUP · XƏBƏR',
+            cta_h='Tədbiriniz üçün <em>canlı musiqi</em>?', cta_p='Toy, nişan, ad günü və korporativ tədbirlər — band, showman, DJ, səs-işıq bir komandada.',
+            cta_b='Tarixi seç', more='Digər xəbərlər', wa='Salam! Tədbir üçün məlumat almaq istəyirəm.',
+            l_title='Musiqi xəbərləri — yeni mahnılar, kliplər, artistlər | Showband Group',
+            l_desc='Azərbaycan və dünya musiqisindən son xəbərlər: yeni mahnılar, kliplər, konsertlər və artistlər. Showband Group xəbər lenti.',
+            l_k='Xəbər lenti', l_h='Musiqi <em>xəbərləri</em>', l_p='Yeni mahnılar, kliplər, konsertlər və artistlər haqqında ən son xəbərlər.',
+            all='Hamısı', empty='Bu bölmədə hələ xəbər yoxdur.', l_name='Musiqi xəbərləri — Showband Group'),
+ 'ru': dict(home='Главная', news='Новости', read='мин чтения', mn='мин', views='просмотров', src='Источник', badge='SHOWBAND GROUP · НОВОСТИ',
+            cta_h='Нужна <em>живая музыка</em> на мероприятие?', cta_p='Свадьбы, помолвки, дни рождения и корпоративы — бэнд, шоумен, DJ, звук и свет в одной команде.',
+            cta_b='Выбрать дату', more='Другие новости', wa='Здравствуйте! Хочу узнать о мероприятии.',
+            l_title='Новости музыки — новые песни, клипы, артисты | Showband Group',
+            l_desc='Последние новости азербайджанской и мировой музыки: новые песни, клипы, концерты и артисты. Лента новостей Showband Group.',
+            l_k='Лента новостей', l_h='Новости <em>музыки</em>', l_p='Самые свежие новости о новых песнях, клипах, концертах и артистах.',
+            all='Все', empty='В этом разделе пока нет новостей.', l_name='Новости музыки — Showband Group'),
+ 'en': dict(home='Home', news='News', read='min read', mn='min', views='views', src='Source', badge='SHOWBAND GROUP · NEWS',
+            cta_h='Need <em>live music</em> for your event?', cta_p='Weddings, engagements, birthdays and corporate events — band, showman, DJ, sound and light in one team.',
+            cta_b='Pick a date', more='More news', wa='Hello! I would like to know more about an event.',
+            l_title='Music news — new songs, videos, artists | Showband Group',
+            l_desc='The latest news from Azerbaijani and world music: new songs, videos, concerts and artists. Showband Group news feed.',
+            l_k='News feed', l_h='Music <em>news</em>', l_p='The latest news about new songs, music videos, concerts and artists.',
+            all='All', empty='No news in this section yet.', l_name='Music news — Showband Group'),
+}
+
+def catname(c, lang):
+    return c if lang == 'az' else CATN.get(c, (c, c))[0 if lang == 'ru' else 1]
+
+def tp(p, lang):
+    """Xəbərin həmin dildə versiyası."""
+    if lang == 'az': return p
+    q = dict(p, **(p.get('i18n') or {}).get(lang, {}))
+    q['category'] = catname(p['category'], lang)
+    return q
 
 def mins(p):
     words = len((p['lead'] + ' ' + ' '.join(b.get('p', '') for b in p['body'])).split())
@@ -111,31 +154,34 @@ def foot(rel):
 </html>
 '''
 
-def cover(p, big=False, rel=''):
+def cover(p, big=False, rel='', lang='az'):
     if p.get('image'):
         return (f'<div class="cv ph{" big" if big else ""}"><img src="{rel}{E(p["image"])}" alt="{E(p["title"])}" loading="lazy">'
                 f'<span>{E(p["category"])}</span>' + f'<img class="wm" src="{rel}img/logo.png" alt="Showband Group">' + '</div>')
-    return f'<div class="cv{" big" if big else ""}" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>SHOWBAND GROUP · XƏBƏR</i></div>'
+    return f'<div class="cv{" big" if big else ""}" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>{NT[lang]["badge"]}</i></div>'
 
-def card(p, rel, big=False):
-    return (f'<a class="nc{" big" if big else ""}" href="{rel}xeberler/{p["slug"]}/" data-cat="{E(p["category"])}">{cover(p, big, rel)}'
-            f'<div class="nb"><small>{fdate(p["date"])} · {mins(p)} dəq<span class="vw" data-views="{p["slug"]}" hidden> · 👁 <b></b></span></small><h3>{E(p["title"])}</h3><p>{E(p["description"])}</p></div></a>')
+def card(p, rel, big=False, lang='az'):
+    p = tp(p, lang)
+    return (f'<a class="nc{" big" if big else ""}" href="{rel}xeberler/{p["slug"]}/" data-cat="{E(p["category"])}">{cover(p, big, rel, lang)}'
+            f'<div class="nb"><small>{fdate(p["date"], lang)} · {mins(p)} {NT[lang]["mn"]}<span class="vw" data-views="{p["slug"]}" hidden> · 👁 <b></b></span></small><h3>{E(p["title"])}</h3><p>{E(p["description"])}</p></div></a>')
 
-def article(p):
-    rel = '../../'
-    url = f'{SITE}/xeberler/{p["slug"]}/'
+def article(p0, lang='az'):
+    from i18n_site import pre, localize
+    p = tp(p0, lang); T = NT[lang]
+    rel = '../../' if lang == 'az' else '../../../'
+    url = f'{SITE}/{pre(lang)}xeberler/{p["slug"]}/'
     ld = {
         '@context': 'https://schema.org', '@graph': [
             {'@type': 'NewsArticle', 'headline': p['title'][:110], 'description': p['description'],
              'datePublished': p['date'], 'dateModified': p.get('updated', p['date']),
-             'inLanguage': 'az', 'mainEntityOfPage': url, 'image': [f'{SITE}/' + p.get('image', 'img/og.jpg')],
+             'inLanguage': lang, 'mainEntityOfPage': url, 'image': [f'{SITE}/' + p.get('image', 'img/og.jpg')],
              'keywords': ', '.join(p['tags']), 'articleSection': p['category'],
              'author': {'@type': 'Organization', 'name': CFG['site_name'], 'url': SITE + '/'},
              'publisher': {'@type': 'Organization', 'name': CFG['site_name'],
                            'logo': {'@type': 'ImageObject', 'url': f'{SITE}/img/logo.png'}}},
             {'@type': 'BreadcrumbList', 'itemListElement': [
-                {'@type': 'ListItem', 'position': 1, 'name': 'Ana səhifə', 'item': SITE + '/'},
-                {'@type': 'ListItem', 'position': 2, 'name': 'Xəbərlər', 'item': SITE + '/xeberler/'},
+                {'@type': 'ListItem', 'position': 1, 'name': T['home'], 'item': SITE + '/'},
+                {'@type': 'ListItem', 'position': 2, 'name': T['news'], 'item': f'{SITE}/{pre(lang)}xeberler/'},
                 {'@type': 'ListItem', 'position': 3, 'name': p['title'], 'item': url}]}]}
     extra = (f'<meta property="article:published_time" content="{p["date"]}">'
              f'<meta property="article:section" content="{E(p["category"])}">'
@@ -143,59 +189,61 @@ def article(p):
              + '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>')
     body = ''.join(f'<h2>{E(b["h"])}</h2>' if 'h' in b else f'<p>{E(b["p"])}</p>' for b in p['body'])
     rel_posts = [x for x in POSTS if x['slug'] != p['slug']]
-    rel_posts = sorted(rel_posts, key=lambda x: (x['category'] != p['category'], x['date']), reverse=False)[:3]
-    wa = f'https://wa.me/{CFG["whatsapp"]}?text=' + re.sub(' ', '%20', 'Salam! Tədbir üçün məlumat almaq istəyirəm.')
+    rel_posts = sorted(rel_posts, key=lambda x: (x['category'] != p0['category'], x['date']), reverse=False)[:3]
+    wa = f'https://wa.me/{CFG["whatsapp"]}?text=' + re.sub(' ', '%20', T['wa'])
     t = p['title'] if len(p['title']) > 44 else f'{p["title"]} | Showband Group'  # uzun başlıqda Google quyruğu kəsir
-    return head(t, p['description'], url, rel, 'article', extra, p.get('image', 'img/og.jpg')) + f'''
- <nav class="bc" aria-label="breadcrumb"><a href="{rel}">Ana səhifə</a><span>›</span><a href="{rel}xeberler/">Xəbərlər</a><span>›</span><em>{E(p["category"])}</em></nav>
+    html_ = head(t, p['description'], url, rel, 'article', extra, p.get('image', 'img/og.jpg')) + f'''
+ <nav class="bc" aria-label="breadcrumb"><a href="{rel}">{T["home"]}</a><span>›</span><a href="{rel}xeberler/">{T["news"]}</a><span>›</span><em>{E(p["category"])}</em></nav>
  <article class="art">
   <header class="ah">
    <span class="chip">{E(p["category"])}</span>
    <h1>{E(p["title"])}</h1>
-   <div class="meta"><time datetime="{p["date"]}">{fdate(p["date"])}</time><span>{mins(p)} dəq oxu</span><span class="vw" data-views="{p["slug"]}" data-hit hidden>👁 <b></b> baxış</span><span>Showband Group</span></div>
+   <div class="meta"><time datetime="{p["date"]}">{fdate(p["date"], lang)}</time><span>{mins(p)} {T["read"]}</span><span class="vw" data-views="{p["slug"]}" data-hit hidden>👁 <b></b> {T["views"]}</span><span>Showband Group</span></div>
   </header>
-  {cover(p, True, rel)}
+  {cover(p, True, rel, lang)}
   <div class="tx">
    <p class="lead">{E(p["lead"])}</p>
    {body}
    <ul class="tags">{"".join(f"<li>#{E(t)}</li>" for t in p["tags"])}</ul>
-   {(f'<p class="src">Mənbə: <a href="{E(p["source"]["url"])}" target="_blank" rel="noopener nofollow">{E(p["source"]["name"])}</a></p>' if p.get("source") else '')}
+   {(f'<p class="src">{T["src"]}: <a href="{E(p["source"]["url"])}" target="_blank" rel="noopener nofollow">{E(p["source"]["name"])}</a></p>' if p.get("source") else '')}
   </div>
  </article>
  <aside class="cta">
-  <div><span class="k">Showband Group</span><h2>Tədbiriniz üçün <em>canlı musiqi</em>?</h2><p>Toy, nişan, ad günü və korporativ tədbirlər — band, showman, DJ, səs-işıq bir komandada.</p></div>
-  <div class="cb"><a class="btn" href="{rel}#bron">Tarixi seç</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
+  <div><span class="k">Showband Group</span><h2>{T["cta_h"]}</h2><p>{T["cta_p"]}</p></div>
+  <div class="cb"><a class="btn" href="{rel}#bron">{T["cta_b"]}</a><a class="btn o" href="{wa}" target="_blank" rel="noopener">WhatsApp</a></div>
  </aside>
- <section class="more"><h2>Digər xəbərlər</h2><div class="ng">{"".join(card(x, rel) for x in rel_posts)}</div></section>
+ <section class="more"><h2>{T["more"]}</h2><div class="ng">{"".join(card(x, rel, False, lang) for x in rel_posts)}</div></section>
 ''' + foot(rel)
+    return localize(html_, lang, rel, f'xeberler/{p["slug"]}/')
 
-def listing():
-    rel = '../'
-    url = f'{SITE}/xeberler/'
-    ld = {'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': 'Musiqi xəbərləri — Showband Group',
-          'url': url, 'inLanguage': 'az',
+def listing(lang='az'):
+    from i18n_site import pre, localize
+    T = NT[lang]
+    rel = '../' if lang == 'az' else '../../'
+    url = f'{SITE}/{pre(lang)}xeberler/'
+    ld = {'@context': 'https://schema.org', '@type': 'CollectionPage', 'name': T['l_name'],
+          'url': url, 'inLanguage': lang,
           'mainEntity': {'@type': 'ItemList', 'itemListElement': [
-              {'@type': 'ListItem', 'position': i + 1, 'url': f'{SITE}/xeberler/{p["slug"]}/'} for i, p in enumerate(POSTS[:30])]}}
+              {'@type': 'ListItem', 'position': i + 1, 'url': f'{SITE}/{pre(lang)}xeberler/{p["slug"]}/'} for i, p in enumerate(POSTS[:30])]}}
     extra = '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>'
-    chips = '<button class="on" data-f="">Hamısı</button>' + ''.join(f'<button data-f="{E(c)}">{E(c)}</button>' for c in CATS)
+    chips = f'<button class="on" data-f="">{T["all"]}</button>' + ''.join(f'<button data-f="{E(catname(c, lang))}">{E(catname(c, lang))}</button>' for c in CATS)
     first, rest = (POSTS[0], POSTS[1:]) if POSTS else (None, [])
-    return head('Musiqi xəbərləri — yeni mahnılar, kliplər, artistlər | Showband Group',
-                'Azərbaycan və dünya musiqisindən son xəbərlər: yeni mahnılar, kliplər, konsertlər və artistlər. Showband Group xəbər lenti.',
-                url, rel, 'website', extra) + f'''
+    html_ = head(T['l_title'], T['l_desc'], url, rel, 'website', extra) + f'''
  <section class="lh">
-  <span class="k">Xəbər lenti</span>
-  <h1>Musiqi <em>xəbərləri</em></h1>
-  <p>Yeni mahnılar, kliplər, konsertlər və artistlər haqqında ən son xəbərlər.</p>
+  <span class="k">{T["l_k"]}</span>
+  <h1>{T["l_h"]}</h1>
+  <p>{T["l_p"]}</p>
   <div class="chips" id="chips">{chips}</div>
  </section>
- <section class="ng" id="ng">{(card(first, rel) if first else '')}{"".join(card(p, rel) for p in rest)}</section>
- <p class="empty" id="empty" hidden>Bu bölmədə hələ xəbər yoxdur.</p>
+ <section class="ng" id="ng">{(card(first, rel, False, lang) if first else '')}{"".join(card(p, rel, False, lang) for p in rest)}</section>
+ <p class="empty" id="empty" hidden>{T["empty"]}</p>
 <script>
 (function(){{var b=document.querySelectorAll('#chips button'),c=document.querySelectorAll('#ng .nc'),e=document.getElementById('empty');
 b.forEach(function(x){{x.onclick=function(){{b.forEach(function(y){{y.classList.toggle('on',y===x)}});var f=x.dataset.f,n=0;
 c.forEach(function(k){{var s=!f||k.dataset.cat===f;k.hidden=!s;if(s)n++}});e.hidden=n>0}}}})}})();
 </script>
 ''' + foot(rel)
+    return localize(html_, lang, rel, 'xeberler/')
 
 def rss():
     items = ''.join(f'''<item><title>{E(p["title"])}</title><link>{SITE}/xeberler/{p["slug"]}/</link><guid>{SITE}/xeberler/{p["slug"]}/</guid><pubDate>{dt.datetime.fromisoformat(p["date"]).strftime("%a, %d %b %Y 09:00:00 +0400")}</pubDate><description>{E(p["description"])}</description><category>{E(p["category"])}</category></item>''' for p in POSTS[:30])
@@ -203,7 +251,7 @@ def rss():
 
 def sitemap():
     today = dt.date.today().isoformat()
-    urls = [(SITE + '/', today, '1.0'), (SITE + '/xeberler/', POSTS[0]['date'] if POSTS else today, '0.8')]
+    urls = [(SITE + '/', today, '1.0')] + [(f'{SITE}/{l}xeberler/', POSTS[0]['date'] if POSTS else today, '0.8') for l in ('', 'ru/', 'en/')]
     urls += [(f'{SITE}/{l}{s}/', today, '0.9' if not l else '0.8') for l in ('', 'ru/', 'en/') for s in ('toy', 'korporativ', 'ad-gunu')]  # xidmət səhifələri (pages.py, az/ru/en)
     try:
         import paketler; urls += [(f'{SITE}/{paketler.pre(l)}paket/{p["slug"]}/', today, '0.8' if l == 'az' else '0.7') for l in paketler.LANGS for p in paketler.P]  # paket səhifələri (az/ru/en)
@@ -211,7 +259,7 @@ def sitemap():
     try:
         import videos; urls += [(f'{SITE}/{s}/', today, '0.7') for s in videos.build()]  # video səhifələri (videos.py)
     except Exception as e: print('videos:', e)
-    urls += [(f'{SITE}/xeberler/{p["slug"]}/', p.get('updated', p['date']), '0.6') for p in POSTS]
+    urls += [(f'{SITE}/{l}xeberler/{p["slug"]}/', p.get('updated', p['date']), '0.6') for l in ('', 'ru/', 'en/') for p in POSTS]
     return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(
         f' <url><loc>{u}</loc><lastmod>{d}</lastmod><priority>{pr}</priority></url>\n' for u, d, pr in urls) + '</urlset>\n'
 
@@ -225,9 +273,13 @@ def home_block():
     s = open(path, encoding='utf-8').read()
     a, b = '<!--NEWS-->', '<!--/NEWS-->'
     if a not in s or b not in s: print('index.html: NEWS marker tapılmadı'); return
-    cards = ''.join(
-        f'<a class="nwc" href="xeberler/{p["slug"]}/">' + (f'<div class="cv ph"><img src="{E(p["image"])}" alt="{E(p["title"])}" loading="lazy"><span>{E(p["category"])}</span></div>' if p.get('image') else f'<div class="cv" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>SHOWBAND GROUP · XƏBƏR</i></div>') +
-        f'<div class="nb"><small>{fdate(p["date"])}<span class="vw" data-views="{p["slug"]}" hidden> · 👁 <b></b></span></small><h3>{E(p["title"])}</h3></div></a>' for p in POSTS[:3])
+    def one(p0, lang):
+        p = tp(p0, lang); pre = '' if lang == 'az' else lang + '/'
+        return (f'<a class="nwc" href="{pre}xeberler/{p["slug"]}/">' + (f'<div class="cv ph"><img src="{E(p["image"])}" alt="{E(p["title"])}" loading="lazy"><span>{E(p["category"])}</span></div>' if p.get('image') else f'<div class="cv" style="background:{grad(p["category"])}"><span>{E(p["category"])}</span><b>{E(p["title"])}</b><i>{NT[lang]["badge"]}</i></div>') +
+                f'<div class="nb"><small>{fdate(p["date"], lang)}<span class="vw" data-views="{p["slug"]}" hidden> · 👁 <b></b></span></small><h3>{E(p["title"])}</h3></div></a>')
+    # hər dil üçün ayrıca qrup; görünən qrup <html lang> ilə seçilir (ana səhifənin apply() funksiyası lang-ı dəyişir)
+    cards = ('<style>.nwl{display:contents}html[lang=az] .nwl:not([data-l=az]),html[lang=ru] .nwl:not([data-l=ru]),html[lang=en] .nwl:not([data-l=en]){display:none}</style>'
+             + ''.join(f'<div class="nwl" data-l="{l}">' + ''.join(one(p, l) for p in POSTS[:3]) + '</div>' for l in ('az', 'ru', 'en')))
     s = s[:s.index(a) + len(a)] + cards + s[s.index(b):]
     va, vb = '<!--VIEWS-->', '<!--/VIEWS-->'
     if va not in s: s = s.replace('</body>', va + vb + '\n</body>', 1)
@@ -235,14 +287,17 @@ def home_block():
     open(path, 'w', encoding='utf-8').write(s)
 
 if __name__ == '__main__':
-    w('xeberler/index.html', listing())
-    for p in POSTS: w(f'xeberler/{p["slug"]}/index.html', article(p))
-    import shutil  # posts.json-da olmayan köhnə səhifələri sil
-    for dname in os.listdir(os.path.join(ROOT, 'xeberler')):
-        dp = os.path.join(ROOT, 'xeberler', dname)
-        if os.path.isdir(dp) and dname not in {p['slug'] for p in POSTS}:
-            try: shutil.rmtree(dp)
-            except Exception as e: print('silinmədi:', dname, e)
+    import shutil
+    slugs = {p['slug'] for p in POSTS}
+    for lang, pre in (('az', ''), ('ru', 'ru/'), ('en', 'en/')):
+        w(f'{pre}xeberler/index.html', listing(lang))
+        for p in POSTS: w(f'{pre}xeberler/{p["slug"]}/index.html', article(p, lang))
+        base = os.path.join(ROOT, pre + 'xeberler')  # posts.json-da olmayan köhnə səhifələri sil
+        for dname in os.listdir(base):
+            dp = os.path.join(base, dname)
+            if os.path.isdir(dp) and dname not in slugs:
+                try: shutil.rmtree(dp)
+                except Exception as e: print('silinmədi:', dname, e)
     w('xeberler/rss.xml', rss()); w('sitemap.xml', sitemap())
     home_block()
     import pages; pages.build()

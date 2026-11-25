@@ -12,10 +12,41 @@ HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 from tg import env
 
-KEEP = ['slug', 'title', 'description', 'category', 'date', 'tags', 'lead', 'body', 'reel', 'source', 'image']
+KEEP = ['slug', 'title', 'description', 'category', 'date', 'tags', 'lead', 'body', 'reel', 'source', 'image', 'i18n']
 
 
 def site_url(): return json.load(open(os.path.join(HERE, 'config.json'), encoding='utf-8'))['site_url'].rstrip('/')
+
+
+def translate(post):
+    """Xəbəri rus və ingilis dilinə tərcümə edir (sayt /ru/xeberler/, /en/xeberler/ üçün).
+    Bütün modellər bir dəfə yoxlanılır; alınmasa {} — xəbər yalnız AZ dərc olunur (RU/EN-də AZ mətn görünür)."""
+    import write
+    src = {k: post[k] for k in ('title', 'description', 'lead', 'tags', 'body')}
+    prompt = ('Translate this Azerbaijani music-news article into Russian (ru) and English (en). Natural, fluent news style, not word-for-word. '
+              'Keep names of people, brands, songs and venues; use their usual Russian/English spelling. Keep the JSON structure exactly: '
+              'same keys, same number and order of "body" items, each item keeps its key ("h" = heading, "p" = paragraph). '
+              'Return JSON: {"ru": {...}, "en": {...}}.\n\n' + json.dumps(src, ensure_ascii=False))
+    chain = [lambda m=m: write._gemini(m, prompt, 0.3) for m in write.MODELS]
+    if write.secret('GROQ_API_KEY'):
+        chain += [lambda m=m: write._openai('https://api.groq.com/openai/v1/chat/completions', write.secret('GROQ_API_KEY'), m, prompt, 0.3) for m in write.GROQ]
+    if write.secret('OPENROUTER_API_KEY'):
+        chain += [lambda m=m: write._openai('https://openrouter.ai/api/v1/chat/completions', write.secret('OPENROUTER_API_KEY'), m, prompt, 0.3) for m in write.OPENROUTER]
+    for call in chain:
+        try:
+            r = call(); out = {}
+            for l in ('ru', 'en'):
+                t = (r or {}).get(l) or {}
+                ok = (all(isinstance(t.get(k), str) and t[k].strip() for k in ('title', 'description', 'lead'))
+                      and isinstance(t.get('body'), list) and len(t['body']) == len(post['body'])
+                      and all(isinstance(b, dict) and (('h' in b) == ('h' in a)) for a, b in zip(post['body'], t['body'])))
+                if ok:
+                    out[l] = {'title': t['title'], 'description': t['description'], 'lead': t['lead'],
+                              'tags': [str(x) for x in (t.get('tags') or post['tags'])], 'body': t['body']}
+            if out: return out
+        except Exception as e:
+            print('  ! tərcümə:', str(e)[:200])
+    return {}
 
 
 def publish(path):
@@ -46,6 +77,12 @@ def publish(path):
         except Exception:
             shutil.copy(img, dst)
         post['image'] = f'img/news/{d["slug"]}.jpg'
+    try:  # RU / EN versiyalar — alınmasa xəbər yenə də dərc olunur
+        tr = translate(post)
+        if tr: post['i18n'] = tr
+        print('tərcümə:', ', '.join(tr) or 'yoxdur')
+    except Exception as e:
+        print('tərcümə alınmadı:', e)
     posts.insert(0, post)
     json.dump(posts, open(os.path.join(HERE, 'posts.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     subprocess.run([sys.executable, os.path.join(HERE, 'build_news.py')], check=True)

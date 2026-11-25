@@ -37,7 +37,67 @@
    "name": "Axar.az",
    "url": "https://axar.az/news/kult/1150259.html"
   },
-  "image": "img/news/susada-i-et-turizm-paytaxti-tedbiri-bas-tutdu.jpg"
+  "image": "img/news/susada-i-et-turizm-paytaxti-tedbiri-bas-tutdu.jpg",
+  "i18n": {
+   "ru": {
+    "title": "В Шуше прошло мероприятие «Туристическая столица ОЭС»",
+    "description": "В Шуше прошла церемония закрытия проекта «Туристическая столица Организации экономического сотрудничества», статус передан другому городу.",
+    "tags": [
+     "Шуша",
+     "ОЭС",
+     "культура",
+     "туризм",
+     "концерт"
+    ],
+    "lead": "В культурной столице Азербайджана Шуше прошла церемония закрытия мероприятия Организации экономического сотрудничества.",
+    "body": [
+     {
+      "h": "Итоговое мероприятие в культурной столице"
+     },
+     {
+      "p": "18 ноября в Шуше состоялась церемония закрытия проекта «Шуша – туристическая столица Организации экономического сотрудничества 2026». Сообщается, что помимо Азербайджана в мероприятии участвовали делегации Турции, Ирана, Казахстана, Кыргызстана, Таджикистана, Пакистана и Туркменистана."
+     },
+     {
+      "p": "В рамках мероприятия с участием представителей стран-членов также прошла специальная туристическая выставка. Каждая страна на своём стенде представила богатое культурное наследие и туристические возможности."
+     },
+     {
+      "h": "Церемония передачи статуса"
+     },
+     {
+      "p": "В рамках плана мероприятий был представлен подробный отчёт о проведённых в этом году в Шуше событиях. На заключительном этапе статус «Туристической столицы ОЭС» официально передан пакистанскому городу Лахор."
+     }
+    ]
+   },
+   "en": {
+    "title": "Shusha hosts the ECO Tourism Capital closing event",
+    "description": "Shusha hosted the closing ceremony of the Economic Cooperation Organization Tourism Capital year, and the title passed to another city.",
+    "tags": [
+     "Shusha",
+     "ECO",
+     "culture",
+     "tourism",
+     "concert"
+    ],
+    "lead": "Shusha, Azerbaijan’s cultural capital, hosted the closing ceremony of the Economic Cooperation Organization event.",
+    "body": [
+     {
+      "h": "Final event in the cultural capital"
+     },
+     {
+      "p": "On 18 November Shusha hosted the closing ceremony of the “Shusha – Tourism Capital of the Economic Cooperation Organization 2026” project. Besides Azerbaijan, delegations from Türkiye, Iran, Kazakhstan, Kyrgyzstan, Tajikistan, Pakistan and Turkmenistan took part."
+     },
+     {
+      "p": "A special tourism exhibition with representatives of the member states was also held as part of the event. Each country used its stand to present its rich cultural heritage and tourism opportunities."
+     },
+     {
+      "h": "Handover ceremony"
+     },
+     {
+      "p": "A detailed report on the events held in Shusha this year was presented. In the final part, the “ECO Tourism Capital” title was officially handed over to Lahore, Pakistan."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "rustem-haciyev-ve-zulfiyye-xanbabayeva-toyunda-telefon-qadag",
@@ -78,7 +138,69 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/toylarinda-telefon-qadagan-olunub-aqutinle-qalkin-de-istirak-edib-529090"
   },
-  "image": "img/news/rustem-haciyev-ve-zulfiyye-xanbabayeva-toyunda-telefon-qadag.jpg"
+  "image": "img/news/rustem-haciyev-ve-zulfiyye-xanbabayeva-toyunda-telefon-qadag.jpg",
+  "i18n": {
+   "ru": {
+    "title": "На свадьбе с Рустамом Гаджиевым и Зульфией Ханбабаевой запретили телефоны",
+    "description": "На свадьбе в бакинском отеле Four Seasons с участием Рустама Гаджиева, Зульфии Ханбабаевой и других звёзд гостям запретили пользоваться телефонами — решение обсуждают.",
+    "tags": [
+     "Рустам Гаджиев",
+     "Зульфия Ханбабаева",
+     "свадьба",
+     "запрет телефонов",
+     "Four Seasons",
+     "Максим Галкин"
+    ],
+    "lead": "На роскошной свадьбе в Баку запретили пользоваться телефонами — гости встретили это решение с интересом.",
+    "body": [
+     {
+      "h": "Место и оформление свадьбы"
+     },
+     {
+      "p": "Отель Four Seasons был украшен цветочными композициями, для гостей подготовили удобные зоны отдыха. Зал был полон свежих цветов, а мягкий свет создавал красивую атмосферу."
+     },
+     {
+      "p": "Организаторы объяснили, что ввели запрет на телефоны, чтобы гости не отвлекались в такой праздничной обстановке. Об этом правиле было объявлено официально, его назвали примером для других."
+     },
+     {
+      "h": "Гости и программа"
+     },
+     {
+      "p": "На свадьбе были бизнесмен Рустам Гаджиев, народная артистка Азербайджана Зульфия Ханбабаева, заслуженный артист Аббас Багиров, российский шоумен Максим Галкин и Леонид Агутин. Телефоны попросили выключить, чтобы всё внимание было на программе вечера. Говорят, это решение может стать примером и для других мероприятий."
+     }
+    ]
+   },
+   "en": {
+    "title": "Phones banned at a wedding with Rustam Hajiyev and Zulfiyya Khanbabayeva",
+    "description": "Guests at a wedding in Baku’s Four Seasons hotel, attended by Rustam Hajiyev, Zulfiyya Khanbabayeva and other stars, were not allowed to use their phones — the decision is being discussed.",
+    "tags": [
+     "Rustam Hajiyev",
+     "Zulfiyya Khanbabayeva",
+     "wedding",
+     "phone ban",
+     "Four Seasons",
+     "Maxim Galkin"
+    ],
+    "lead": "Phones were banned at a luxury wedding in Baku, and guests met the decision with interest.",
+    "body": [
+     {
+      "h": "Venue and decor"
+     },
+     {
+      "p": "The Four Seasons hotel was decorated with floral arrangements, and comfortable seating areas were set up for guests. The hall was full of fresh flowers, and soft lighting created a beautiful atmosphere."
+     },
+     {
+      "p": "The organisers said they introduced the phone ban so guests would not be distracted in such a festive setting. The rule was announced officially and called an example for others."
+     },
+     {
+      "h": "Guests and programme"
+     },
+     {
+      "p": "Guests included businessman Rustam Hajiyev, People’s Artist of Azerbaijan Zulfiyya Khanbabayeva, Honoured Artist Abbas Bagirov, Russian showman Maxim Galkin and Leonid Agutin. Phones were switched off so everyone could focus on the evening’s programme. Some say the idea could set an example for other events."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "alim-qasimovun-mugam-ifasi-gta-6-oyununda-dinleyicilerle-bul",
@@ -119,7 +241,69 @@
    "name": "Axar.az",
    "url": "https://axar.az/news/kult/1150415.html"
   },
-  "image": "img/news/alim-qasimovun-mugam-ifasi-gta-6-oyununda-dinleyicilerle-bul.jpg"
+  "image": "img/news/alim-qasimovun-mugam-ifasi-gta-6-oyununda-dinleyicilerle-bul.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Мугам Алима Гасымова прозвучит в игре GTA 6",
+    "description": "Мугамная версия песни Нелли Фуртадо в исполнении народного артиста Алима Гасымова и его дочери Фарганы Гасымовой войдёт в знаменитую игру GTA 6.",
+    "tags": [
+     "Алим Гасымов",
+     "GTA 6",
+     "мугам",
+     "Фаргана Гасымова",
+     "видеоигры",
+     "музыка"
+    ],
+    "lead": "Азербайджанская музыка становится частью мировых видеоигр: мугам народного артиста Алима Гасымова и его дочери Фарганы Гасымовой прозвучит в GTA 6.",
+    "body": [
+     {
+      "h": "Мировой поп и мугам"
+     },
+     {
+      "p": "По информации, в будущей игре GTA 6 особое место отведено мугаму — гордости азербайджанского искусства. На игровой радиостанции Kaleidoscope FM прозвучит необычная версия известной песни Нелли Фуртадо «Say It Right»: вместо оригинала — интерпретация Алима и Фарганы Гасымовых в стиле мугама."
+     },
+     {
+      "p": "В исполнении артистов голос сочетается с народными инструментами — кяманчой, таром и дафом. Так один из известных хитов мировой поп-музыки получает совершенно новую форму благодаря богатым импровизационным возможностям азербайджанского мугама. Это сотрудничество укрепляет место азербайджанской музыки на мировой сцене."
+     },
+     {
+      "h": "Что ждёт игроков?"
+     },
+     {
+      "p": "В звуковом оформлении игры будет звучать не оригинал Нелли Фуртадо, а самобытное мугамное исполнение азербайджанских мастеров. Это станет неожиданным и интересным музыкальным опытом для игроков. Совместное выступление отца и дочери показывает гармонию традиционного искусства и современных технологий."
+     }
+    ]
+   },
+   "en": {
+    "title": "Alim Qasimov’s mugham performance will feature in GTA 6",
+    "description": "A mugham-style version of a Nelly Furtado song by People’s Artist Alim Qasimov and his daughter Fargana Qasimova will appear in the hit game GTA 6.",
+    "tags": [
+     "Alim Qasimov",
+     "GTA 6",
+     "mugham",
+     "Fargana Qasimova",
+     "video games",
+     "music"
+    ],
+    "lead": "Azerbaijani music is becoming part of global video games: a mugham performance by Alim Qasimov and his daughter Fargana Qasimova will be heard in GTA 6.",
+    "body": [
+     {
+      "h": "World pop meets mugham"
+     },
+     {
+      "p": "According to reports, the upcoming GTA 6 gives a special place to mugham, the pride of Azerbaijani art. The in-game station Kaleidoscope FM will play an unusual version of Nelly Furtado’s well-known “Say It Right”: instead of the pop original, it features Alim and Fargana Qasimova’s mugham-style interpretation."
+     },
+     {
+      "p": "The performance combines vocals with folk instruments such as the kamancha, tar and daf. One of the best-known pop hits thus takes on a completely new form through the rich improvisation of Azerbaijani mugham. The collaboration further strengthens Azerbaijani music’s place on the global stage."
+     },
+     {
+      "h": "What awaits players?"
+     },
+     {
+      "p": "The game’s soundtrack will feature not Nelly Furtado’s original but a distinctive mugham performance by Azerbaijani masters — an unexpected and exciting musical experience for players. The father-daughter duet shows the harmony of traditional art and modern technology."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "madonna-uzun-fasileden-sonra-qremmi-mukafatina-namized-goste",
@@ -159,7 +343,67 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/madonna-16-ilden-sonra-qremmiye-namized-oldu-528717"
   },
-  "image": "img/news/madonna-uzun-fasileden-sonra-qremmi-mukafatina-namized-goste.jpg"
+  "image": "img/news/madonna-uzun-fasileden-sonra-qremmi-mukafatina-namized-goste.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Мадонна после долгого перерыва номинирована на «Грэмми»",
+    "description": "Мировая звезда Мадонна спустя шестнадцать лет снова стала номинантом престижной музыкальной премии.",
+    "tags": [
+     "Мадонна",
+     "Грэмми",
+     "новости музыки",
+     "альбом",
+     "шоу-бизнес"
+    ],
+    "lead": "Мировая звезда Мадонна после долгого перерыва снова в борьбе за престижную музыкальную премию.",
+    "body": [
+     {
+      "h": "Большой успех спустя шестнадцать лет"
+     },
+     {
+      "p": "По данным, 68-летняя певица спустя много лет снова номинирована на «Грэмми». Её новый альбом «Confessions II» вошёл в список номинантов в категории «Лучший танцевальный/электронный альбом». Новость с радостью встретили миллионы поклонников, она вызвала широкий отклик в музыкальном сообществе."
+     },
+     {
+      "p": "В этой категории вместе с ней за награду поборются Robyn, Skrillex, Slayyyter и Tame Impala. Кроме того, не осталась без внимания и композиция «Bring Your Love», записанная вместе с Сабриной Карпентер, — она претендует на награду «Лучшее поп-исполнение дуэтом или группой»."
+     },
+     {
+      "h": "Другие номинации и церемония"
+     },
+     {
+      "p": "В этом году лидирует британская певица Raye — у неё одиннадцать номинаций. За главную награду «Альбом года» поборются мировые звёзды Тейлор Свифт, Бруно Марс, Оливия Родриго и Розалия. Церемония пройдёт 7 февраля 2027 года в Лос-Анджелесе."
+     }
+    ]
+   },
+   "en": {
+    "title": "Madonna earns a Grammy nomination after a long break",
+    "description": "Global star Madonna has been nominated for the prestigious music award again after sixteen years.",
+    "tags": [
+     "Madonna",
+     "Grammy",
+     "music news",
+     "album",
+     "showbiz"
+    ],
+    "lead": "Global stage star Madonna is back in the race for a prestigious music award after a long break.",
+    "body": [
+     {
+      "h": "A big success sixteen years later"
+     },
+     {
+      "p": "According to reports, the 68-year-old singer has been nominated for a Grammy again after many years. Her new album “Confessions II” made the list for Best Dance/Electronic Album. Millions of fans welcomed the news, and it caused a big stir in the music community."
+     },
+     {
+      "p": "In this category she will compete with Robyn, Skrillex, Slayyyter and Tame Impala. Her song “Bring Your Love” with Sabrina Carpenter also caught attention and is nominated for Best Pop Duo/Group Performance."
+     },
+     {
+      "h": "Other nominations and the ceremony"
+     },
+     {
+      "p": "British singer Raye leads this year’s list with eleven nominations. Taylor Swift, Bruno Mars, Olivia Rodrigo and Rosalía will compete for Album of the Year. The ceremony is scheduled for 7 February 2027 in Los Angeles."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "lale-memmedova-ile-sehnede-showband-group-sehnede-0600",
@@ -192,7 +436,53 @@
    "name": "Showband Group",
    "url": "https://showbandgroup.az/videolar/"
   },
-  "image": "img/news/lale-memmedova-ile-sehnede-showband-group-sehnede-0600.jpg"
+  "image": "img/news/lale-memmedova-ile-sehnede-showband-group-sehnede-0600.jpg",
+  "i18n": {
+   "ru": {
+    "title": "На сцене с Лалой Мамедовой: Showband Group на сцене",
+    "description": "Живое исполнение, шоумен и DJ — пишите нам для вашего мероприятия.",
+    "tags": [
+     "Showband Group",
+     "На сцене",
+     "Баку",
+     "Живое шоу"
+    ],
+    "lead": "Живое исполнение, шоумен и DJ — пишите нам для вашего мероприятия.",
+    "body": [
+     {
+      "p": "На сцене с Лалой Мамедовой — Showband Group с живым исполнением, шоуменом и DJ."
+     },
+     {
+      "h": "Для вашего мероприятия"
+     },
+     {
+      "p": "Живое исполнение, шоумен и DJ — пишите нам для вашего мероприятия."
+     }
+    ]
+   },
+   "en": {
+    "title": "On stage with Lala Mammadova: Showband Group live",
+    "description": "Live music, a showman and a DJ — message us for your event.",
+    "tags": [
+     "Showband Group",
+     "On stage",
+     "Baku",
+     "Live show"
+    ],
+    "lead": "Live music, a showman and a DJ — message us for your event.",
+    "body": [
+     {
+      "p": "On stage with Lala Mammadova — Showband Group with live music, a showman and a DJ."
+     },
+     {
+      "h": "For your event"
+     },
+     {
+      "p": "Live music, a showman and a DJ — message us for your event."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "beyons-musiqi-tarixinde-yuz-qremmi-nominasiyasi-alan-ilk-sen",
@@ -232,7 +522,67 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/100-defe-qremmiye-namized-gosterilen-ilk-mugenni-oldu-528889"
   },
-  "image": "img/news/beyons-musiqi-tarixinde-yuz-qremmi-nominasiyasi-alan-ilk-sen.jpg"
+  "image": "img/news/beyons-musiqi-tarixinde-yuz-qremmi-nominasiyasi-alan-ilk-sen.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Бейонсе стала первой в истории артисткой со ста номинациями на «Грэмми»",
+    "description": "Мировая звезда Бейонсе получила сотую номинацию на «Грэмми» и установила исторический рекорд. Подробности в нашей новости.",
+    "tags": [
+     "Бейонсе",
+     "Грэмми",
+     "новости музыки",
+     "премия",
+     "шоу-бизнес"
+    ],
+    "lead": "Знаменитая американская певица Бейонсе добилась впечатляющего результата и установила новый рекорд.",
+    "body": [
+     {
+      "h": "Исторический рекорд и новая номинация"
+     },
+     {
+      "p": "Объявлены номинанты престижной музыкальной премии, церемония которой пройдёт в феврале. Певица стала первой артисткой, набравшей сто номинаций за карьеру. На этот раз успех ей принесла композиция «Morning Dew (Donk)»."
+     },
+     {
+      "p": "Среди соперниц в этой категории — известные исполнительницы Kehlani, Виктория Моне, Джилл Скотт и Tems."
+     },
+     {
+      "h": "Успехи других звёзд"
+     },
+     {
+      "p": "Ещё один интересный момент — успех британской певицы Raye: в этом году у неё одиннадцать номинаций, и это лучший результат среди женщин. Напомним, в прошлом году столько же номинаций было у самой Бейонсе."
+     }
+    ]
+   },
+   "en": {
+    "title": "Beyoncé becomes the first artist with 100 Grammy nominations",
+    "description": "Global star Beyoncé has earned her hundredth Grammy nomination, setting a record in music history. Details in our story.",
+    "tags": [
+     "Beyoncé",
+     "Grammy",
+     "music news",
+     "award",
+     "showbiz"
+    ],
+    "lead": "Famous American singer Beyoncé has reached a stunning milestone and set a new record.",
+    "body": [
+     {
+      "h": "A historic record and a new nomination"
+     },
+     {
+      "p": "Nominees for the prestigious music award, to be held in February, have been announced. Beyoncé has become the first artist to reach one hundred nominations in her career — this time thanks to “Morning Dew (Donk)”."
+     },
+     {
+      "p": "Her rivals in this category include well-known artists Kehlani, Victoria Monét, Jill Scott and Tems."
+     },
+     {
+      "h": "Other stars’ successes"
+     },
+     {
+      "p": "Another highlight is British singer Raye, who earned eleven nominations this year — the top result among female artists. Last year Beyoncé herself had the same number of nominations."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "gims-korrupsiya-ittihami-ile-uz-uze-qaldi",
@@ -272,7 +622,67 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/shou-biznes/dunyasohretli-repere-agir-ittihamlar-polis-emekdaslari-da-ise-qarisiblar"
   },
-  "image": "img/news/gims-korrupsiya-ittihami-ile-uz-uze-qaldi.jpg"
+  "image": "img/news/gims-korrupsiya-ittihami-ile-uz-uze-qaldi.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Гимсу предъявлено обвинение в коррупции",
+    "description": "Всемирно известный рэпер Гимс предстанет перед судом по серьёзным обвинениям в коррупции и финансовых нарушениях.",
+    "tags": [
+     "Гимс",
+     "рэпер",
+     "суд",
+     "коррупция",
+     "Showband Group"
+    ],
+    "lead": "Серьёзные обвинения в адрес всемирно известного музыканта Гимса вызвали большой резонанс в музыкальном мире.",
+    "body": [
+     {
+      "h": "Против известного рэпера выдвинуты серьёзные обвинения"
+     },
+     {
+      "p": "Конголезский рэпер Гимс (настоящее имя — Ганди Билель Джуна), один из известных людей музыкального мира, оказался в центре внимания правоохранительных органов из-за обвинений в коррупции. По данным, к расследованию привлечены официальные органы и полиция."
+     },
+     {
+      "p": "В ходе предстоящего судебного процесса подробно изучат финансовую деятельность артиста и обоснованность выдвинутых обвинений. Ожидается, что на заседании с участием юристов и профильных ведомств прояснятся все детали."
+     },
+     {
+      "h": "Музыкальное сообщество ждёт решения суда"
+     },
+     {
+      "p": "Пока ни сам артист, ни его адвокаты подробных заявлений не делали. Однако сообщается, что обвинения могут повлиять на карьеру рэпера и его будущие проекты. Представители шоу-бизнеса и поклонники с большим интересом ждут решения суда."
+     }
+    ]
+   },
+   "en": {
+    "title": "Gims faces corruption charges",
+    "description": "World-famous rapper Gims will stand trial on serious charges of corruption and financial misconduct.",
+    "tags": [
+     "Gims",
+     "rapper",
+     "court",
+     "corruption",
+     "Showband Group"
+    ],
+    "lead": "Serious accusations against world-famous musician Gims have caused a big stir in the music world.",
+    "body": [
+     {
+      "h": "Serious charges against the famous rapper"
+     },
+     {
+      "p": "Congolese rapper Gims (real name Gandhi Bilel Djuna), one of the best-known names in music, has come under the scrutiny of law enforcement over corruption allegations. According to reports, official bodies and the police are involved in the investigation."
+     },
+     {
+      "p": "At the upcoming trial, the artist’s finances and the validity of the allegations will be examined in detail. All the details are expected to become clear at the hearing with lawyers and the relevant agencies."
+     },
+     {
+      "h": "The music community awaits the verdict"
+     },
+     {
+      "p": "Neither the artist nor his lawyers have made a detailed statement so far. Reports suggest the charges could affect the rapper’s career and future projects. Showbiz figures and fans are following the case closely."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "maksim-qalkin-bakida-toy-meclisinde-qonaq-oldu",
@@ -310,7 +720,61 @@
    "name": "Axar.az",
    "url": "https://axar.az/news/kult/1149370.html"
   },
-  "image": "img/news/maksim-qalkin-bakida-toy-meclisinde-qonaq-oldu.jpg"
+  "image": "img/news/maksim-qalkin-bakida-toy-meclisinde-qonaq-oldu.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Максим Галкин побывал на свадьбе в Баку",
+    "description": "Сообщается, что известный российский шоумен Максим Галкин побывал на свадьбе в Баку. Опубликованные фото вызвали интерес.",
+    "tags": [
+     "Максим Галкин",
+     "свадьба в Баку",
+     "Лейла Гулиева",
+     "Аббас Багиров",
+     "новости шоу-бизнеса"
+    ],
+    "lead": "Известный российский шоумен Максим Галкин, по сообщениям, побывал на одной из свадеб в Баку. Кадры с праздника активно обсуждают в соцсетях.",
+    "body": [
+     {
+      "h": "Яркие кадры с бакинской свадьбы"
+     },
+     {
+      "p": "Новость о том, что известный шоумен находится в нашей столице, быстро разлетелась по соцсетям. Сообщается, что Максим Галкин посетил одно из частных торжеств в Баку. Первыми фото с мероприятия поделилась с подписчиками известная ведущая Лейла Гулиева. Кадры быстро привлекли внимание и вызвали обсуждения."
+     },
+     {
+      "h": "Известные лица вместе"
+     },
+     {
+      "p": "На кадрах Лейлы Гулиевой не только российский шоумен, но и известный азербайджанский артист, заслуженный артист Аббас Багиров. Фото передают интересные моменты встречи людей искусства. Подписчики оставили под публикацией самые разные комментарии.\n\nВ подписи ведущая Лейла Гулиева отметила, что тот день был для неё довольно тяжёлым. По её словам, несмотря на трудности, такие моменты — прекрасный повод ценить жизнь и благодарить. Ведущая поблагодарила поддержавших её семью, друзей, врачей и коллег."
+     }
+    ]
+   },
+   "en": {
+    "title": "Maxim Galkin attends a wedding in Baku",
+    "description": "Famous Russian showman Maxim Galkin reportedly attended a wedding in Baku. Photos shared online drew interest.",
+    "tags": [
+     "Maxim Galkin",
+     "Baku wedding",
+     "Leyla Guliyeva",
+     "Abbas Bagirov",
+     "showbiz news"
+    ],
+    "lead": "Well-known Russian showman Maxim Galkin reportedly attended one of the weddings held in Baku. Footage from the celebration sparked wide discussion on social media.",
+    "body": [
+     {
+      "h": "Eye-catching shots from a Baku wedding"
+     },
+     {
+      "p": "News of the famous showman’s visit to our capital spread quickly on social media. Maxim Galkin reportedly attended a private celebration in Baku. Well-known host Leyla Guliyeva was the first to share photos from the event with her followers, and they quickly drew attention."
+     },
+     {
+      "h": "Famous faces together"
+     },
+     {
+      "p": "Leyla Guliyeva’s photos show not only the Russian showman but also Honoured Artist of Azerbaijan Abbas Bagirov. The pictures capture interesting moments of artists getting together, and followers left a variety of comments.\n\nIn her caption, Leyla Guliyeva said the day had been quite hard for her. Despite the difficulties, she said such moments are a good reason to appreciate life and be grateful, and she thanked her family, friends, doctors and colleagues for their support."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "britni-spirs-btiny-zergerlik-brendini-teqdim-etdi",
@@ -351,7 +815,69 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/shou-biznes/britni-spirs-biznese-basladi-oz-brendini-teqdim-etdi"
   },
-  "image": "img/news/britni-spirs-btiny-zergerlik-brendini-teqdim-etdi.jpg"
+  "image": "img/news/britni-spirs-btiny-zergerlik-brendini-teqdim-etdi.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Бритни Спирс представила ювелирный бренд BTiny",
+    "description": "Американская поп-звезда Бритни Спирс представила собственный ювелирный бренд BTiny — с современным дизайном и изделиями для молодой аудитории.",
+    "tags": [
+     "Бритни Спирс",
+     "BTiny",
+     "ювелирный бренд",
+     "поп-звезда",
+     "бизнес",
+     "музыка"
+    ],
+    "lead": "Бритни Спирс представила новый ювелирный бренд BTiny и делает шаг в бизнес помимо музыкальной карьеры.",
+    "body": [
+     {
+      "h": "Презентация бренда BTiny"
+     },
+     {
+      "p": "По данным источника, американская поп-звезда Бритни Спирс на этой неделе официально представила ювелирный бренд BTiny. Презентация прошла в Лос-Анджелесе, где вместе с прессой показали ряд новых моделей. Этот шаг расценивают как попытку певицы направить свои творческие идеи в коммерческое русло."
+     },
+     {
+      "p": "Название BTiny соединяет сокращённое имя Бритни и слово «tiny» — маленький, изящный. На презентации можно было познакомиться с командой дизайнеров, а гости отметили простой, но стильный вид украшений."
+     },
+     {
+      "h": "Концепция и аудитория"
+     },
+     {
+      "p": "BTiny ориентирован на молодую и активную аудиторию и предлагает удобные для повседневной носки и при этом модные украшения. Дизайн отличается минимализмом и яркими деталями, которые помогают подчеркнуть индивидуальный стиль. Инициатива Бритни Спирс интересна как шаг к укреплению её влияния в моде и бизнесе."
+     }
+    ]
+   },
+   "en": {
+    "title": "Britney Spears launches the BTiny jewellery brand",
+    "description": "American pop star Britney Spears has launched her own jewellery brand BTiny, with modern designs aimed at a young audience.",
+    "tags": [
+     "Britney Spears",
+     "BTiny",
+     "jewellery brand",
+     "pop star",
+     "business",
+     "music"
+    ],
+    "lead": "Britney Spears has launched her new jewellery brand BTiny, stepping into business beyond her music career.",
+    "body": [
+     {
+      "h": "The BTiny launch"
+     },
+     {
+      "p": "According to the source, US pop star Britney Spears officially launched the BTiny jewellery brand this week. The presentation took place in Los Angeles, where several new pieces were shown to the press. The move is seen as the singer channelling her creative ideas into a commercial venture."
+     },
+     {
+      "p": "The name BTiny combines a short form of Britney with the word “tiny”. Guests could meet the design team, and many noticed the simple yet stylish look of the pieces."
+     },
+     {
+      "h": "Concept and target audience"
+     },
+     {
+      "p": "BTiny targets a young, dynamic audience with fashionable jewellery that is easy to wear every day. The designs are minimalist with colourful details that help express personal style. The project is interesting as a step that expands the pop star’s influence in fashion and business."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "suni-intellekt-musiqi-tarixinde-ilk-defe-ilin-ifacisi-secild",
@@ -390,6 +916,66 @@
   "source": {
    "name": "Oxu.az",
    "url": "https://oxu.az/shou-biznes/musiqi-dunyasinda-tarixi-ilk-insan-deyil-amma-ilin-en-yaxsi-ifacisi-secildi"
+  },
+  "i18n": {
+   "ru": {
+    "title": "Искусственный интеллект впервые в истории назван исполнителем года",
+    "description": "На первой церемонии AI Music Awards в Лос-Анджелесе произошло историческое событие: исполнителем года выбрали искусственный интеллект.",
+    "tags": [
+     "новости музыки",
+     "искусственный интеллект",
+     "премия",
+     "Лос-Анджелес",
+     "Showband Group"
+    ],
+    "lead": "В музыкальном мире произошло небывалое событие: проект на основе искусственного интеллекта признан лучшим исполнителем года.",
+    "body": [
+     {
+      "h": "Историческая церемония"
+     },
+     {
+      "p": "В Лос-Анджелесе прошло знаковое для музыкальной индустрии событие — первая церемония AI Music Awards, учреждённая для музыки, созданной с помощью искусственного интеллекта, и людей, которые участвуют в её создании."
+     },
+     {
+      "p": "На мероприятии оценили достижения цифровых технологий и творческого интеллекта в музыке. Считается, что подобные инициативы в будущем могут перевести традиции композиции и исполнения в совершенно другую плоскость."
+     },
+     {
+      "h": "Новая эпоха в искусстве"
+     },
+     {
+      "p": "По мнению экспертов, новый формат с каждым днём стирает границы между искусством и технологиями. Мы в Showband Group продолжаем внимательно следить за такими глобальными новинками и интересными трендами в мире музыки."
+     }
+    ]
+   },
+   "en": {
+    "title": "AI named artist of the year for the first time in music history",
+    "description": "At the first AI Music Awards in Los Angeles, artificial intelligence was named artist of the year — a historic first for music.",
+    "tags": [
+     "music news",
+     "artificial intelligence",
+     "award",
+     "Los Angeles",
+     "Showband Group"
+    ],
+    "lead": "The music world has seen an unprecedented event: an AI-based project has been named the best artist of the year.",
+    "body": [
+     {
+      "h": "A historic ceremony"
+     },
+     {
+      "p": "Los Angeles hosted a landmark event for the music industry — the first AI Music Awards, created for music made with artificial intelligence and the people behind it."
+     },
+     {
+      "p": "The event recognised the achievements of digital technology and creative intelligence in music. Some believe such initiatives could take composing and performing traditions to a completely different level."
+     },
+     {
+      "h": "A new era in art"
+     },
+     {
+      "p": "Experts say the new format is blurring the line between art and technology day by day. At Showband Group we keep a close eye on such global innovations and trends in music."
+     }
+    ]
+   }
   }
  },
  {
@@ -434,7 +1020,75 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/dunya/turkiyeli-meshurlarin-yeni-il-qonorarlari-aciqlandi-kim-ne-qeder-qazanacaq-siyahi"
   },
-  "image": "img/news/turkiye-sou-biznesinin-yeni-il-konserti-ucun-ulduzlarin-qono.jpg"
+  "image": "img/news/turkiye-sou-biznesinin-yeni-il-konserti-ucun-ulduzlarin-qono.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Стали известны гонорары турецких звёзд за новогодние концерты",
+    "description": "Раскрыты миллионные гонорары, которые турецкие звёзды просят за выступление в новогоднюю ночь. Кто сколько заработает — подробнее в новости.",
+    "tags": [
+     "Турция",
+     "шоу-бизнес",
+     "Новый год",
+     "гонорар",
+     "звёзды",
+     "концерт"
+    ],
+    "lead": "Источники раскрыли, какие гонорары просят звёзды турецкого шоу-бизнеса за выступление в новогоднюю ночь.",
+    "body": [
+     {
+      "h": "Общая картина гонораров"
+     },
+     {
+      "p": "По данным источников, за выход на сцену в новогоднюю ночь турецкие исполнители и актрисы просят миллионные гонорары. Сумма зависит от популярности звезды, длительности выступления и бюджета организатора."
+     },
+     {
+      "p": "Сообщается, что некоторые известные звёзды просят 2–3 миллиона лир, а другие — больше 5 миллионов. Эти цифры считают показателем растущего спроса в шоу-бизнесе в последние годы."
+     },
+     {
+      "h": "Самые высокооплачиваемые звёзды"
+     },
+     {
+      "p": "Среди обладателей самых высоких гонораров — исполнители, много лет известные на региональном и международном уровне. Говорят, что их запросы поднимают рыночную планку."
+     },
+     {
+      "p": "Участники таких концертов привлекают внимание не только музыкой, но и шоу-элементами, модой и визуальными эффектами. Поэтому новогодние мероприятия интересны и местной, и зарубежной публике."
+     }
+    ]
+   },
+   "en": {
+    "title": "Fees of Turkish stars for New Year concerts revealed",
+    "description": "The million-lira fees Turkish showbiz stars ask for New Year’s Eve shows have been revealed. Who earns how much? Details inside.",
+    "tags": [
+     "Türkiye",
+     "showbiz",
+     "New Year",
+     "fee",
+     "stars",
+     "concert"
+    ],
+    "lead": "Sources have revealed the fees Turkish showbiz stars are asking for New Year’s Eve performances.",
+    "body": [
+     {
+      "h": "The overall picture"
+     },
+     {
+      "p": "According to sources, Turkish singers and actresses ask for fees in the millions to perform on New Year’s Eve. The amount depends on the star’s popularity, the length of the show and the organiser’s budget."
+     },
+     {
+      "p": "Some well-known stars reportedly ask 2–3 million lira, while others ask more than 5 million. These figures are seen as a sign of growing demand in showbiz in recent years."
+     },
+     {
+      "h": "The highest earners"
+     },
+     {
+      "p": "Among the highest-paid are performers who have been known regionally and internationally for many years. Their fees are said to raise market standards."
+     },
+     {
+      "p": "Performers at these concerts stand out not only for their music but also for show elements, fashion and visual effects, which makes New Year’s Eve events attractive to both local and foreign audiences."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "ebru-gundes-debdebeli-saati-ile-yeniden-diqqet-merkezinde",
@@ -474,7 +1128,67 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/ebru-gundes-7-milyonluq-saati-ile-gundem-oldu-foto-528070"
   },
-  "image": "img/news/ebru-gundes-debdebeli-saati-ile-yeniden-diqqet-merkezinde.jpg"
+  "image": "img/news/ebru-gundes-debdebeli-saati-ile-yeniden-diqqet-merkezinde.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Эбру Гюндеш привлекла внимание часами за миллионы",
+    "description": "Известная турецкая певица Эбру Гюндеш оказалась в центре внимания из-за роскошных часов на новых фото. Сообщается, что они стоят миллионы лир.",
+    "tags": [
+     "Эбру Гюндеш",
+     "часы за миллионы",
+     "шоу-бизнес",
+     "роскошь",
+     "новости музыки"
+    ],
+    "lead": "Известная турецкая певица Эбру Гюндеш снова в центре внимания благодаря новым фото в соцсетях.",
+    "body": [
+     {
+      "h": "Дорогой аксессуар вызвал обсуждения"
+     },
+     {
+      "p": "Роскошные часы на последних снимках певицы стали главной темой в шоу-бизнесе. По данным турецкой прессы, этот эксклюзивный аксессуар стоит около семи с половиной миллионов турецких лир."
+     },
+     {
+      "p": "Пользователи соцсетей сразу начали активно обсуждать цену. По их словам, стоимость часов сопоставима с ценой роскошного автомобиля и даже дома."
+     },
+     {
+      "h": "Интерес к стилю певицы не угасает"
+     },
+     {
+      "p": "Эбру Гюндеш всегда выделялась вкусом в одежде и аксессуарах, и новые часы ещё раз подтвердили её любовь к моде. Похоже, эти детали ещё долго будут обсуждать и поклонники, и представители шоу-бизнеса."
+     }
+    ]
+   },
+   "en": {
+    "title": "Ebru Gündeş turns heads with a million-lira watch",
+    "description": "Famous Turkish singer Ebru Gündeş made headlines with a luxury watch in her latest photos, reportedly worth millions of lira.",
+    "tags": [
+     "Ebru Gündeş",
+     "luxury watch",
+     "showbiz",
+     "luxury",
+     "music news"
+    ],
+    "lead": "Well-known Turkish singer Ebru Gündeş is in the spotlight again thanks to her latest photos on social media.",
+    "body": [
+     {
+      "h": "A pricey accessory sparks debate"
+     },
+     {
+      "p": "The luxury watch in the singer’s latest photos has taken over showbiz news. According to the Turkish press, the exclusive accessory is worth about seven and a half million Turkish lira."
+     },
+     {
+      "p": "Social media users immediately started discussing the price, saying the watch costs as much as a luxury car or even a house."
+     },
+     {
+      "h": "Interest in her style never fades"
+     },
+     {
+      "p": "Known for her taste in clothes and accessories, Ebru Gündeş once again showed her love of fashion. Fans and showbiz insiders are likely to talk about these details for a long time."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "aygun-kazimova-dunya-ulduzu-ile-duet-oxuya-biler",
@@ -514,7 +1228,67 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/shou-biznes/aygun-kazimova-eminemle-duet-oxuyacaq-foto"
   },
-  "image": "img/news/aygun-kazimova-dunya-ulduzu-ile-duet-oxuya-biler.jpg"
+  "image": "img/news/aygun-kazimova-dunya-ulduzu-ile-duet-oxuya-biler.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Айгюн Кязимова может спеть дуэтом с мировой звездой",
+    "description": "Появились сообщения, что народная артистка Азербайджана Айгюн Кязимова готовит новый дуэт с известным американским рэпером Эминемом.",
+    "tags": [
+     "Айгюн Кязимова",
+     "Эминем",
+     "дуэт",
+     "новости музыки",
+     "шоу-бизнес"
+    ],
+    "lead": "Появились слухи, что народная артистка Азербайджана Айгюн Кязимова споёт дуэтом со всемирно известным американским рэпером Эминемом.",
+    "body": [
+     {
+      "h": "Неожиданное сотрудничество"
+     },
+     {
+      "p": "По последним слухам в музыкальном сообществе и соцсетях, одна из главных звёзд азербайджанской сцены, народная артистка Айгюн Кязимова, работает над совместным проектом с известным американским рэпером Эминемом. Сочетание этих имён вызвало большой интерес у местных слушателей и широкие обсуждения."
+     },
+     {
+      "p": "Хотя детали проекта пока не раскрыты, поклонники говорят, что с нетерпением ждут совместной работы представителей двух разных музыкальных культур. Считается, что такое сотрудничество может вызвать большой отклик и в стране, и за рубежом."
+     },
+     {
+      "h": "Ждём официального заявления"
+     },
+     {
+      "p": "Пока ни пресс-служба народной артистки, ни другая сторона официально это не комментировали. Однако фото и сообщения из неофициальных источников только подогрели обсуждения. Мы в Showband Group следим за развитием этой интересной новости и поделимся подробностями, как только они появятся."
+     }
+    ]
+   },
+   "en": {
+    "title": "Aygun Kazimova may sing a duet with a global star",
+    "description": "Reports say People’s Artist of Azerbaijan Aygun Kazimova is preparing a new duet with famous American rapper Eminem.",
+    "tags": [
+     "Aygun Kazimova",
+     "Eminem",
+     "duet",
+     "music news",
+     "showbiz"
+    ],
+    "lead": "Rumours have emerged that People’s Artist of Azerbaijan Aygun Kazimova will sing a duet with world-famous American rapper Eminem.",
+    "body": [
+     {
+      "h": "An unexpected collaboration"
+     },
+     {
+      "p": "According to the latest rumours in the music community and on social media, People’s Artist Aygun Kazimova, one of the biggest stars of the Azerbaijani stage, is working on a joint project with American rapper Eminem. The pairing has drawn huge interest from local listeners and sparked wide discussion."
+     },
+     {
+      "p": "Details have not been fully revealed yet, but fans say they can’t wait to hear two artists from very different musical cultures together. The collaboration could make a big splash both at home and internationally."
+     },
+     {
+      "h": "An official statement is awaited"
+     },
+     {
+      "p": "Neither the artist’s press office nor the other side has commented officially so far, but photos and unofficial reports have only fuelled the discussion. At Showband Group we are following the story and will share new details as soon as they are known."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "xankendide-zefer-gunu-konsertinde-erdoganin-sevdiyi-mahni-se",
@@ -557,7 +1331,73 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/erdoganin-sevdiyi-mahni-xankendide-video-527927"
   },
-  "image": "img/news/xankendide-zefer-gunu-konsertinde-erdoganin-sevdiyi-mahni-se.jpg"
+  "image": "img/news/xankendide-zefer-gunu-konsertinde-erdoganin-sevdiyi-mahni-se.jpg",
+  "i18n": {
+   "ru": {
+    "title": "На концерте в честь Дня Победы в Ханкенди прозвучала любимая песня Эрдогана",
+    "description": "На большом концерте в честь Дня Победы в Конгресс-центре Ханкенди исполнили любимую песню лидера Турции.",
+    "tags": [
+     "Ханкенди",
+     "День Победы",
+     "Сабина Араблы",
+     "Реджеп Тайип Эрдоган",
+     "концерт"
+    ],
+    "lead": "В Ханкенди прошёл торжественный концерт в честь годовщины 8 ноября — Дня Победы, запомнившийся интересными музыкальными номерами.",
+    "body": [
+     {
+      "h": "Большой музыкальный вечер в честь Дня Победы"
+     },
+     {
+      "p": "В Конгресс-центре Ханкенди прошла официальная торжественная концертная программа, посвящённая 8 ноября — Дню Победы. В этот знаменательный вечер, когда отмечалась славная победа страны, прозвучали яркие и запоминающиеся номера, подарившие зрителям праздничное настроение."
+     },
+     {
+      "h": "Прозвучала любимая песня президента Турции"
+     },
+     {
+      "p": "Среди номеров праздничного концерта была одна из самых любимых песен президента Турции Реджепа Тайипа Эрдогана — «Beraber yürüdük biz bu yollarda». Песня композитора Сельчука Текая вызвала большой интерес и особый подъём в зале."
+     },
+     {
+      "h": "Исполнение Сабины Араблы покорило зрителей"
+     },
+     {
+      "p": "Эту известную и трогательную песню на концерте исполнила певица Сабина Араблы. Её выступление зрители встретили тепло и аплодисментами. Отмечается, что такие события ещё больше укрепляют культурные связи двух братских стран."
+     }
+    ]
+   },
+   "en": {
+    "title": "Erdoğan’s favourite song performed at Victory Day concert in Khankendi",
+    "description": "A favourite song of Türkiye’s leader was performed at a grand Victory Day concert at the Khankendi Congress Centre.",
+    "tags": [
+     "Khankendi",
+     "Victory Day",
+     "Sabina Arabli",
+     "Recep Tayyip Erdoğan",
+     "concert"
+    ],
+    "lead": "Khankendi hosted a gala concert for the anniversary of 8 November — Victory Day, remembered for its memorable musical numbers.",
+    "body": [
+     {
+      "h": "A grand musical evening for Victory Day"
+     },
+     {
+      "p": "The Khankendi Congress Centre hosted an official gala concert dedicated to 8 November — Victory Day. On this memorable evening celebrating the country’s glorious victory, colourful musical numbers gave the audience a festive mood."
+     },
+     {
+      "h": "The Turkish president’s favourite song"
+     },
+     {
+      "p": "One of the numbers was among the favourite songs of Turkish President Recep Tayyip Erdoğan — “Beraber yürüdük biz bu yollarda”, composed by Selçuk Tekay. The song drew great interest and created a special atmosphere in the hall."
+     },
+     {
+      "h": "Sabina Arabli wins the audience over"
+     },
+     {
+      "p": "The famous, emotional song was performed by singer Sabina Arabli, and the audience welcomed it with warm applause. Such events are said to strengthen the cultural ties between the two brotherly countries even further."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "xetai-rayonunda-zefer-gunu-mohtesem-konsertle-qeyd-edildi",
@@ -597,7 +1437,67 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/digar/xetai-rayonunda-8-noyabr-zefer-gunune-hesr-olunmus-konsert-proqrami-ve-atesfesanliq-teskil-olunub-foto-video"
   },
-  "image": "img/news/xetai-rayonunda-zefer-gunu-mohtesem-konsertle-qeyd-edildi.jpg"
+  "image": "img/news/xetai-rayonunda-zefer-gunu-mohtesem-konsertle-qeyd-edildi.jpg",
+  "i18n": {
+   "ru": {
+    "title": "В Хатаинском районе День Победы отметили большим концертом",
+    "description": "В Хатаинском районе прошли праздничный концерт и фейерверк в честь 8 ноября — Дня Победы. Подробности на сайте Showband Group.",
+    "tags": [
+     "День Победы",
+     "Хатаинский район",
+     "концерт",
+     "фейерверк",
+     "праздник"
+    ],
+    "lead": "В Хатаинском районе прошли торжественное музыкальное мероприятие и фейерверк в честь годовщины 8 ноября — Дня Победы.",
+    "body": [
+     {
+      "h": "Организаторы праздника"
+     },
+     {
+      "p": "7 ноября на амфитеатре парка имени Гейдара Алиева в Хатаинском районе столицы царила настоящая праздничная атмосфера. Мероприятие, посвящённое героической истории и славной победе нашего народа, организовали районная исполнительная власть и Хатаинская районная организация партии «Ени Азербайджан»."
+     },
+     {
+      "p": "После официальной части вечер, на который с радостью пришли жители района и любители музыки, продолжился большой концертной программой. Патриотические песни и праздничное настроение сделали его особенным."
+     },
+     {
+      "h": "Вечер завершился фейерверком"
+     },
+     {
+      "p": "В конце торжественного вечера небо столицы украсил красивый фейерверк. Участники с радостью разделили праздник, а выступления на сцене оставили у всех незабываемые впечатления."
+     }
+    ]
+   },
+   "en": {
+    "title": "Khatai district celebrates Victory Day with a grand concert",
+    "description": "Khatai district hosted a festive concert and fireworks for 8 November — Victory Day. Details on the Showband Group site.",
+    "tags": [
+     "Victory Day",
+     "Khatai district",
+     "concert",
+     "fireworks",
+     "holiday"
+    ],
+    "lead": "Khatai district held a festive musical event and fireworks to mark the anniversary of 8 November — Victory Day.",
+    "body": [
+     {
+      "h": "The organisers"
+     },
+     {
+      "p": "On 7 November the amphitheatre of Heydar Aliyev Park in Baku’s Khatai district was filled with a real holiday atmosphere. The event, dedicated to the heroic history and glorious victory of our people, was organised by the district executive authority and the Khatai branch of the New Azerbaijan Party."
+     },
+     {
+      "p": "After the official part, the evening — attended enthusiastically by residents and music lovers — continued with a rich concert programme. Patriotic songs and the festive mood made it special."
+     },
+     {
+      "h": "Fireworks to finish"
+     },
+     {
+      "p": "The evening ended with a spectacular fireworks display over the capital. Guests celebrated with great joy, and the performances left everyone with unforgettable memories."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "sedaya-ad-gunu-showband-group-surprizleri-ile-kecdi-0600",
@@ -633,7 +1533,59 @@
    "name": "Showband Group",
    "url": "https://showbandgroup.az/videolar/"
   },
-  "image": "img/news/sedaya-ad-gunu-showband-group-surprizleri-ile-kecdi-0600.jpg"
+  "image": "img/news/sedaya-ad-gunu-showband-group-surprizleri-ile-kecdi-0600.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Sədaya: день рождения с сюрпризами Showband Group",
+    "description": "DJ, шоумен, лазерное шоу — пусть и ваш день рождения запомнится так же.",
+    "tags": [
+     "Showband Group",
+     "День рождения",
+     "Баку",
+     "Живое шоу"
+    ],
+    "lead": "DJ, шоумен, лазерное шоу — пусть и ваш день рождения запомнится так же.",
+    "body": [
+     {
+      "p": "На дне рождения в Sədaya Showband Group развлекала гостей с DJ, шоуменом и лазерным шоу."
+     },
+     {
+      "p": "Для именинника подготовили особые сюрпризы и игры — вечер прошёл в танцах и смехе."
+     },
+     {
+      "h": "Для вашего мероприятия"
+     },
+     {
+      "p": "DJ, шоумен, лазерное шоу — пусть и ваш день рождения запомнится так же."
+     }
+    ]
+   },
+   "en": {
+    "title": "Sədaya: a birthday full of Showband Group surprises",
+    "description": "DJ, showman, laser show — make your birthday just as memorable.",
+    "tags": [
+     "Showband Group",
+     "Birthday",
+     "Baku",
+     "Live show"
+    ],
+    "lead": "DJ, showman, laser show — make your birthday just as memorable.",
+    "body": [
+     {
+      "p": "At a birthday party at Sədaya, Showband Group entertained guests with a DJ, a showman and a laser show."
+     },
+     {
+      "p": "Special surprises and games were prepared for the birthday person — the night was full of dancing and laughter."
+     },
+     {
+      "h": "For your event"
+     },
+     {
+      "p": "DJ, showman, laser show — make your birthday just as memorable."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "devid-qarrett-bakida-mohtesem-simfonik-sou-teqdim-etdi",
@@ -667,7 +1619,55 @@
    "name": "Axar.az",
    "url": "https://axar.az/news/kult/1145898.html"
   },
-  "image": "img/news/devid-qarrett-bakida-mohtesem-simfonik-sou-teqdim-etdi.jpg"
+  "image": "img/news/devid-qarrett-bakida-mohtesem-simfonik-sou-teqdim-etdi.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Дэвид Гарретт представил в Баку грандиозное симфоническое шоу",
+    "description": "Всемирно известный скрипач Дэвид Гарретт выступил в Центре Гейдара Алиева. Шоу посмотрели Мехрибан Алиева и члены семьи.",
+    "tags": [
+     "Дэвид Гарретт",
+     "Центр Гейдара Алиева",
+     "Симфоническое шоу",
+     "Мехрибан Алиева",
+     "Новости музыки"
+    ],
+    "lead": "В нашей столице состоялось незабываемое выступление всемирно известного музыканта. Грандиозное симфоническое шоу в Центре Гейдара Алиева подарило зрителям уникальные моменты.",
+    "body": [
+     {
+      "h": "Грандиозный музыкальный вечер в столице"
+     },
+     {
+      "p": "Всемирно известный скрипач Дэвид Гарретт выступил в Баку с симфоническим шоу «Millennium Symphony – Crossover Programme». Среди зрителей были первый вице-президент Азербайджана Мехрибан Алиева и члены семьи. Музыкант мастерски соединил классику с роком, поп-музыкой и известными мелодиями из кино."
+     },
+     {
+      "p": "В программе прозвучали произведения Бетховена, Ханса Циммера, Майкла Джексона, а также групп Nirvana и Rammstein. Талантливый музыкант выступает на сцене с детства и сотрудничал с известными дирижёрами мира. Его классический альбом «ICONIC» добился большого международного успеха и получил ряд престижных наград."
+     }
+    ]
+   },
+   "en": {
+    "title": "David Garrett presents a stunning symphonic show in Baku",
+    "description": "World-famous violinist David Garrett performed at the Heydar Aliyev Centre. Mehriban Aliyeva and family members watched the show.",
+    "tags": [
+     "David Garrett",
+     "Heydar Aliyev Centre",
+     "Symphonic show",
+     "Mehriban Aliyeva",
+     "Music news"
+    ],
+    "lead": "Our capital hosted an unforgettable performance by a world-famous musician. The grand symphonic show at the Heydar Aliyev Centre gave the audience unique moments.",
+    "body": [
+     {
+      "h": "A grand musical evening in the capital"
+     },
+     {
+      "p": "World-famous violinist David Garrett performed in Baku with his symphonic show “Millennium Symphony – Crossover Programme”. First Vice-President of Azerbaijan Mehriban Aliyeva and family members were among the audience. The musician skilfully blended classical music with rock, pop and famous film themes."
+     },
+     {
+      "p": "The programme included works by Beethoven, Hans Zimmer, Michael Jackson, as well as Nirvana and Rammstein. The talented musician has performed since childhood and worked with renowned conductors around the world. His classical album “ICONIC” achieved great international success and won several prestigious awards."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "the-weeknd-elton-conu-kecerek-mohtesem-rekorda-imza-atdi",
@@ -707,7 +1707,67 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/shou-biznes/the-weeknd-den-1-3-milyard-dollarliq-rekord-elton-conu-geride-qoydu"
   },
-  "image": "img/news/the-weeknd-elton-conu-kecerek-mohtesem-rekorda-imza-atdi.jpg"
+  "image": "img/news/the-weeknd-elton-conu-kecerek-mohtesem-rekorda-imza-atdi.jpg",
+  "i18n": {
+   "ru": {
+    "title": "The Weeknd обошёл Элтона Джона и установил рекорд",
+    "description": "Мировая звезда The Weeknd вышел на первое место среди артистов-мужчин по доходам от концертного тура.",
+    "tags": [
+     "The Weeknd",
+     "новости музыки",
+     "мировой рекорд",
+     "концертный тур",
+     "шоу-бизнес"
+    ],
+    "lead": "Известный канадский поп-исполнитель The Weeknd добился выдающегося результата: по данным, он установил новый мировой рекорд по доходам от концертного тура.",
+    "body": [
+     {
+      "h": "Исторический тур покоряет новые вершины"
+     },
+     {
+      "p": "The Weeknd, одна из ведущих фигур мировой музыки, вписал своё имя в историю шоу-бизнеса грандиозным туром «After Hours Til Dawn». Масштабный тур принёс исполнителю миллиарды долларов и сделал его самым зарабатывающим музыкантом-мужчиной в мире. Каждый концерт поклонники встречали с огромным энтузиазмом."
+     },
+     {
+      "p": "Такие невероятные финансовые показатели ещё раз подтверждают мировую популярность артиста. Главными причинами успеха называют организацию концертов, сценические шоу и масштаб аудитории. Эксперты отмечают, что этот тур задал новые стандарты для музыкальной индустрии."
+     },
+     {
+      "h": "Успех, оставивший позади Элтона Джона"
+     },
+     {
+      "p": "По имеющимся данным, с таким результатом The Weeknd обошёл легендарного Элтона Джона. Сообщается, что канадская звезда заработала около 1,3 миллиарда долларов и стала безусловным лидером среди певцов-мужчин в этой категории. Этот рекорд, вероятно, будут обсуждать ещё долго."
+     }
+    ]
+   },
+   "en": {
+    "title": "The Weeknd overtakes Elton John to set a huge record",
+    "description": "Global star The Weeknd has become the top male artist by concert tour revenue.",
+    "tags": [
+     "The Weeknd",
+     "music news",
+     "world record",
+     "concert tour",
+     "showbiz"
+    ],
+    "lead": "Famous Canadian pop artist The Weeknd has reached a historic milestone, reportedly setting a new world record for concert tour revenue.",
+    "body": [
+     {
+      "h": "A historic tour reaches new heights"
+     },
+     {
+      "p": "The Weeknd, one of the leading figures in music, has written his name into showbiz history with the massive “After Hours Til Dawn” tour. The large-scale tour reportedly earned billions of dollars, making him the highest-grossing male musician in the world. Fans welcomed every show with huge enthusiasm."
+     },
+     {
+      "p": "These incredible figures once again prove the artist’s global popularity. The organisation of the concerts, the stage shows and the size of the audience are seen as the main reasons for the success. Experts say the tour has set new standards for the music industry."
+     },
+     {
+      "h": "Passing Elton John"
+     },
+     {
+      "p": "According to available data, with this result The Weeknd has overtaken the legendary Elton John. With around 1.3 billion dollars in revenue, the Canadian star has become the clear leader among male singers in this category — a record likely to be talked about for a long time."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "sinan-ozen-tokat-konsertinden-sonra-sakarya-yolunda-qeza-kec",
@@ -750,7 +1810,73 @@
    "name": "Oxu.az",
    "url": "https://oxu.az/dunya/meshur-turk-mugenni-konsertden-qayidarken-qezaya-dusdu-foto"
   },
-  "image": "img/news/sinan-ozen-tokat-konsertinden-sonra-sakarya-yolunda-qeza-kec.jpg"
+  "image": "img/news/sinan-ozen-tokat-konsertinden-sonra-sakarya-yolunda-qeza-kec.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Синан Озен попал в аварию на дороге в Сакарье после концерта в Токате",
+    "description": "Турецкий певец Синан Озен попал в автомобильную аварию в районе Сакарьи, возвращаясь с концерта в Токате; артист и его брат не пострадали.",
+    "tags": [
+     "Синан Озен",
+     "Токат",
+     "автоавария",
+     "Сакарья",
+     "концерт"
+    ],
+    "lead": "Турецкая поп-звезда Синан Озен после концерта в Токате попал в аварию на дороге в Сакарье, но артист и его брат не пострадали.",
+    "body": [
+     {
+      "h": "Подробности аварии"
+     },
+     {
+      "p": "Известный певец Синан Озен после концерта в Токате ехал в сторону Стамбула и попал в аварию в районе Сакарьи. По данным местных СМИ, автомобиль съехал на обочину, но утечки топлива или возгорания не было."
+     },
+     {
+      "p": "На место сразу прибыли скорая помощь и полиция, проверили состояние пострадавших. Артист и его брат вместе с пассажирами выбрались из машины и получили медицинскую помощь."
+     },
+     {
+      "h": "Состояние артиста"
+     },
+     {
+      "p": "Как сообщают официальные источники, Синан Озен и его брат не получили травм. Менеджер певца сказал: «Наш Синан полностью здоров, уверены, что он скоро снова выйдет на сцену»."
+     },
+     {
+      "p": "Поклонники в соцсетях выражают поддержку артисту. Планы будущих концертов Синана пока на паузе, но ожидается, что после восстановления он возьмётся за новые проекты."
+     }
+    ]
+   },
+   "en": {
+    "title": "Sinan Özen in a car crash on the Sakarya road after his Tokat concert",
+    "description": "Turkish singer Sinan Özen was involved in a car accident near Sakarya on his way back from a concert in Tokat; he and his brother are safe and unharmed.",
+    "tags": [
+     "Sinan Özen",
+     "Tokat",
+     "car accident",
+     "Sakarya",
+     "concert"
+    ],
+    "lead": "Turkish pop star Sinan Özen was in a car accident on the Sakarya road after his Tokat concert, but he and his brother escaped unharmed.",
+    "body": [
+     {
+      "h": "Details of the accident"
+     },
+     {
+      "p": "Famous singer Sinan Özen was driving towards Istanbul after his concert in Tokat when the accident happened near Sakarya. Local media report that the car left the road, but there was no fuel leak or fire."
+     },
+     {
+      "p": "Ambulance and police teams arrived immediately and checked on those involved. The artist, his brother and the other passengers got out of the car and received medical attention."
+     },
+     {
+      "h": "The artist’s condition"
+     },
+     {
+      "p": "Official sources say Sinan Özen and his brother were not injured. His manager said: “Our Sinan is perfectly healthy, and we believe he will be back on stage soon.”"
+     },
+     {
+      "p": "Fans have sent their support on social media. Sinan’s upcoming concert plans are on hold for now, but he is expected to return to new projects once he has recovered."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "leyla-ve-arzu-eliyevalar-konsertde-istirak-etdiler",
@@ -790,7 +1916,67 @@
    "name": "Axar.az",
    "url": "https://axar.az/news/kult/1143594.html"
   },
-  "image": "img/news/leyla-ve-arzu-eliyevalar-konsertde-istirak-etdiler.jpg"
+  "image": "img/news/leyla-ve-arzu-eliyevalar-konsertde-istirak-etdiler.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Лейла и Арзу Алиевы посетили концерт",
+    "description": "Лейла и Арзу Алиевы посетили специальную концертную программу в рамках проекта «Ария рая».",
+    "tags": [
+     "Лейла Алиева",
+     "Арзу Алиева",
+     "Ария рая",
+     "концерт",
+     "культура"
+    ],
+    "lead": "На специальном музыкальном мероприятии в столице известные гости встретились с жителями социальных учреждений.",
+    "body": [
+     {
+      "h": "Музыкальный вечер проекта «Ария рая»"
+     },
+     {
+      "p": "В столице в рамках важного проекта «Ария рая» зрителям представили яркую концертную программу. Участники, специально готовившиеся к этому вечеру, показали своё мастерство на сцене."
+     },
+     {
+      "p": "На мероприятии вместе выступили воспитанники детского дома №2 и жители социальных учреждений для людей с инвалидностью. Проект, показывающий объединяющую силу искусства и музыки, подарил зрителям тёплые моменты."
+     },
+     {
+      "h": "Тёплая встреча и памятные фото"
+     },
+     {
+      "p": "На концерте присутствовали вице-президент Фонда Гейдара Алиева Лейла Алиева и руководитель Бакинского медиацентра Арзу Алиева. Они тепло пообщались с воспитанниками детского дома и жителями социальных учреждений и сфотографировались на память. Проект «Ария рая» реализуется по инициативе Лейлы Алиевой."
+     }
+    ]
+   },
+   "en": {
+    "title": "Leyla and Arzu Aliyeva attend a concert",
+    "description": "Leyla and Arzu Aliyeva attended a special concert programme held as part of the “Aria of Paradise” project.",
+    "tags": [
+     "Leyla Aliyeva",
+     "Arzu Aliyeva",
+     "Aria of Paradise",
+     "concert",
+     "culture"
+    ],
+    "lead": "At a special musical event in the capital, well-known guests met residents of social care institutions.",
+    "body": [
+     {
+      "h": "A musical evening of the “Aria of Paradise” project"
+     },
+     {
+      "p": "A colourful concert programme was presented in the capital as part of the important “Aria of Paradise” project. Participants who had specially prepared for the evening showed their talent on stage."
+     },
+     {
+      "p": "Children from Orphanage No. 2 and residents of social care institutions for people with disabilities performed together. The project, which shows the unifying power of art and music, gave the audience heartwarming moments."
+     },
+     {
+      "h": "A warm meeting and photos"
+     },
+     {
+      "p": "Heydar Aliyev Foundation Vice-President Leyla Aliyeva and Baku Media Centre head Arzu Aliyeva attended the concert. They chatted warmly with the children and residents and took souvenir photos. The “Aria of Paradise” project is carried out on Leyla Aliyeva’s initiative."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "emrah-i-pekin-neheng-serveti-ve-menzilleri-muzakire-yaradib",
@@ -833,7 +2019,73 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/kucuk-emrahin-serveti-gundem-oldu-300-den-cox-menzili-var-526931"
   },
-  "image": "img/news/emrah-i-pekin-neheng-serveti-ve-menzilleri-muzakire-yaradib.jpg"
+  "image": "img/news/emrah-i-pekin-neheng-serveti-ve-menzilleri-muzakire-yaradib.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Огромное состояние и квартиры Эмраха Ипека вызвали обсуждения",
+    "description": "Сообщения о том, что у известного турецкого певца Эмраха сотни квартир и большой доход от аренды, вызвали обсуждения.",
+    "tags": [
+     "Эмрах",
+     "состояние",
+     "недвижимость",
+     "шоу-бизнес",
+     "певец"
+    ],
+    "lead": "Турецкий певец Эмрах Ипек, прославившийся ещё в детстве, на этот раз оказался в центре внимания из-за огромной недвижимости и состояния.",
+    "body": [
+     {
+      "h": "Сотни квартир и ежемесячный доход"
+     },
+     {
+      "p": "По данным турецкой прессы, у артиста сотни квартир в Стамбуле и Бодруме. Одни источники говорят о более чем 200 квартирах, другие — о более чем 300. Ежемесячный доход от аренды якобы достигает около 300 тысяч долларов, то есть 10 миллионов лир."
+     },
+     {
+      "h": "Спорткомплекс и растущий портфель"
+     },
+     {
+      "p": "Сообщается, что Эмрах также купил в Стамбуле спортивный комплекс примерно за 3 миллиона долларов и добавил в свой портфель 12 магазинов и дуплекс в том же здании. Отмечается, что у него есть квартира в районе Шишли и вилла в Бодруме стоимостью около 8 миллионов лир. По другим данным, когда-то он продал около 300 квартир, чтобы вложиться в более крупные проекты."
+     },
+     {
+      "h": "Официального подтверждения нет"
+     },
+     {
+      "p": "Официальных и подтверждённых данных о точном количестве недвижимости и ежемесячном доходе артиста нет. Напомним, его доходы уже обсуждались на судебном процессе в 2022 году — тогда сообщалось, что он зарабатывает около 400 тысяч лир в месяц."
+     }
+    ]
+   },
+   "en": {
+    "title": "Emrah İpek’s huge fortune and apartments spark debate",
+    "description": "Reports that famous Turkish singer Emrah owns hundreds of apartments and earns large rental income have sparked debate.",
+    "tags": [
+     "Emrah",
+     "fortune",
+     "real estate",
+     "showbiz",
+     "singer"
+    ],
+    "lead": "Turkish singer Emrah İpek, famous since childhood, is in the news this time for his huge property portfolio and fortune.",
+    "body": [
+     {
+      "h": "Hundreds of apartments and monthly income"
+     },
+     {
+      "p": "According to the Turkish press, the veteran artist owns hundreds of apartments in Istanbul and Bodrum. Some sources say over 200, others over 300. His monthly rental income is claimed to reach about 300,000 dollars, or 10 million lira."
+     },
+     {
+      "h": "A sports complex and a growing portfolio"
+     },
+     {
+      "p": "Emrah reportedly also bought a sports complex in Istanbul for about 3 million dollars and added 12 shops and a duplex apartment in the same building to his portfolio. He is also said to own an apartment in Şişli and a villa in Bodrum worth about 8 million lira. Other claims say he once sold around 300 apartments to move into bigger projects."
+     },
+     {
+      "h": "No official confirmation"
+     },
+     {
+      "p": "There is no official, confirmed information on the exact number of properties or his monthly income. His earnings were also discussed during a 2022 court case, when his monthly income was said to be about 400,000 lira."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "tacir-sahmalioglu-medekiciltme-emeliyyati-etdirdiyini-aciqladi",
@@ -873,7 +2125,67 @@
    "name": "Axar.az",
    "url": "https://axar.az/news/kult/1142880.html"
   },
-  "image": "img/news/tacir-sahmalioglu-medekiciltme-emeliyyati-etdirdiyini-aciqladi.jpg"
+  "image": "img/news/tacir-sahmalioglu-medekiciltme-emeliyyati-etdirdiyini-aciqladi.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Таджир Шахмалыоглу рассказал, что сделал операцию по уменьшению желудка",
+    "description": "Известный певец Таджир Шахмалыоглу рассказал, что по состоянию здоровья сделал операцию по уменьшению желудка, и поделился трудностями.",
+    "tags": [
+     "Таджир Шахмалыоглу",
+     "уменьшение желудка",
+     "шоу-бизнес",
+     "новости музыки",
+     "Showband Group"
+    ],
+    "lead": "Известный азербайджанский певец Таджир Шахмалыоглу оказался в центре внимания после признания о своём здоровье.",
+    "body": [
+     {
+      "h": "Операция в Стамбуле"
+     },
+     {
+      "p": "Будучи гостем программы «Qonaqcanlı», певец рассказал о проблемах со здоровьем. По его словам, осложнения, вызванные диабетом, заставили его обратиться к врачу в Стамбуле. Во время обследования специалисты сказали, что помимо основного лечения нужна и операция по уменьшению желудка."
+     },
+     {
+      "p": "Артист признался, что по совету врачей решился на этот шаг и был прооперирован. По его словам, решение было принято ради сохранения здоровья."
+     },
+     {
+      "h": "Диета нарушена — появились новые проблемы"
+     },
+     {
+      "p": "Сразу после операции Таджир Шахмалыоглу вернулся в Баку и, по его словам, не смог соблюдать строгую диету. Это привело к новым осложнениям, и ему пришлось оперироваться ещё и по поводу желчи. Напомним, некоторое время назад певец уже перенёс операцию на желчном пузыре."
+     }
+    ]
+   },
+   "en": {
+    "title": "Tajir Shahmalioglu reveals he had stomach reduction surgery",
+    "description": "Well-known singer Tajir Shahmalioglu said he had stomach reduction surgery for health reasons and shared the difficulties he went through.",
+    "tags": [
+     "Tajir Shahmalioglu",
+     "stomach reduction",
+     "showbiz",
+     "music news",
+     "Showband Group"
+    ],
+    "lead": "Well-known Azerbaijani singer Tajir Shahmalioglu made headlines after opening up about his health.",
+    "body": [
+     {
+      "h": "Surgery in Istanbul"
+     },
+     {
+      "p": "As a guest on the “Qonaqcanlı” show, the singer talked about his health problems. He said complications from diabetes led him to see a doctor in Istanbul, where specialists told him that stomach reduction surgery was needed in addition to the main treatment."
+     },
+     {
+      "p": "The artist said he took this step on his doctors’ advice and had the operation, a decision made to protect his health."
+     },
+     {
+      "h": "Broken diet, new problems"
+     },
+     {
+      "p": "Tajir Shahmalioglu said that after returning to Baku right after the surgery he could not stick to the strict diet. This led to new complications, and he then needed gallbladder-related surgery as well. The singer had already undergone a gallbladder operation some time ago."
+     }
+    ]
+   }
+  }
  },
  {
   "slug": "avroviziya-2027-niderland-qerarini-deyisdi-ve",
@@ -913,6 +2225,66 @@
    "name": "Qafqazinfo",
    "url": "https://qafqazinfo.az/news/detail/niderland-qerarini-deyisdi-avroviziyada-istirak-etmeyecek-526509"
   },
-  "image": "img/news/avroviziya-2027-niderland-qerarini-deyisdi-ve.jpg"
+  "image": "img/news/avroviziya-2027-niderland-qerarini-deyisdi-ve.jpg",
+  "i18n": {
+   "ru": {
+    "title": "Нидерланды изменили решение: страна не примет участие в Евровидении-2027",
+    "description": "Нидерланды не будут участвовать в конкурсе Евровидение-2027 из-за вопроса об участии Израиля. Вещатель страны изменил своё решение.",
+    "tags": [
+     "Евровидение 2027",
+     "Нидерланды",
+     "Израиль",
+     "новости музыки",
+     "Showband Group"
+    ],
+    "lead": "Нидерланды отказались от участия в конкурсе песни «Евровидение» 2027 года.",
+    "body": [
+     {
+      "h": "Решение об отказе"
+     },
+     {
+      "p": "По имеющимся данным, NPO — организация общественных вещателей Нидерландов — отменила прежнее решение о возвращении страны на конкурс. Сообщается, что причиной стали споры и опасения вокруг участия Израиля."
+     },
+     {
+      "p": "Напомним, ранее нидерландский вещатель AVROTROS в августе объявил о выходе из конкурса именно по этой причине. Решение Нидерландов всё же отправить участника вызвало критику внутри страны: около 400 сотрудников NPO потребовали пересмотреть позицию."
+     },
+     {
+      "h": "Позиции других стран"
+     },
+     {
+      "p": "Директор NPO Жет де Ранитц отметила, что не нашлось вещателя, который мог бы обеспечить участие представителя Нидерландов. При этом NPO продолжит транслировать конкурс в своём эфире. Отмечается, что кроме Нидерландов об отказе от участия в «Евровидении-2027» заявила и Ирландия, а Чехия не будет участвовать из-за бюджетных ограничений."
+     }
+    ]
+   },
+   "en": {
+    "title": "The Netherlands changes course and will skip Eurovision 2027",
+    "description": "The Netherlands will not take part in the Eurovision Song Contest 2027 over the Israel issue. The country’s broadcaster has reversed its decision.",
+    "tags": [
+     "Eurovision 2027",
+     "Netherlands",
+     "Israel",
+     "music news",
+     "Showband Group"
+    ],
+    "lead": "The Netherlands has pulled out of the 2027 Eurovision Song Contest.",
+    "body": [
+     {
+      "h": "The decision to withdraw"
+     },
+     {
+      "p": "According to reports, NPO, the Dutch public broadcasting organisation, has cancelled its earlier decision for the country to return to the contest. The move was reportedly driven by the debate and concerns over Israel’s participation."
+     },
+     {
+      "p": "Earlier, in August, Dutch broadcaster AVROTROS announced its withdrawal for the same reason. The Netherlands’ plan to send an entry drew criticism at home, with around 400 NPO employees calling for the position to be reconsidered."
+     },
+     {
+      "h": "Other countries’ positions"
+     },
+     {
+      "p": "NPO director Jet de Ranitz said no broadcaster had been found that could ensure a Dutch entry. NPO will, however, continue to broadcast the contest. Besides the Netherlands, Ireland has also said it will not take part in Eurovision 2027, while Czechia is out due to budget constraints."
+     }
+    ]
+   }
+  }
  }
 ]

@@ -54,6 +54,7 @@ def localize(html, lang, rel, path):
     # xidmət / video səhifələrinə linklər həmin dildə qalsın
     for s in ('toy/', 'korporativ/', 'ad-gunu/', 'videolar/', 'paket/'):
         html = html.replace(f'href="{rel}{s}', f'href="{rel}{pre(lang)}{s}')
+    html = re.sub(r'href="' + re.escape(rel) + r'xeberler/(?!news\.css|rss\.xml)', f'href="{rel}{pre(lang)}xeberler/', html)
     # ana səhifə linkləri seçilmiş dildə açılsın
     html = html.replace(f'href="{rel}#', f'href="{rel}?lang={lang}#').replace(f'href="{rel}"', f'href="{rel}?lang={lang}"')
     html = html.replace(f'href="{rel}?pk=', f'href="{rel}?lang={lang}&pk=')
