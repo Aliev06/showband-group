@@ -88,7 +88,7 @@ SEO = {
   'p': ['Korporativ tədbir şirkətin üzüdür: əməkdaşlar, tərəfdaşlar və qonaqlar tədbirdən sonra brendi necə xatırlayacaqlar — bu, təşkilatdan asılıdır. Showband Group korporativ gecələri, təqdimatları, Yeni il və bayram proqramlarını, şirkətin ildönümlərini və mükafatlandırma mərasimlərini bir komanda ilə təşkil edir.',
         'İş brief ilə başlayır: tədbirin məqsədi, qonaqların sayı, məkan, rəsmi hissənin müddəti və brend tələbləri. Bunun əsasında ssenari hazırlayırıq — rəsmi çıxışlardan əyləncə hissəsinə rahat keçid, interaktiv oyunlar, müsabiqələr və şou nömrələri.',
         'Aparıcı, Live Band və ya DJ, səs sistemi, işıq və lazer şousu, səhnə və brend rənglərində dekor bir komandadan gəlir. Bu, podratçılar arasında koordinasiya problemini aradan qaldırır və tədbir vaxtında, planlı keçir.',
-        'Korporativ paket — 2000 AZN, hər şey daxil: hazırlıq, ssenari, aparıcı, tar, müğənni-gitarist, show band, ritm ansamblı, 1 saatlıq diskoteka, səs sistemi və gedişat. Qiymət Bakı üçündür; regionlarda və xaricdə dəyişə bilər.'],
+        'Korporativ paket — 2000 AZN-dən, hər şey daxil: hazırlıq, ssenari, aparıcı, tar, müğənni-gitarist, show band, ritm ansamblı, 1 saatlıq diskoteka, səs sistemi və gedişat. Qiymət Bakı üçündür; regionlarda və xaricdə dəyişə bilər.'],
   'faq': [('Yeni il korporativi üçün nə vaxt bron etmək lazımdır?', 'Dekabr tarixləri tez dolur, ona görə 1–2 ay əvvəl yazmağı məsləhət görürük.'),
           ('Tədbiri şirkətin brend rənglərində hazırlaya bilərsiniz?', 'Bəli. Səhnə, işıq, ekranlar və dekor brend rənglərinizə və üslubunuza uyğun hazırlanır.')]},
  'ad-gunu': {

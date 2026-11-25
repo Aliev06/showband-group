@@ -83,7 +83,7 @@ T['en']['kino'] = dict(name='Cinema Opening', eb='Wedding package', dur='Wedding
         ('You choose the order', 'Opening first and then the couple — or the couple enters and sits down first, then the opening starts.')],
  extra=['The price may vary depending on the script, the dance group line-up and the number of performers.'])
 
-T['ru']['nisan'] = dict(name='Пакет «Помолвка»', eb='Полное ведение мероприятия', dur='Всё мероприятие',
+T['ru']['nisan'] = dict(name='Помолвка', eb='Полное ведение мероприятия', dur='Всё мероприятие',
  desc='Всё в одном пакете: живая музыка, певец, DJ, конкурсы и игры, Showband, дискотека, халай и яллы — мы ведём вашу помолвку от начала до конца.',
  items=[('Звуковая система', 'Колонки, микрофоны и всё звуковое оборудование.'),
         ('Ведущий', 'Ведёт мероприятие от начала до конца, объявляет официальную часть, проводит конкурсы, игры и презентации; пишет сценарий для вашей помолвки, особый выход жениха и невесты.'),
@@ -94,7 +94,7 @@ T['ru']['nisan'] = dict(name='Пакет «Помолвка»', eb='Полное
         ('DJ', 'Музыка для выхода, шоу и торта; национальные попурри, халаи и яллы.'),
         ('Дискотека · 1 час', 'С денежными, фейерверк- и дымовыми пистолетами.')],
  extra=[])
-T['en']['nisan'] = dict(name='Engagement package', eb='Full event management', dur='Whole event',
+T['en']['nisan'] = dict(name='Engagement', eb='Full event management', dur='Whole event',
  desc='Everything in one package: live music, a singer, DJ, contests and games, Showband, a disco, halay and yalli — we run your engagement from start to finish.',
  items=[('Sound system', 'Speakers, microphones and all sound equipment.'),
         ('Host', 'Runs the event from start to finish, announces the official part, holds contests, games and presentations; writes a script for your engagement and a special entrance for the couple.'),
@@ -106,7 +106,7 @@ T['en']['nisan'] = dict(name='Engagement package', eb='Full event management', d
         ('Disco · 1 hour', 'With money, firework and smoke guns.')],
  extra=[])
 
-T['ru']['adgunu'] = dict(name='Пакет «День рождения»', eb='Полное ведение мероприятия', dur='Всё мероприятие',
+T['ru']['adgunu'] = dict(name='День рождения', eb='Полное ведение мероприятия', dur='Всё мероприятие',
  desc='Ваш день рождения от начала до конца ведём мы — ведущий, тар, живой ритм, Showband, DJ и часовая дискотека в одной команде.',
  items=[('Звуковая система', 'Колонки, микрофоны и всё звуковое оборудование.'),
         ('Ведущий', 'Ведёт мероприятие от начала до конца, объявляет официальную часть, проводит конкурсы, игры и презентации; пишет сценарий праздника.'),
@@ -116,7 +116,7 @@ T['ru']['adgunu'] = dict(name='Пакет «День рождения»', eb='П
         ('DJ', 'Музыка для выхода, шоу и торта; национальные попурри, халаи и яллы.'),
         ('Дискотека · 1 час', 'С денежными, фейерверк- и дымовыми пистолетами.')],
  extra=['Можно добавить певца — цена обсуждается отдельно.'])
-T['en']['adgunu'] = dict(name='Birthday package', eb='Full event management', dur='Whole event',
+T['en']['adgunu'] = dict(name='Birthday', eb='Full event management', dur='Whole event',
  desc='We run your birthday from start to finish — host, tar, live rhythm, Showband, DJ and a 1-hour disco in one team.',
  items=[('Sound system', 'Speakers, microphones and all sound equipment.'),
         ('Host', 'Runs the event from start to finish, announces the official part, holds contests, games and presentations; writes the script of the day.'),
@@ -146,7 +146,7 @@ T['en']['mezun'] = dict(name='Graduation & Party', eb='Last bell · graduation n
         ('Full disco · 1 hour', 'Mixed repertoire, contests and games; money, firework and smoke guns included.')],
  extra=['A guitar band, singer and dance groups can be added for an extra fee.'])
 
-T['ru']['korp'] = dict(name='Корпоративный пакет', eb='Всё включено', dur='Всё мероприятие · выезд включён',
+T['ru']['korp'] = dict(name='Корпоратив', eb='Всё включено', dur='Всё мероприятие · выезд включён',
  desc='Полный развлекательный пакет для корпоративов — от подготовки до дискотеки: вся команда, шоу-программы, техническое обеспечение и выезд. Без доплат.',
  items=[('Подготовка', 'Первая встреча, сценарий, вопросы и викторины по сфере компании, оформление и технический план.'),
         ('Встреча гостей', 'Тарист встречает гостей нежными, ретро и инструментальными мелодиями.'),
@@ -158,7 +158,7 @@ T['ru']['korp'] = dict(name='Корпоративный пакет', eb='Всё 
         ('Полная дискотека · 1 час', 'Современные и национальные танцы, яллы и халаи; светящиеся костюмы, палочки для флешмоба, светящиеся очки.'),
         ('Техническое обеспечение', 'Профессиональный звук (6 колонок, 2 микрофона), монтаж и демонтаж, выезд команды и оборудования.')],
  extra=[])
-T['en']['korp'] = dict(name='Corporate package', eb='All inclusive', dur='Whole event · travel included',
+T['en']['korp'] = dict(name='Corporate', eb='All inclusive', dur='Whole event · travel included',
  desc='A complete entertainment package for corporate events — from preparation to the disco: the whole team, show programmes, technical support and travel. No extra charges.',
  items=[('Preparation', 'First meeting, script, questions and quizzes about your industry, decor and technical plan.'),
         ('Welcome', 'A tar player greets guests with gentle, retro and instrumental tunes.'),

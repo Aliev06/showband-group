@@ -36,7 +36,7 @@ def localize(html, lang, rel, path):
         f'<a href="{rel}{pre(l)}{path}"{" class=on" if l == lang else ""} hreflang="{l}">{l.upper()}</a>' for l in LANGS) + '</div>'
     css = ('<style>.lsw{display:flex;gap:2px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:3px}'
            '.lsw a{font:700 12px var(--s);color:var(--mute);text-decoration:none;padding:7px 10px;border-radius:999px}'
-           '.lsw a.on{background:var(--red);color:#fff}@media(max-width:640px){.lsw a{padding:6px 8px;font-size:11px}}</style>')
+           '.lsw a.on{background:var(--red);color:#fff}@media(max-width:640px){.lsw a{padding:6px 8px;font-size:11px}}@media(max-width:370px){.lsw a{padding:5px 6px}.nav .nr{gap:6px}}</style>')
     html = html.replace('</head>', f"<script>try{{localStorage.setItem('sb_lang','{lang}')}}catch(e){{}}</script>\n</head>", 1)
     if lang == 'az': return html.replace('<div class="nr">', css + '<div class="nr">' + sw, 1)
     u = UI[lang]

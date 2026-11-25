@@ -104,3 +104,5 @@ footer .pt a{text-decoration:none}footer .pt a:hover{color:var(--fg)}
 .mnav .btn{margin-top:8px}
 @media (max-width:1000px){.burger{display:flex}}
 @media (min-width:1001px){.mnav{display:none!important}}
+
+html,body{overflow-x:clip}

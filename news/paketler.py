@@ -44,7 +44,7 @@ P = [
             ('Bəy və gəlinin möhtəşəm girişi', 'Girişdə əl fişəng tapançaları + 1 ədəd RGB işıqlı əl tüstü tapançası (rəngi salonun dizaynına uyğun).'),
             ('Açılışı siz seçirsiniz', 'Əvvəl açılış, ardınca bəy və gəlin — və ya əvvəl bəy və gəlin daxil olub əyləşir, sonra açılış başlayır.')],
   'extra': ['Qiymət ssenaridən, rəqs qrupunun tərkibindən və iştirakçıların sayından asılı olaraq dəyişə bilər.']},
- {'id': 'nisan', 'slug': 'nisan', 'img': 'pk_nisan', 'eb': 'Tədbirin tam idarəsi', 'name': 'Nişan paketi',
+ {'id': 'nisan', 'slug': 'nisan', 'img': 'pk_nisan', 'eb': 'Tədbirin tam idarəsi', 'name': 'Nişan',
   'price': 1500, 'dur': 'Tədbir boyu',
   'desc': 'Hamısı bir paketdə: canlı musiqi, müğənni, DJ, konkurslar və oyunlar, Showband, diskoteka, halay və yallı — nişanınızı əvvəldən sona qədər biz aparırıq.',
   'items': [('Səs sistemi', 'Kalonkalar, mikrofonlar və bütün səs avadanlığı.'),
@@ -56,7 +56,7 @@ P = [
             ('DJ', 'Giriş, şou və tort mahnıları; milli popurilər, halaylar və yallılar.'),
             ('Diskoteka · 1 saat', 'Pul atan, feyerverk və tüstü tapançaları ilə.')],
   'extra': []},
- {'id': 'adgunu', 'slug': 'ad-gunu', 'img': 'pk_adgunu', 'eb': 'Tədbirin tam idarəsi', 'name': 'Ad günü paketi',
+ {'id': 'adgunu', 'slug': 'ad-gunu', 'img': 'pk_adgunu', 'eb': 'Tədbirin tam idarəsi', 'name': 'Ad günü',
   'price': 1000, 'dur': 'Tədbir boyu',
   'desc': 'Ad gününüzü əvvəldən sona qədər biz aparırıq — aparıcı, tar, canlı ritm, Showband, DJ və 1 saatlıq diskoteka bir komandada.',
   'items': [('Səs sistemi', 'Kalonkalar, mikrofonlar və bütün səs avadanlığı.'),
@@ -77,8 +77,8 @@ P = [
             ('Showband instrumental qrup · 20–25 dəq', 'İşıqlı geyimlərlə instrumental mahnılar.'),
             ('Full diskoteka · 1 saat', 'Qarışıq repertuar, konkurslar və oyunlar; pul atan, feyerverk və tüstü tapançaları daxil.')],
   'extra': ['Gitarist qrup, müğənni və rəqs qrupları əlavə ödənişlə dəvət oluna bilər.']},
- {'id': 'korp', 'slug': 'korporativ', 'img': 'pk_korp', 'eb': 'Hər şey daxil', 'name': 'Korporativ paket',
-  'price': 2000, 'dur': 'Tədbir boyu · gedişat daxil',
+ {'id': 'korp', 'slug': 'korporativ', 'img': 'pk_korp', 'eb': 'Hər şey daxil', 'name': 'Korporativ',
+  'price': 2000, 'from': True, 'dur': 'Tədbir boyu · gedişat daxil',
   'desc': 'Şirkət korporativləri üçün hazırlıqdan diskotekaya qədər tam əyləncə paketi — bütün komanda, şou proqramlar, texniki təminat və gedişat daxil. Əlavə ödəniş yoxdur.',
   'items': [('Hazırlıq mərhələsi', 'İlkin görüş, ssenarinin hazırlanması, şirkətin sahəsinə uyğun suallar və viktorinalar, tərtibat və texniki plan.'),
             ('Qarşılanma', 'Tar ifaçısı həzin, retro və instrumental mahnılarla qonaqları qarşılayır.'),
@@ -129,7 +129,7 @@ CSS = '''<style>
 .aoth a img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .5s}.aoth a:hover img{transform:scale(1.05)}
 .aoth a:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85))}
 .aoth a span{position:relative;z-index:1;font:800 17px/1.15 var(--d)}.aoth a small{display:block;font:600 13px var(--s);color:var(--red2);margin-top:4px}
-.abar{display:none}.abar s,.aoth s{margin-right:6px;opacity:.55;font-size:.8em}
+.abar{display:none}.aex>div{min-width:0;overflow-wrap:anywhere}.abar s,.aoth s{margin-right:6px;opacity:.55;font-size:.8em}
 @media(max-width:900px){.agrid{grid-template-columns:1fr 1fr}.aex{grid-template-columns:1fr 1fr}.aoth{grid-template-columns:1fr 1fr}.ah{min-height:78vh}.abt{display:none}
  .abar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;gap:12px;align-items:center;justify-content:space-between;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:rgba(11,11,14,.92);backdrop-filter:blur(14px);border-top:1px solid var(--line)}
  .abar b{font:900 22px var(--d)}.abar small{display:block;color:var(--mute);font:500 12px var(--s)}.abar .btn{padding:14px 22px}

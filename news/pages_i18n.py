@@ -112,14 +112,14 @@ SEO['ru']['korporativ'] = {'h2': 'Организация корпоративо�
  'Корпоратив — лицо компании: как сотрудники, партнёры и гости запомнят бренд после мероприятия, зависит от организации. Showband Group одной командой организует корпоративные вечера, презентации, новогодние и праздничные программы, юбилеи компаний и церемонии награждения.',
  'Работа начинается с брифа: цель мероприятия, количество гостей, площадка, длительность официальной части и требования бренда. На этой основе готовим сценарий — плавный переход от официальных выступлений к развлекательной части, интерактивные игры, конкурсы и шоу-номера.',
  'Ведущий, Live Band или DJ, звук, свет и лазерное шоу, сцена и декор в цветах бренда — от одной команды. Это снимает проблему координации подрядчиков, и мероприятие проходит вовремя и по плану.',
- 'Корпоративный пакет — 2000 AZN, всё включено: подготовка, сценарий, ведущий, тар, певец-гитарист, шоу-бэнд, ритм-ансамбль, часовая дискотека, звук и выезд. Цена для Баку; в регионах и за рубежом может отличаться.'],
+ 'Корпоративный пакет — от 2000 AZN, всё включено: подготовка, сценарий, ведущий, тар, певец-гитарист, шоу-бэнд, ритм-ансамбль, часовая дискотека, звук и выезд. Цена для Баку; в регионах и за рубежом может отличаться.'],
  'faq': [('Когда бронировать новогодний корпоратив?', 'Декабрьские даты быстро заняты, поэтому советуем писать за 1–2 месяца.'),
          ('Можно оформить мероприятие в цветах бренда?', 'Да. Сцена, свет, экраны и декор оформляются в цветах и стиле вашего бренда.')]}
 SEO['en']['korporativ'] = {'h2': 'Corporate event planning in Baku', 'p': [
  'A corporate event is the face of the company: how employees, partners and guests remember the brand afterwards depends on the organisation. Showband Group organises company parties, presentations, New Year and holiday programmes, company anniversaries and award ceremonies as one team.',
  'Work starts with a brief: the purpose of the event, number of guests, venue, length of the official part and brand requirements. Based on that we prepare the script — a smooth transition from official speeches to entertainment, interactive games, contests and show acts.',
  'Host, Live Band or DJ, sound, light and laser show, stage and decor in your brand colours — from one team. That removes the hassle of coordinating contractors, and the event runs on time and to plan.',
- 'Corporate package — 2000 AZN, all inclusive: preparation, script, host, tar, singer-guitarist, show band, rhythm ensemble, 1-hour disco, sound system and travel. The price is for Baku; it may vary in the regions and abroad.'],
+ 'Corporate package — from 2000 AZN, all inclusive: preparation, script, host, tar, singer-guitarist, show band, rhythm ensemble, 1-hour disco, sound system and travel. The price is for Baku; it may vary in the regions and abroad.'],
  'faq': [('When should we book a New Year corporate party?', 'December dates fill up fast, so we recommend getting in touch 1–2 months ahead.'),
          ('Can you style the event in our brand colours?', 'Yes. Stage, lighting, screens and decor are prepared in your brand colours and style.')]}
 
