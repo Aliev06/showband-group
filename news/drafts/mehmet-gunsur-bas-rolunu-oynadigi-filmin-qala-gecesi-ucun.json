@@ -44,9 +44,10 @@
  "track": "DJ Orxan Abbasov — Daba Daba",
  "tg_message": 220,
  "status": "published",
- "ig_status": "queued",
+ "ig_status": "done",
  "tiktok": {
   "id": "be10e1d9b63d4addbd204f8f2dc6705c",
   "user": "showbandgroup"
- }
+ },
+ "ig_id": "18133410931798709"
 }
