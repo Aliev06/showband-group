@@ -69,6 +69,14 @@ textarea{resize:vertical;min-height:60px;font:600 15px var(--s)}
 .lnk{word-break:break-all;color:var(--mute);font-size:13px;text-align:center}
 .dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--ok);margin-right:6px}.dot.off{background:var(--bad)}
 [hidden]{display:none!important}
+.mode{display:flex;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:5px;gap:5px}
+.mode button{flex:1;padding:13px;border-radius:12px;font:700 15px var(--s);color:var(--mute)}
+.mode button[aria-pressed=true]{background:var(--red);color:#fff}
+.lst{display:grid;gap:6px;max-height:360px;overflow:auto}
+.lst div{display:flex;gap:10px;padding:9px 12px;background:var(--card2);border-radius:10px;font-weight:600}
+.lst b{font-family:var(--d);color:var(--mute);min-width:46px}.lst span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.lst small{color:var(--mute)}
+.wn div{background:rgba(245,197,66,.12);outline:1px solid rgba(245,197,66,.4)}
+.wn code{font:800 14px var(--d);color:var(--gold);letter-spacing:.1em}
 </style>
 </head>
 <body>
@@ -83,7 +91,11 @@ textarea{resize:vertical;min-height:60px;font:600 15px var(--s)}
   </form>
 
   <div id="main" hidden style="display:grid;gap:16px">
-    <div class="tabs" role="group"><button data-tab="game" aria-pressed="true">Oyun</button><button data-tab="qs" aria-pressed="false">Suallar</button><button data-tab="qr" aria-pressed="false">QR kod</button></div>
+    <div class="card" style="gap:12px"><span class="k">Bu gecə nə oynayırıq?</span>
+      <div class="mode" role="group"><button data-mode="quiz" aria-pressed="true">🎮 Viktorina</button><button data-mode="lottery" aria-pressed="false">🎟 Lotereya</button></div>
+      <button class="btn gh" id="scr">🖥 Böyük ekrana çıxar</button>
+      <p class="muted" style="font-size:13px">QR eynidir — telefonlar seçdiyin rejimə özü keçir. Ekran səhifəsini proyektora qoşulmuş noutbukda aç.</p></div>
+    <div class="tabs" role="group"><button data-tab="game" aria-pressed="true">Oyun</button><button data-tab="lot" aria-pressed="false">Lotereya</button><button data-tab="qs" aria-pressed="false">Suallar</button><button data-tab="qr" aria-pressed="false">QR kod</button></div>
 
     <section id="t-game" style="display:grid;gap:16px">
       <div class="card">
@@ -96,6 +108,19 @@ textarea{resize:vertical;min-height:60px;font:600 15px var(--s)}
       <div class="card"><h2>Lider cədvəli</h2><div class="board" id="board"><p class="muted">Hələ oyunçu yoxdur</p></div></div>
       <div class="card"><h2>Yeni oyun</h2><p class="muted">Dəsti seç və «Yeni oyun» bas — oyunçular sıfırlanır, hamı yenidən adını yazır.</p>
         <div class="row"><select id="gset"></select><button class="btn gh" id="newg">Yeni oyun</button></div><p class="err" id="gerr"></p></div>
+    </section>
+
+    <section id="t-lot" hidden style="display:grid;gap:16px">
+      <div class="card">
+        <div class="stats"><div class="stat"><span class="k">İştirakçı</span><b id="ln">0</b></div><div class="stat"><span class="k">Qalib</span><b id="lw">0</b></div><div class="stat"><span class="k">Qeydiyyat</span><b id="lo" style="font-size:16px">—</b></div></div>
+        <input type="text" id="prize" maxlength="60" placeholder="Hədiyyə (məs. Əsas hədiyyə, 2-ci yer…) — ekranda görünür">
+        <button class="btn big" id="draw">🎰 Çəkilişi başla</button>
+        <p class="err" id="lerr"></p>
+        <div class="row"><button class="btn gh" id="lopen">Qeydiyyatı bağla</button><button class="btn dg" id="lundo">Son qalibi ləğv et</button></div>
+      </div>
+      <div class="card"><h2>Qaliblər</h2><div class="lst wn" id="wins"><p class="muted">Hələ çəkiliş olmayıb</p></div></div>
+      <div class="card"><h2>İştirakçılar</h2><div class="lst" id="ents"><p class="muted">Hələ heç kim yazılmayıb</p></div></div>
+      <div class="card"><h2>Yeni lotereya</h2><p class="muted">Bütün biletlər və qaliblər silinir — növbəti tədbir üçün.</p><button class="btn dg" id="lnew">Lotereyanı sıfırla</button></div>
     </section>
 
     <section id="t-qs" hidden style="display:grid;gap:16px">
@@ -131,6 +156,7 @@ const net=Net('admin',onMsg,on=>$('#dot').classList.toggle('off',!on));
 net.onopen=()=>{if(pin)net.send({t:'auth',pin})};
 
 function onMsg(m){
+  if(m.t==='err'&&m.e==='empty'){$('#lerr').textContent='Çəkiləcək bilet qalmayıb';return}
   if(m.t==='err'){if(m.e==='pin'){authed=false;$('#perr').textContent='PIN səhvdir';$('#login').hidden=false;$('#main').hidden=true;try{sessionStorage.removeItem('sbq_pin')}catch(e){}}
     if(m.e==='set')$('#gerr').textContent='Bu dəstdə sual yoxdur';return}
   if(m.t==='admin'){if(!authed){authed=true;$('#perr').textContent='';try{sessionStorage.setItem('sbq_pin',pin)}catch(e){}$('#login').hidden=true;$('#main').hidden=false;try{drawQR()}catch(e){}}A=m;render()}
@@ -139,11 +165,23 @@ $('#login').onsubmit=e=>{e.preventDefault();pin=$('#pin').value.trim();if(!pin){
   $('#perr').textContent=net.open?'Yoxlanılır…':'Serverə qoşulur…';net.send({t:'auth',pin});
   setTimeout(()=>{if(!authed&&!/səhv/.test($('#perr').textContent))$('#perr').textContent='Serverə qoşulmaq alınmır. İnterneti yoxla və ya Wi-Fi ↔ mobil internet dəyiş.'},7000)};
 
-document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x===b));['game','qs','qr'].forEach(t=>$('#t-'+t).hidden=t!==b.dataset.tab);if(b.dataset.tab==='qr')drawQR()});
+document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x===b));['game','lot','qs','qr'].forEach(t=>$('#t-'+t).hidden=t!==b.dataset.tab);if(b.dataset.tab==='qr')drawQR()});
 
 const PH={lobby:'Gözləmə zalı',q:'Sual gedir',reveal:'Nəticə',final:'Oyun bitdi'};
+function renderLot(){
+  const a=A,L=a.lot;
+  document.querySelectorAll('[data-mode]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.mode===a.mode));
+  $('#ln').textContent=L.n;$('#lw').textContent=L.winners.length;$('#lo').textContent=L.open?'Açıq':'Bağlı';
+  $('#lopen').textContent=L.open?'Qeydiyyatı bağla':'Qeydiyyatı aç';
+  if(document.activeElement!==$('#prize'))$('#prize').value=L.prize||'';
+  const busy=L.draw&&Date.now()+(a.now-Date.now())<L.draw.startAt+L.draw.dur+1500;
+  $('#draw').disabled=!!busy||!L.n;$('#draw').textContent=busy?'🥁 Çəkiliş gedir…':a.mode!=='lottery'?'🎰 Çəkiliş (əvvəlcə «Lotereya» rejimi)':'🎰 Çəkilişi başla';
+  if(busy)setTimeout(()=>{if(A===a)renderLot()},Math.max(500,L.draw.startAt+L.draw.dur+1600-(Date.now()+(a.now-Date.now()))));
+  $('#wins').innerHTML=L.winners.length?L.winners.slice().reverse().map(w=>`<div><b>№${w.ticket}</b><span>${esc(w.name)} <small>· ${esc(w.field)}${w.prize?' · '+esc(w.prize):''}</small></span><code>${esc(w.code)}</code></div>`).join(''):'<p class="muted">Hələ çəkiliş olmayıb</p>';
+  $('#ents').innerHTML=L.entries.length?L.entries.map(e=>`<div><b>№${e.ticket}</b><span>${esc(e.name)} <small>· ${esc(e.field)}</small></span></div>`).join(''):'<p class="muted">Hələ heç kim yazılmayıb</p>';
+}
 function render(){
-  const a=A;$('#np').textContent=a.players;$('#na').textContent=a.phase==='q'?`${a.answered}/${a.players}`:'—';
+  const a=A;renderLot();$('#np').textContent=a.players;$('#na').textContent=a.phase==='q'?`${a.answered}/${a.players}`:'—';
   $('#phase').textContent=a.q&&a.phase!=='lobby'?`${PH[a.phase]} · ${a.q.i+1}/${a.q.total}`:PH[a.phase];$('#phase').classList.toggle('live',a.phase==='q');
   const set=a.sets.find(s=>s.id===a.setId);$('#setname').textContent=set?set.name:'Dəst seçilməyib';
   const nx=$('#next'),last=a.q&&a.q.i+1>=a.q.total;
@@ -164,6 +202,15 @@ function render(){
   const cur=$('#gset').value;$('#gset').innerHTML=opt||'<option value="">Dəst yoxdur — «Suallar» bölməsində yarat</option>';if(cur&&a.sets.some(s=>s.id===cur))$('#gset').value=cur;
   $('#sets').innerHTML=a.sets.length?a.sets.map(s=>`<div class="set"><div><b>${esc(s.name)}</b><small>${s.qs.length} sual</small></div><div class="row" style="flex:0 0 auto"><button class="btn gh" data-ed="${esc(s.id)}">Düzəlt</button><button class="btn dg" data-del="${esc(s.id)}">Sil</button></div></div>`).join(''):'<p class="muted">Hələ dəst yoxdur</p>';
 }
+
+/* mode + lottery */
+document.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>net.send({t:'mode',m:b.dataset.mode}));
+$('#scr').onclick=()=>window.open('/oyun/ekran/','sb_ekran');
+$('#draw').onclick=()=>{$('#lerr').textContent='';if(A.mode!=='lottery'){net.send({t:'mode',m:'lottery'})}net.send({t:'lPrize',text:$('#prize').value});net.send({t:'lDraw'})};
+$('#prize').onchange=()=>net.send({t:'lPrize',text:$('#prize').value});
+$('#lopen').onclick=()=>net.send({t:'lOpen',v:!A.lot.open});
+$('#lundo').onclick=e=>confirmBtn(e.target,'Əminsən? Yenə bas',()=>net.send({t:'lUndo'}));
+$('#lnew').onclick=e=>confirmBtn(e.target,'Hamısı silinəcək — yenə bas',()=>net.send({t:'lNew'}));
 
 /* controls with inline confirm */
 function confirmBtn(btn,label,fn){if(btn.dataset.sure){delete btn.dataset.sure;fn();return}const t=btn.textContent;btn.dataset.sure=1;btn.textContent=label;setTimeout(()=>{if(btn.dataset.sure){delete btn.dataset.sure;btn.textContent=t}},3000)}

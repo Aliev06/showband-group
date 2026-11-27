@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
-<title>Showband Oyun — canlı viktorina</title>
+<title>Showband Oyun — viktorina və lotereya</title>
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0b0b0e">
 <link rel="icon" href="/img/favicon-32.png">
@@ -95,12 +95,23 @@ input:focus{border-color:var(--red)}
 .foot{text-align:center;color:var(--mute);font-size:13px}
 .foot a{color:var(--fg)}
 .conf{position:fixed;inset:0;pointer-events:none;z-index:9}
+/* lottery */
+.tk{position:relative;text-align:center;padding:26px 20px 22px;border-radius:24px;background:linear-gradient(160deg,#2a1015,#18181d 70%);border:1px solid rgba(227,18,43,.45)}
+.tk:before,.tk:after{content:"";position:absolute;top:50%;width:26px;height:26px;border-radius:50%;background:var(--bg);transform:translateY(-50%)}
+.tk:before{left:-14px}.tk:after{right:-14px}
+.tk .no{font:800 72px/1 var(--d);color:var(--red);font-variant-numeric:tabular-nums;margin:10px 0 6px;letter-spacing:-.02em}
+.tk .nm{font:700 18px var(--s)}.tk .fd{color:var(--mute);margin-top:2px}
+.tk hr{border:0;border-top:2px dashed var(--line);margin:18px 0 14px}
+.roll{font:800 88px/1 var(--d);text-align:center;color:var(--fg);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.drum{font-size:56px;text-align:center;animation:sh .35s infinite alternate}@keyframes sh{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+.win{text-align:center;padding:28px 20px;border-radius:24px;background:linear-gradient(160deg,#a16207,#3a2a08);border:1px solid var(--gold)}
+.win .code{font:800 40px var(--d);letter-spacing:.18em;margin-top:10px;background:rgba(0,0,0,.25);border-radius:14px;padding:10px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div class="app">
-  <div class="top"><img src="logo.webp" alt="Showband Group" width="105" height="30"><span class="pill" id="st"><span class="dot off" id="dot"></span><b id="cnt">0</b> oyunçu</span></div>
+  <div class="top"><img src="logo.webp" alt="Showband Group" width="105" height="30"><span class="pill" id="st"><span class="dot off" id="dot"></span><b id="cnt">0</b> <span id="cntl">oyunçu</span></span></div>
   <div id="v" class="scr"><div class="center sub">Qoşulur…</div></div>
 </div>
 <canvas class="conf" id="conf"></canvas>
@@ -112,19 +123,23 @@ const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
 let pid=ls.get('sbq_id');if(!pid){pid=Math.random().toString(36).slice(2)+Date.now().toString(36);ls.set('sbq_id',pid)}
-let S={phase:null},view='',timerRAF=0,picked=null,lastRes='';
+let S={phase:null},view='',timerRAF=0,picked=null,lastRes='',autoTried=false,rollT=0;
 
 const net=Net('player',onMsg,on=>{$('#dot').classList.toggle('off',!on)});
 net.onopen=()=>net.send({t:'hello',id:pid,gameId:ls.get('sbq_game')});
 
 function onMsg(m){
+  if(m.t==='count'&&S.mode==='lottery'){$('#cnt').textContent=m.tickets;S.tickets=m.tickets;return}
   if(m.t==='count'){$('#cnt').textContent=m.players;$('#lc')&&($('#lc').textContent=m.players);if(S.phase==='q'&&picked!==null)$('#ans')&&($('#ans').textContent=`${m.answered}/${m.players} cavab verdi`);S.players=m.players;return}
-  if(m.t==='err'){const e=$('#jerr');if(e)e.textContent={name:'Adını yaz (ən azı 2 hərf)',taken:'Bu ad artıq var — başqa ad yaz',full:'Oyun doludur'}[m.e]||'Xəta';const b=$('#jb');if(b)b.disabled=false;return}
+  if(m.t==='err'){if(m.e==='taken'&&view!=='join'){autoTried=true;return showJoin()}
+    const e=$('#jerr');if(e)e.textContent={name:'Adını yaz (ən azı 2 hərf)',taken:'Bu ad artıq var — başqa ad yaz',full:'Yer qalmayıb',field:'Sahəni yaz (məs. IT, marketinq)',closed:'Qeydiyyat bağlanıb'}[m.e]||'Xəta';const b=$('#jb');if(b)b.disabled=false;return}
   if(m.t==='got'){picked=m.a;markPicked();return}
   if(m.t==='state'){
-    const prev=S;S=m;$('#cnt').textContent=m.players||0;
+    const prev=S;S=m;
+    $('#cntl').textContent=m.mode==='lottery'?'iştirakçı':'oyunçu';$('#cnt').textContent=(m.mode==='lottery'?m.tickets:m.players)||0;
+    if(m.mode==='lottery')return routeLot();
     if(m.me)ls.set('sbq_game',m.gameId);
-    if(!m.me){return showJoin()}
+    if(!m.me){if(m.lot&&m.lot.me&&!autoTried){autoTried=true;net.send({t:'join',id:pid,name:m.lot.me.name});return}return showJoin()}
     if(m.phase==='lobby')return showLobby();
     if(m.phase==='q'){if(view!=='q'+m.q.i){picked=m.mine;showQ()}return}
     if(m.phase==='reveal'){const key='r'+m.q.i+m.gameId;if(lastRes!==key){lastRes=key;showResult()}return}
@@ -204,6 +219,53 @@ function showFinal(){
     <div class="card center"><b>Oyunu bəyəndin?</b><p class="sub" style="margin:6px 0 14px">Showband Group-a Google-da rəy yaz ⭐</p><a class="btn" style="display:block;text-decoration:none;color:#fff" href="${REVIEW}" target="_blank" rel="noopener">Rəy yaz</a></div>
     <p class="foot"><a href="/">showbandgroup.az</a> · Toy, ad günü, korporativ</p>`,'final');
   if(m&&m.rank<=3)confetti(140);
+}
+
+/* ---------- lottery ---------- */
+function routeLot(){
+  const L=S.lot,d=L.draw,now=net.now();
+  if(!L.me){if(!L.open)return setV(`<div class="center"><div class="big">🎟</div><h1 style="margin-top:14px">Qeydiyyat bağlanıb</h1><p class="sub" style="margin-top:8px">Lotereyaya yazılma vaxtı bitdi. Növbəti dəfə! 😉</p></div>`,'lclosed');return showLJoin()}
+  if(d&&now<d.startAt+d.dur+500&&view!=='lres'+d.id)return showDraw();
+  if(d&&view==='lres'+d.id)return;
+  if(d&&now<d.startAt+d.dur+5*60e3)return showLRes(true);
+  showTicket();
+}
+function showLJoin(){
+  if(view==='ljoin')return;
+  setV(`<div><h1>Lotereya 🎟</h1><p class="sub" style="margin-top:8px">Nikneymini və çalışdığın sahəni yaz — gecənin sonunda böyük ekranda çəkiliş!</p></div>
+  <form class="card" id="jf" style="display:grid;gap:12px" novalidate>
+    <input id="nm" maxlength="24" autocomplete="nickname" placeholder="Nikneym" value="${esc(ls.get('sbq_name')||'')}">
+    <input id="fd" maxlength="40" placeholder="Sahən (məs. IT, marketinq, tibb)" value="${esc(ls.get('sbq_field')||'')}">
+    <p class="err" id="jerr"></p>
+    <button class="btn" id="jb">Lotereyaya qoşul</button>
+  </form>`,'ljoin');
+  $('#jf').onsubmit=e=>{e.preventDefault();const n=$('#nm').value.trim(),f=$('#fd').value.trim();
+    if(n.length<2){$('#jerr').textContent='Nikneymini yaz (ən azı 2 hərf)';return}if(f.length<2){$('#jerr').textContent='Sahəni yaz (məs. IT, marketinq)';return}
+    ls.set('sbq_name',n);ls.set('sbq_field',f);$('#jb').disabled=true;$('#jerr').textContent=net.open?'':'Serverə qoşulur…';net.send({t:'ljoin',id:pid,name:n,field:f});
+    setTimeout(()=>{if(view==='ljoin'){$('#jb').disabled=false;$('#jerr').textContent='Serverə qoşulmaq alınmır. İnterneti yoxla və ya Wi-Fi ↔ mobil internet dəyiş.'}},7000)};
+}
+function ticketCard(){const me=S.lot.me;return `<div class="tk"><div class="sub">Siz lotereyadasınız!</div><div class="no">№${me.ticket}</div><div class="nm">${esc(me.name)}</div><div class="fd">${esc(me.field)}</div>
+  <hr><div class="sub" style="font-size:14px">${S.lot.prize?`Hədiyyə: <b style="color:var(--fg)">${esc(S.lot.prize)}</b><br>`:''}Çəkiliş gecənin sonunda — telefonu yanında saxla 😉</div></div>`}
+function winBlock(code,prize){return `<div class="win"><div style="font-size:46px">🎉</div><h1>Sən qazandın!</h1>${prize?`<p style="margin:8px 0 0;font-weight:700">${esc(prize)}</p>`:''}<p style="margin:8px 0 0;opacity:.85">Kodu aparıcıya göstər</p><div class="code">${esc(code)}</div></div>`}
+function showTicket(){
+  const key='ltk'+S.lot.me.ticket+(S.lot.wins||[]).length+(S.lot.prize||'');if(view===key)return;
+  const w=(S.lot.wins||[]).slice(-1)[0];
+  setV(`${w?winBlock(w.code,w.prize):''}${ticketCard()}<p class="foot">Lotereyada: <b>${S.tickets||S.lot.n}</b> nəfər</p>`,key);
+}
+function showDraw(){
+  const d=S.lot.d=S.lot.draw;if(view==='ldraw'+d.id)return;
+  setV(`<div class="center"><div class="drum">🥁</div><h1 style="margin-top:10px">Çəkiliş gedir…</h1>${d.prize?`<p class="sub" style="margin-top:6px">${esc(d.prize)}</p>`:''}</div>
+    <div class="roll" id="roll">№—</div><p class="foot">Sənin biletin: <b>№${S.lot.me.ticket}</b> · böyük ekrana bax 👀</p>`,'ldraw'+d.id);
+  const max=Math.max(S.lot.n||1,d.ticket);clearInterval(rollT);
+  rollT=setInterval(()=>{const left=d.startAt+d.dur-net.now();const el=$('#roll');if(!el||view!=='ldraw'+d.id){clearInterval(rollT);return}
+    if(left<=0){clearInterval(rollT);return showLRes(false)}
+    el.textContent='№'+(1+Math.floor(Math.random()*max))},90);
+}
+function showLRes(quiet){
+  const d=S.lot.draw;clearInterval(rollT);
+  setV(d.mine?`${winBlock(d.code,d.prize)}${ticketCard()}`
+    :`<div class="center"><div class="big" style="color:var(--fg)">🙂</div><h1 style="margin-top:12px">Bu dəfə yox</h1><p class="sub" style="margin-top:8px">Qalib: <b style="color:var(--fg)">${esc(d.name)}</b> · №${d.ticket}</p></div>${ticketCard()}`,'lres'+d.id);
+  if(d.mine&&!quiet){confetti(160);if(navigator.vibrate)navigator.vibrate([80,60,80,60,200])}
 }
 
 /* ---------- confetti ---------- */

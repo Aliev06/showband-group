@@ -1,10 +1,14 @@
 // Showband Oyun — canlı viktorina (Kahoot üslubu) üçün Worker + Durable Object.
 // Hər telefon bir WebSocket saxlayır; otaq (Durable Object) sualı hamıya eyni anda göndərir,
 // cavab vaxtını SERVER ölçür, xalları hesablayır, lider cədvəlini paylayır.
+// Rejimlər: 'quiz' (viktorina) və 'lottery' (lotereya) — bir QR, admin rejimi seçir.
+// Rollar: player (telefon), admin (PIN ilə), screen (böyük ekran, yalnız oxuyur).
 // Secret: ADMIN_PIN · Binding: ROOM (Durable Object, class Room)
 
 const ORIGINS = ['https://showbandgroup.az', 'https://www.showbandgroup.az'];
 const MAX_PLAYERS = 400;
+const MAX_TICKETS = 3000;
+const DRAW_MS = 13000;   // lototron neçə ms fırlanır (ekran animasiyası bununla sinxrondur)
 
 export default {
   async fetch(req, env) {
@@ -27,21 +31,28 @@ export class Room {
     this.ctx = ctx; this.env = env;
     this.g = null;      // oyun vəziyyəti
     this.sets = null;   // sual dəstləri
+    this.L = null;      // lotereya
+    this.mode = 'quiz';
     ctx.blockConcurrencyWhile(async () => {
       this.g = (await ctx.storage.get('g')) || this.fresh();
       this.sets = (await ctx.storage.get('sets')) || [];
+      this.L = (await ctx.storage.get('L')) || this.freshL();
+      this.mode = (await ctx.storage.get('mode')) || 'quiz';
     });
   }
 
   fresh() {
     return { phase: 'lobby', setId: null, qs: [], qi: -1, startAt: 0, endsAt: 0, players: {}, answers: {}, prevRank: {}, gameId: Date.now().toString(36) };
   }
+  freshL() { return { open: true, entries: {}, next: 1, winners: [], draw: null, prize: '', lid: Date.now().toString(36) }; }
   save() { return this.ctx.storage.put('g', this.g); }
+  saveL() { return this.ctx.storage.put('L', this.L); }
 
   async fetch(req) {
     const pair = new WebSocketPair();
     const [client, server] = Object.values(pair);
-    const role = new URL(req.url).searchParams.get('role') === 'admin' ? 'admin' : 'player';
+    const r = new URL(req.url).searchParams.get('role');
+    const role = r === 'admin' ? 'admin' : r === 'screen' ? 'screen' : 'player';
     this.ctx.acceptWebSocket(server, [role]);
     server.serializeAttachment({ role, pid: null, authed: false });
     return new Response(null, { status: 101, webSocket: client });
@@ -62,10 +73,42 @@ export class Room {
     const q = this.g.qs[this.g.qi];
     return { i: this.g.qi, total: this.g.qs.length, text: q.text, opts: q.opts, dur: q.dur };
   }
-  counts() { return { players: Object.keys(this.g.players).length, answered: Object.keys(this.g.answers).length }; }
+  counts() { return { players: Object.keys(this.g.players).length, answered: Object.keys(this.g.answers).length, tickets: Object.keys(this.L.entries).length }; }
+
+  // ---------- lotereya ----------
+  drawPublic(d) { return d ? { id: d.id, startAt: d.startAt, dur: d.dur, ticket: d.ticket, name: d.name, field: d.field, prize: d.prize } : null; }
+  lotFor(pid) {
+    const L = this.L, e = pid ? L.entries[pid] : null, d = L.draw;
+    const myWins = e ? L.winners.filter((w) => w.ticket === e.ticket) : [];
+    return { open: L.open, n: Object.keys(L.entries).length, prize: L.prize, lid: L.lid,
+      me: e ? { ticket: e.ticket, name: e.name, field: e.field } : null,
+      draw: d ? { ...this.drawPublic(d), mine: !!(e && e.ticket === d.ticket), code: e && e.ticket === d.ticket ? d.code : undefined } : null,
+      wins: myWins.map((w) => ({ prize: w.prize, code: w.code })) };
+  }
+  lotPublic(full) {
+    const L = this.L, list = Object.values(L.entries).sort((a, b) => b.ticket - a.ticket);
+    return { open: L.open, n: list.length, prize: L.prize, lid: L.lid, maxTicket: L.next - 1,
+      recent: list.slice(0, 14).map(({ ticket, name, field }) => ({ ticket, name, field })),
+      tickets: list.slice(0, 400).map((e) => e.ticket),
+      draw: full ? L.draw : this.drawPublic(L.draw),
+      winners: L.winners.map(({ ticket, name, field, prize, code }) => (full ? { ticket, name, field, prize, code } : { ticket, name, field, prize })),
+      ...(full ? { entries: list.slice(0, 500).map(({ ticket, name, field }) => ({ ticket, name, field })) } : {}) };
+  }
+  screenView() {
+    const g = this.g, base = { t: 'screen', mode: this.mode, now: Date.now(), phase: g.phase, ...this.counts(), lot: this.lotPublic(false) };
+    if (g.phase === 'q') base.q = { ...this.publicQ(), endsAt: g.endsAt };
+    if (g.phase === 'reveal' || g.phase === 'final') {
+      const q = g.qs[g.qi], rk = this.ranking();
+      base.q = q ? { i: g.qi, total: g.qs.length, text: q.text, opts: q.opts, correct: q.correct } : null;
+      base.dist = q ? q.opts.map((_, k) => Object.values(g.answers).filter((x) => x.a === k).length) : [];
+      base.top = rk.slice(0, g.phase === 'final' ? 10 : 5).map(({ id, ...r }) => r);
+    }
+    return base;
+  }
+  pushScreens() { const v = this.screenView(); for (const ws of this.socks('screen')) this.send(ws, v); }
 
   stateFor(pid) {
-    const g = this.g, base = { t: 'state', phase: g.phase, gameId: g.gameId, now: Date.now(), ...this.counts() };
+    const g = this.g, base = { t: 'state', mode: this.mode, phase: g.phase, gameId: g.gameId, now: Date.now(), ...this.counts(), lot: this.lotFor(pid) };
     if (g.phase === 'q') Object.assign(base, { q: this.publicQ(), endsAt: g.endsAt, mine: pid && g.answers[pid] ? g.answers[pid].a : null });
     if (g.phase === 'reveal' || g.phase === 'final') Object.assign(base, this.result(pid));
     if (pid && g.players[pid]) base.me = { name: g.players[pid].name, score: g.players[pid].score };
@@ -84,20 +127,20 @@ export class Room {
   adminView() {
     const g = this.g, q = g.qs[g.qi];
     const dist = q ? q.opts.map((_, k) => Object.values(g.answers).filter((x) => x.a === k).length) : [];
-    return { t: 'admin', phase: g.phase, gameId: g.gameId, setId: g.setId, now: Date.now(), endsAt: g.endsAt, ...this.counts(),
+    return { t: 'admin', mode: this.mode, lot: this.lotPublic(true), phase: g.phase, gameId: g.gameId, setId: g.setId, now: Date.now(), endsAt: g.endsAt, ...this.counts(),
       q: q ? { i: g.qi, total: g.qs.length, text: q.text, opts: q.opts, correct: q.correct, dur: q.dur } : null, dist,
       board: this.ranking().map(({ id, ...r }) => r), sets: this.sets };
   }
 
   broadcastState() {
     for (const ws of this.socks('player')) this.send(ws, this.stateFor((ws.deserializeAttachment() || {}).pid));
-    this.pushAdmin();
+    this.pushAdmin(); this.pushScreens();
   }
   pushAdmin() { const v = this.adminView(); for (const ws of this.admins()) this.send(ws, v); }
   pushCounts() {
     const c = { t: 'count', ...this.counts() };
     for (const ws of this.socks('player')) this.send(ws, c);
-    this.pushAdmin();
+    this.pushAdmin(); this.pushScreens();
   }
 
   // ---------- oyun axını ----------
@@ -138,6 +181,7 @@ export class Room {
     let m; try { m = JSON.parse(raw); } catch (e) { return; }
     const at = ws.deserializeAttachment() || {};
     if (m.t === 'ping') return this.send(ws, { t: 'pong', now: Date.now(), c: m.c });
+    if (at.role === 'screen') { if (m.t === 'hello') this.send(ws, this.screenView()); return; }
     return at.role === 'admin' ? this.onAdmin(ws, at, m) : this.onPlayer(ws, at, m);
   }
 
@@ -145,7 +189,7 @@ export class Room {
     const g = this.g;
     if (m.t === 'hello') {               // qayıdan oyunçu (internet kəsilib-gəlib)
       const pid = clean(m.id, 40);
-      if (pid && g.players[pid] && m.gameId === g.gameId) { at.pid = pid; ws.serializeAttachment(at); }
+      if (pid && ((g.players[pid] && m.gameId === g.gameId) || this.L.entries[pid])) { at.pid = pid; ws.serializeAttachment(at); }
       return this.send(ws, this.stateFor(at.pid));
     }
     if (m.t === 'join') {
@@ -159,6 +203,20 @@ export class Room {
       await this.save();
       this.send(ws, this.stateFor(pid));
       return this.pushCounts();
+    }
+    if (m.t === 'ljoin') {                // lotereyaya yazılma: nikneym + sahə
+      const L = this.L, pid = clean(m.id, 40), name = clean(m.name, 24), field = clean(m.field, 40);
+      if (!pid || name.length < 2) return this.send(ws, { t: 'err', e: 'name' });
+      if (field.length < 2) return this.send(ws, { t: 'err', e: 'field' });
+      if (!L.entries[pid]) {
+        if (!L.open) return this.send(ws, { t: 'err', e: 'closed' });
+        if (Object.keys(L.entries).length >= MAX_TICKETS) return this.send(ws, { t: 'err', e: 'full' });
+        L.entries[pid] = { ticket: L.next++, name, field, at: Date.now() };
+      } else Object.assign(L.entries[pid], { name, field });
+      at.pid = pid; ws.serializeAttachment(at);
+      await this.saveL();
+      this.send(ws, this.stateFor(pid));
+      this.pushAdmin(); return this.pushScreens();
     }
     if (m.t === 'ans' && g.phase === 'q' && at.pid && g.players[at.pid] && !g.answers[at.pid]) {
       const now = Date.now(), q = g.qs[g.qi], a = Number(m.a);
@@ -212,6 +270,34 @@ export class Room {
         if (g.phase === 'q') return this.closeQuestion();
         return;
       case 'end': return this.finish();
+      case 'mode':
+        if (!['quiz', 'lottery'].includes(m.m)) return;
+        this.mode = m.m; await this.ctx.storage.put('mode', this.mode);
+        return this.broadcastState();
+      case 'lOpen': this.L.open = !!m.v; await this.saveL(); return this.broadcastState();
+      case 'lPrize': this.L.prize = clean(m.text, 60); await this.saveL(); this.pushAdmin(); return this.pushScreens();
+      case 'lDraw': {
+        const L = this.L, now = Date.now();
+        if (L.draw && now < L.draw.startAt + L.draw.dur + 1500) return;            // çəkiliş hələ gedir
+        const won = new Set(L.winners.map((w) => w.ticket));
+        const pool = Object.values(L.entries).filter((e) => !won.has(e.ticket));
+        if (!pool.length) return this.send(ws, { t: 'err', e: 'empty' });
+        const rnd = new Uint32Array(2); crypto.getRandomValues(rnd);
+        const e = pool[rnd[0] % pool.length];
+        const code = String(1000 + (rnd[1] % 9000));
+        L.draw = { id: now.toString(36), startAt: now + 900, dur: DRAW_MS, ticket: e.ticket, name: e.name, field: e.field, prize: L.prize, code };
+        L.winners.push({ ticket: e.ticket, name: e.name, field: e.field, prize: L.prize, code, at: now });
+        await this.saveL();
+        return this.broadcastState();
+      }
+      case 'lUndo': {                     // son qalibi ləğv et (məs. zalda yoxdursa) — yenidən çəkmək olar
+        const L = this.L; const w = L.winners.pop();
+        if (w && L.draw && L.draw.ticket === w.ticket) L.draw = null;
+        await this.saveL(); return this.broadcastState();
+      }
+      case 'lNew':
+        this.L = this.freshL(); await this.saveL();
+        return this.broadcastState();
       case 'kick':
         delete g.players[m.name && Object.keys(g.players).find((id) => g.players[id].name === m.name)];
         await this.save(); return this.broadcastState();
