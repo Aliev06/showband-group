@@ -17,9 +17,10 @@
  "video_title": "Showband Group — promo video",
  "tg_message": 224,
  "status": "published",
- "ig_status": "queued",
+ "ig_status": "done",
  "tiktok": {
   "id": "cd33b8ee49954cd6868243412eea855e",
   "user": "showbandgroup"
- }
+ },
+ "ig_id": "18663675199054533"
 }
