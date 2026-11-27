@@ -43,5 +43,10 @@
  "mode": "hype",
  "track": "DJ Orxan Abbasov & Feyyazbeats — Aman Tello",
  "tg_message": 227,
- "status": "pending"
+ "status": "published",
+ "ig_status": "queued",
+ "tiktok": {
+  "id": "cfd8aa9e781f4fcb9aef1b7feaa948b5",
+  "user": "showbandgroup"
+ }
 }
