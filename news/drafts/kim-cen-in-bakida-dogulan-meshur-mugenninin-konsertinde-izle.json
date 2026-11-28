@@ -43,5 +43,10 @@
  "mode": "event",
  "track": "DJ Orxan Abbasov — Movin To The Sun (Instrumental Cover)",
  "tg_message": 233,
- "status": "pending"
+ "status": "published",
+ "ig_status": "queued",
+ "tiktok": {
+  "id": "4ad642a906464190b343d2c80417e137",
+  "user": "showbandgroup"
+ }
 }
