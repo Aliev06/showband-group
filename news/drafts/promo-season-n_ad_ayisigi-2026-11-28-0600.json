@@ -16,5 +16,10 @@
  "viral": "—",
  "video_title": "Ad günü · Ay İşığı",
  "tg_message": 230,
- "status": "pending"
+ "status": "published",
+ "ig_status": "queued",
+ "tiktok": {
+  "id": "7f9f4080f892476584704c57880220a8",
+  "user": "showbandgroup"
+ }
 }
